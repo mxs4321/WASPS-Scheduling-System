@@ -2,24 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 
 const DEFAULT_COLORS = [
-  '#1abc9c',
-  '#2ecc71',
-  '#3498db',
-  '#9b59b6',
-  '#34495e',
-  '#16a085',
-  '#27ae60',
-  '#2980b9',
-  '#8e44ad',
-  '#2c3e50',
-  '#f1c40f',
-  '#e67e22',
-  '#e74c3c',
-  '#95a5a6',
-  '#f39c12',
-  '#d35400',
-  '#c0392b',
-  '#bdc3c7'
+  '#EB5757',
+  '#F2994A',
+  '#F2C94C',
+  '#219653',
+  '#27AE60',
+  '#6FCF97',
+  '#2F80ED',
+  '#2D9CDB',
+  '#56CCF2',
+  '#9B51E0',
+  '#BB6BD9',
+  '#27AE60',
+  '#7F8DE1',
+  '#56CB7D',
+  '#F88962'
 ];
 
 const computeColor = (name = 'NA', colors = DEFAULT_COLORS) => {
