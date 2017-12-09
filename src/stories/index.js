@@ -1,13 +1,16 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import StatusFilter from '../view/StatusFilter';
+import Sidebar from '../view/Sidebar';
 import Avatar from '../view/Avatar';
 
-storiesOf('Status Filter', module).add('Basic', () => <StatusFilter />);
+storiesOf('Sidebar', module)
+  .add('Dispatcher', () => <Sidebar isDispatcher={true} />)
+  .add('Driver', () => <Sidebar isDriver={true} />)
+  .add('Passanger', () => <Sidebar />);
 
 storiesOf('avatar', module)
   .add('Brett Lamy', () => <Avatar name="Brett Lamy" />)
-  .add('Gabby ODell', () => <Avatar name="Gabby ODell" />)
+  .add('foo bar', () => <Avatar name="foo bar" />)
   .add('NT', () => <Avatar name="NT" />)
   .add('MM', () => <Avatar name="MM" />);
