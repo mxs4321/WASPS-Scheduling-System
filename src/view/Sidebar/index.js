@@ -4,12 +4,14 @@ import StatusFilter from './StatusFilter';
 import type { Status } from './StatusFilter';
 
 type Props = {
+  /** Should the sidebar show tabs accociated with drivers */
   isDriver: boolean,
+  /** Should the sidebar show tabs accociated with dispatchers */
   isDispatcher: boolean,
-  status: Status
+  /** Filter to apply to the status */
+  status?: Status
 };
-
-export default ({ isDriver = false, isDispatcher = false, status }: Props) => (
+const Sidebar = ({ isDriver = false, isDispatcher = false, status }: Props) => (
   <div>
     <Navigation isDispatcher={isDispatcher} isDriver={isDriver} />
     <StatusFilter
@@ -19,3 +21,5 @@ export default ({ isDriver = false, isDispatcher = false, status }: Props) => (
     />
   </div>
 );
+
+export default Sidebar;

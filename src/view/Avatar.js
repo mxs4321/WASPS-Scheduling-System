@@ -1,5 +1,17 @@
+//@flow
 import React from 'react';
 import styled from 'styled-components';
+
+type Props = {
+  /** Uses this name to derive the initials */
+  name: string,
+  /** Calls this function when the user clicks */
+  onClick: Function,
+  /** Diameter of the circle in pixels */
+  size: number
+};
+
+const NoOp = () => {};
 
 const DEFAULT_COLORS = [
   '#EB5757',
@@ -51,8 +63,10 @@ const UserIcon = styled.button`
   }
 `;
 
-export default ({ name, onClick, size = 46, ...args }) => (
+const Avatar = ({ name = 'NA', onClick = NoOp, size = 46, ...args }: Props) => (
   <UserIcon name={name} onClick={onClick} size={size} {...args}>
     {computeInitials(name)}
   </UserIcon>
 );
+
+export default Avatar;

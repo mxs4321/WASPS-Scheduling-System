@@ -1,7 +1,15 @@
+//@flow
 import React from 'react';
 import styled from 'styled-components';
 import { Menu } from '../icons';
 import Avatar from '../Avatar';
+
+type Props = {
+  /** Helps determine the color of the bar */
+  isDispatcher: Boolean,
+  /** Helps determine the color of the bar */
+  isDriver: Boolean
+};
 
 const getToolbarColor = ({ isDispatcher = false, isDriver = false }) => {
   if (isDispatcher) return '#EB5757';
@@ -13,7 +21,7 @@ const HamburgerMenu = styled(Menu)`
   margin: 11px;
 `;
 
-const Toolbar = styled.div`
+const Background = styled.div`
   height: 46px;
   width: 100%;
   background-color: ${getToolbarColor};
@@ -23,7 +31,7 @@ const Toolbar = styled.div`
 `;
 
 const SearchBar = styled.input`
-  width: 80%;
+  width: 70%;
   height: 28px;
   margin: 8px auto;
   border: none;
@@ -35,9 +43,11 @@ const SearchBar = styled.input`
   }
 `;
 
-export default ({ isDispatcher = false, isDriver = false }) => (
-  <Toolbar isDispatcher={isDispatcher} isDriver={isDriver}>
+const Toolbar = ({ isDispatcher = false, isDriver = false }: Props) => (
+  <Background isDispatcher={isDispatcher} isDriver={isDriver}>
     <HamburgerMenu />asdf<SearchBar />
-    <Avatar />
-  </Toolbar>
+    <Avatar size={36} />
+  </Background>
 );
+
+export default Toolbar;
