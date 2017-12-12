@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Menu } from '../icons';
+import Avatar from '../Avatar';
 
 const getToolbarColor = ({ isDispatcher = false, isDriver = false }) => {
   if (isDispatcher) return '#EB5757';
@@ -21,8 +22,22 @@ const Toolbar = styled.div`
   color: white;
 `;
 
+const SearchBar = styled.input`
+  width: 80%;
+  height: 28px;
+  margin: 8px auto;
+  border: none;
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.4);
+  :hover,
+  :focus {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+`;
+
 export default ({ isDispatcher = false, isDriver = false }) => (
   <Toolbar isDispatcher={isDispatcher} isDriver={isDriver}>
-    <HamburgerMenu />asdf
+    <HamburgerMenu />asdf<SearchBar />
+    <Avatar />
   </Toolbar>
 );
