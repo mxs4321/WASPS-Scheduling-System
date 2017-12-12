@@ -17,6 +17,12 @@ const getToolbarColor = ({ isDispatcher = false, isDriver = false }) => {
   return '#4396E3';
 };
 
+const getToolbarTitle = ({ isDispatcher = false, isDriver = false }) => {
+  if (isDispatcher) return 'Dispatcher';
+  if (isDriver) return 'Driver';
+  return 'Passanger';
+};
+
 const HamburgerMenu = styled(Menu)`
   margin: 11px;
 `;
@@ -45,7 +51,9 @@ const SearchBar = styled.input`
 
 const Toolbar = ({ isDispatcher = false, isDriver = false }: Props) => (
   <Background isDispatcher={isDispatcher} isDriver={isDriver}>
-    <HamburgerMenu />asdf<SearchBar />
+    <HamburgerMenu />
+    {getToolbarTitle({ isDispatcher, isDriver })}
+    <SearchBar />
     <Avatar size={36} />
   </Background>
 );
