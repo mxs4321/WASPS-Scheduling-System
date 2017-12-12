@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './controller/App';
 import registerServiceWorker from './util/registerServiceWorker';
 import { injectGlobal } from 'styled-components';
+import 'material-expansion-panel/dist/material-expansion-panel.min.css';
 
 injectGlobal`
   html, body, #root {

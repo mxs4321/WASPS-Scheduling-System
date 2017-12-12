@@ -3,13 +3,15 @@ import { storiesOf } from '@storybook/react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import { withInfo } from '@storybook/addon-info';
+import ExpansionPanel from 'material-expansion-panel';
 
 import Sidebar from '../view/Sidebar';
 import Avatar from '../view/Avatar';
 import Toolbar from '../view/Toolbar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'material-expansion-panel/dist/material-expansion-panel.min.css';
 
-BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
+BigCalendar.momentLocalizer(moment);
 
 storiesOf('Sidebar', module)
   .addDecorator((story, context) =>
@@ -66,4 +68,66 @@ storiesOf('Calendar', module)
       startAccessor="start"
       endAccessor="end"
     />
+  ));
+
+var aIcons = [
+  {
+    icon: 'delete',
+    callback: null,
+    additionalParams: null
+  }
+];
+var aButtons = [
+  {
+    buttonText: 'Save',
+    callback: null,
+    additionalParams: null
+  },
+  {
+    buttonText: 'Cancel',
+    callback: null,
+    additionalParams: null,
+    toggleExpand: true
+  }
+];
+
+storiesOf('Expandable Card', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+    A Listview which expands on item click
+    `)(story)(context)
+  )
+  .add('Single', () => (
+    <ExpansionPanel
+      title="Title"
+      expandedTitle="Expanded Title"
+      titleIcon="done_all"
+      actionButtons={aButtons}
+      actionIcons={aIcons}
+    >
+      <div>Example Content</div>
+    </ExpansionPanel>
+  ))
+  .add('List', () => (
+    <div>
+      <ExpansionPanel
+        titleIcon="done_all"
+        title="Panel Title"
+        expandedTitle="Expanded Panel Title"
+      />
+      <ExpansionPanel
+        titleIcon="done_all"
+        title="Panel Title"
+        expandedTitle="Expanded Panel Title"
+        actionButtons={aButtons}
+        actionIcons={aIcons}
+      >
+        Content
+      </ExpansionPanel>
+      <ExpansionPanel
+        titleIcon="done_all"
+        title="Panel Title"
+        expandedTitle="Expanded Panel Title"
+      />
+    </div>
   ));
