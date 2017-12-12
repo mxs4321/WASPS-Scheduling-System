@@ -37,9 +37,11 @@ const computeInitials = (name = 'NA') => {
 
 const UserIcon = styled.button`
   border-radius: 100%;
-  width: 46px;
-  height: 46px;
-  font-size: 16px;
+  padding: 0;
+  margin: 5px;
+  width: ${props => `${props.size}px` || '46px'};
+  height: ${props => `${props.size}px` || '46px'};
+  font-size: ${props => `${props.size / 3}px` || '16px'};
   color: white;
   border: 1px solid white;
   background-color: ${props => computeColor(props.name)};
@@ -49,8 +51,8 @@ const UserIcon = styled.button`
   }
 `;
 
-export default ({ name, onClick }) => (
-  <UserIcon name={name} onClick={onClick}>
+export default ({ name, onClick, size = 46, ...args }) => (
+  <UserIcon name={name} onClick={onClick} size={size} {...args}>
     {computeInitials(name)}
   </UserIcon>
 );
