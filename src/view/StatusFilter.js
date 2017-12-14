@@ -1,7 +1,7 @@
 //@flow
 import React from 'react';
-import { Help, Warning, Scheduled, Complete, Canceled } from '../icons';
-import List from './List';
+import { Help, Warning, Scheduled, Complete, Canceled } from './icons';
+import List from './SidebarList';
 
 export type Status =
   | 'Unverified'

@@ -5,7 +5,8 @@ import moment from 'moment';
 import { withInfo } from '@storybook/addon-info';
 import ExpansionPanel from 'material-expansion-panel';
 
-import Sidebar from '../view/Sidebar';
+import Navigation from '../view/Navigation';
+import StatusFilter from '../view/StatusFilter';
 import Avatar from '../view/Avatar';
 import Toolbar from '../view/Toolbar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -13,15 +14,25 @@ import 'material-expansion-panel/dist/material-expansion-panel.min.css';
 
 BigCalendar.momentLocalizer(moment);
 
-storiesOf('Sidebar', module)
+storiesOf('Navigation', module)
   .addDecorator((story, context) =>
     withInfo(`
     A Sidebar which changes depending on user privileges. 
     `)(story)(context)
   )
-  .add('Dispatcher', () => <Sidebar isDispatcher={true} />)
-  .add('Driver', () => <Sidebar isDriver={true} />)
-  .add('Passanger', () => <Sidebar />);
+  .add('Dispatcher', () => <Navigation isDispatcher={true} />)
+  .add('Driver', () => <Navigation isDriver={true} />)
+  .add('Passanger', () => <Navigation />);
+
+storiesOf('StatusFilter', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+    A Sidebar which changes depending on user privileges. 
+    `)(story)(context)
+  )
+  .add('Dispatcher', () => <StatusFilter isDispatcher={true} />)
+  .add('Driver', () => <StatusFilter isDriver={true} />)
+  .add('Passanger', () => <StatusFilter />);
 
 storiesOf('Avatar', module)
   .addDecorator((story, context) =>
@@ -52,6 +63,8 @@ storiesOf('Calendar', module)
   )
   .add('Basic', () => (
     <BigCalendar
+      startAccessor="start"
+      endAccessor="end"
       events={[
         {
           title: 'All Day Event very long title',
@@ -65,8 +78,6 @@ storiesOf('Calendar', module)
           end: new Date(2017, 11, 11, 3, 0, 0)
         }
       ]}
-      startAccessor="start"
-      endAccessor="end"
     />
   ));
 

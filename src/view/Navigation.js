@@ -1,7 +1,7 @@
 //@flow
 import React from 'react';
-import { Schedule, Car, Group, Timer } from '../icons';
-import List from './List';
+import { Schedule, Car, Group, Timer } from './icons';
+import List from './SidebarList';
 
 export default ({ isDriver = false, isDispatcher = false }) => (
   <List>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Toolbar from '../view/Toolbar';
-import Sidebar from '../view/Sidebar';
+import Navigation from '../view/Navigation';
+import StatusFilter from '../view/StatusFilter';
 import ExpansionPanel from 'material-expansion-panel';
 import { Add } from '../view/icons';
 
@@ -30,7 +31,10 @@ const FAB = styled.button`
 
 export default class App extends Component {
   state = {
-    sidebarIsOpen: true
+    sidebarIsOpen: true,
+    isDispatcher: false,
+    isDriver: false,
+    statusFilter: ''
   };
 
   toggleSidebar = () => {
@@ -38,12 +42,22 @@ export default class App extends Component {
   };
 
   render() {
-    const { sidebarIsOpen } = this.state;
+    const { sidebarIsOpen, isDispatcher, isDriver, statusFilter } = this.state;
     return (
       <Fullbleed>
         <Toolbar title="Passanger" onMenuToggle={() => this.toggleSidebar()} />
         <Body>
-          {sidebarIsOpen && <Sidebar />}
+          {sidebarIsOpen && (
+            <div>
+              <Navigation isDispatcher={isDispatcher} isDriver={isDriver} />
+              <hr />
+              <StatusFilter
+                isDispatcher={isDispatcher}
+                isDriver={isDriver}
+                status={statusFilter}
+              />
+            </div>
+          )}
           <ExpansionList>
             <ExpansionPanel
               titleIcon="done_all"
