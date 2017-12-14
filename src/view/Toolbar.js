@@ -1,15 +1,19 @@
 //@flow
 import React from 'react';
 import styled from 'styled-components';
-import { Menu } from '../icons';
-import Avatar from '../Avatar';
+import { Menu } from './icons';
+import Avatar from './Avatar';
 
 type Props = {
   /** Helps determine the color of the bar */
   isDispatcher: Boolean,
   /** Helps determine the color of the bar */
-  isDriver: Boolean
+  isDriver: Boolean,
+  /** Call back for when the Hamburger menu button is clicked */
+  onMenuToggle: Function
 };
+
+const NoOp = () => {};
 
 const getToolbarColor = ({ isDispatcher = false, isDriver = false }) => {
   if (isDispatcher) return '#EB5757';
@@ -26,7 +30,6 @@ const getToolbarTitle = ({ isDispatcher = false, isDriver = false }) => {
 const HamburgerMenu = styled(Menu)`
   margin: 11px;
 `;
-
 const Background = styled.div`
   height: 46px;
   width: 100%;
@@ -35,7 +38,6 @@ const Background = styled.div`
   line-height: 46px;
   color: white;
 `;
-
 const SearchBar = styled.input`
   width: 70%;
   height: 28px;
@@ -49,9 +51,13 @@ const SearchBar = styled.input`
   }
 `;
 
-const Toolbar = ({ isDispatcher = false, isDriver = false }: Props) => (
+const Toolbar = ({
+  isDispatcher = false,
+  isDriver = false,
+  onMenuToggle = NoOp
+}: Props) => (
   <Background isDispatcher={isDispatcher} isDriver={isDriver}>
-    <HamburgerMenu />
+    <HamburgerMenu onClick={onMenuToggle} />
     {getToolbarTitle({ isDispatcher, isDriver })}
     <SearchBar />
     <Avatar size={36} />

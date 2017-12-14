@@ -22,19 +22,28 @@ const FAB = styled.button`
   background-color: #f2c94c;
   border-radius: 100%;
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  right: 20px;
+  bottom: 20px;
   transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
 `;
 
 export default class App extends Component {
+  state = {
+    sidebarIsOpen: true
+  };
+
+  toggleSidebar = () => {
+    this.setState(({ sidebarIsOpen }) => ({ sidebarIsOpen: !sidebarIsOpen }));
+  };
+
   render() {
+    const { sidebarIsOpen } = this.state;
     return (
       <Fullbleed>
-        <Toolbar title="Passanger" />
+        <Toolbar title="Passanger" onMenuToggle={() => this.toggleSidebar()} />
         <Body>
-          <Sidebar />
+          {sidebarIsOpen && <Sidebar />}
           <ExpansionList>
             <ExpansionPanel
               titleIcon="done_all"
