@@ -1,8 +1,9 @@
 //@flow
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Menu } from './icons';
 import Avatar from './Avatar';
+import SearchBar from './SearchBar';
 
 type Props = {
   /** Helps determine the color of the bar */
@@ -10,12 +11,21 @@ type Props = {
   /** Helps determine the color of the bar */
   isDriver: Boolean,
   /** Call back for when the Hamburger menu button is clicked */
-  onMenuToggle: Function
+  onMenuToggle: Function,
+  /** Call back for when the search bar is Focused */
+  onSearchFocus: Function,
+  /** Call back for when the search bar is Blured */
+  onSearchBlur: Function
 };
 
 const NoOp = () => {};
 
-const getToolbarColor = ({ isDispatcher = false, isDriver = false }) => {
+const getToolbarBackgroundColor = ({
+  isDispatcher = false,
+  isDriver = false,
+  isSearching = false
+}) => {
+  // if (isSearching) return "#f6f6f6";
   if (isDispatcher) return '#EB5757';
   if (isDriver) return '#27AE60';
   return '#4396E3';
@@ -33,35 +43,41 @@ const HamburgerMenu = styled(Menu)`
 const Background = styled.div`
   height: 46px;
   width: 100%;
-  background-color: ${getToolbarColor};
+  background-color: ${getToolbarBackgroundColor};
   display: flex;
   line-height: 46px;
   color: white;
 `;
-const SearchBar = styled.input`
-  width: 70%;
-  height: 28px;
-  margin: 8px auto;
-  border: none;
-  border-radius: 2px;
-  background-color: rgba(255, 255, 255, 0.4);
-  :hover,
-  :focus {
-    background-color: rgba(255, 255, 255, 0.6);
-  }
-`;
 
-const Toolbar = ({
-  isDispatcher = false,
-  isDriver = false,
-  onMenuToggle = NoOp
-}: Props) => (
-  <Background isDispatcher={isDispatcher} isDriver={isDriver}>
-    <HamburgerMenu onClick={onMenuToggle} />
-    {getToolbarTitle({ isDispatcher, isDriver })}
-    <SearchBar />
-    <Avatar size={36} />
-  </Background>
-);
+class Toolbar extends Component {
+  props: Props;
+  state = {
+    isSearching: false
+  };
+
+  render() {
+    const {
+      isDispatcher = false,
+      isDriver = false,
+      onMenuToggle = NoOp
+    } = this.props;
+    const { isSearching } = this.state;
+    return (
+      <Background
+        isDispatcher={isDispatcher}
+        isDriver={isDriver}
+        isSearching={isSearching}
+      >
+        <HamburgerMenu onClick={onMenuToggle} />
+        {getToolbarTitle({ isDispatcher, isDriver })}
+        <SearchBar
+          onFocus={() => this.setState({ isSearching: true })}
+          onBlur={() => this.setState({ isSearching: false })}
+        />
+        <Avatar size={36} />
+      </Background>
+    );
+  }
+}
 
 export default Toolbar;
