@@ -3,7 +3,14 @@ import React from 'react';
 import { Schedule, Car, Group, Timer } from './icons';
 import List from './SidebarList';
 
-export default ({ isDriver = false, isDispatcher = false }) => (
+type Props = {
+  /** Will show an Availability tab */
+  isDriver: boolean,
+  /** Will show a Drivers tab */
+  isDispatcher: boolean
+};
+
+const Navigation = ({ isDriver = false, isDispatcher = false }: Props) => (
   <List>
     <List.Item>
       <Car />&nbsp;&nbsp;Rides
@@ -23,3 +30,5 @@ export default ({ isDriver = false, isDispatcher = false }) => (
     </List.Item>
   </List>
 );
+
+export default Navigation;

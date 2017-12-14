@@ -3,20 +3,16 @@ import React from 'react';
 import { Help, Warning, Scheduled, Complete, Canceled } from './icons';
 import List from './SidebarList';
 
-export type Status =
-  | 'Unverified'
-  | 'Pending'
-  | 'Scheduled'
-  | 'Complete'
-  | 'Canceled';
-
 type Props = {
-  isAdmin: boolean,
-  status: Status,
-  onClick: Function
+  /** Will toggle weather the unverified and canceled categories appear */
+  isDispatcher: boolean,
+  /** The Currently selected Status */
+  status: 'Unverified' | 'Pending' | 'Scheduled' | 'Complete' | 'Canceled',
+  /** Callback function for when the filter changes states */
+  onFilterChange: Function
 };
 
-export default ({ isDispatcher = false, status, onClick }: Props) => (
+const StatusFilter = ({ isDispatcher, status, onFilterChange }: Props) => (
   <List>
     {isDispatcher && (
       <List.Item>
@@ -39,3 +35,5 @@ export default ({ isDispatcher = false, status, onClick }: Props) => (
     )}
   </List>
 );
+
+export default StatusFilter;

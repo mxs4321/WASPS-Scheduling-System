@@ -17,7 +17,7 @@ BigCalendar.momentLocalizer(moment);
 storiesOf('Navigation', module)
   .addDecorator((story, context) =>
     withInfo(`
-    A Sidebar which changes depending on user privileges. 
+    A component for navigating between different views
     `)(story)(context)
   )
   .add('Dispatcher', () => <Navigation isDispatcher={true} />)
@@ -27,12 +27,11 @@ storiesOf('Navigation', module)
 storiesOf('StatusFilter', module)
   .addDecorator((story, context) =>
     withInfo(`
-    A Sidebar which changes depending on user privileges. 
+    A filter for rides
     `)(story)(context)
   )
-  .add('Dispatcher', () => <StatusFilter isDispatcher={true} />)
-  .add('Driver', () => <StatusFilter isDriver={true} />)
-  .add('Passanger', () => <StatusFilter />);
+  .add('Default', () => <StatusFilter />)
+  .add('Dispatcher', () => <StatusFilter isDispatcher={true} />);
 
 storiesOf('Avatar', module)
   .addDecorator((story, context) =>
