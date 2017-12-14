@@ -2,8 +2,10 @@
   "name": "wasps-scheduling-system",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://mxs4321.github.io/WASPS-Scheduling-System",
   "dependencies": {
     "flow-bin": "^0.60.1",
+    "gh-pages": "^1.1.0",
     "material-expansion-panel": "^1.0.0",
     "react": "^16.2.0",
     "react-big-calendar": "^0.17.0",
@@ -19,7 +21,9 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "flow": "flow"
+    "flow": "flow",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css}": [
