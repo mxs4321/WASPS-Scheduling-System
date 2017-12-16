@@ -5,6 +5,7 @@ import Navigation from '../view/Navigation';
 import StatusFilter from '../view/StatusFilter';
 import ExpansionPanel from 'material-expansion-panel';
 import { Add } from '../view/icons';
+import CreateRide from './CreateRide';
 
 const Fullbleed = styled.div`
   postion: absolute:
@@ -27,6 +28,10 @@ const FAB = styled.button`
   bottom: 20px;
   transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
+  border: none;
+  :focus {
+    outline: 0;
+  }
 `;
 
 export default class App extends Component {
@@ -34,15 +39,28 @@ export default class App extends Component {
     sidebarIsOpen: true,
     isDispatcher: false,
     isDriver: false,
-    statusFilter: ''
+    statusFilter: '',
+    createRideIsOpen: false
   };
 
   toggleSidebar = () => {
     this.setState(({ sidebarIsOpen }) => ({ sidebarIsOpen: !sidebarIsOpen }));
   };
 
+  toggleCreateRide = () => {
+    this.setState(({ createRideIsOpen }) => ({
+      createRideIsOpen: !createRideIsOpen
+    }));
+  };
+
   render() {
-    const { sidebarIsOpen, isDispatcher, isDriver, statusFilter } = this.state;
+    const {
+      sidebarIsOpen,
+      isDispatcher,
+      isDriver,
+      statusFilter,
+      createRideIsOpen
+    } = this.state;
     return (
       <Fullbleed>
         <Toolbar title="Passanger" onMenuToggle={() => this.toggleSidebar()} />
@@ -78,9 +96,12 @@ export default class App extends Component {
             />
           </ExpansionList>
         </Body>
-        <FAB>
+        <FAB onClick={this.toggleCreateRide}>
           <Add />
         </FAB>
+        {createRideIsOpen && (
+          <CreateRide onModalClick={this.toggleCreateRide} />
+        )}
       </Fullbleed>
     );
   }

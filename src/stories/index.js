@@ -1,18 +1,86 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
-import { withInfo } from '@storybook/addon-info';
 import ExpansionPanel from 'material-expansion-panel';
+import { storiesOf } from '@storybook/react';
+import { withInfo } from '@storybook/addon-info';
+import { action } from '@storybook/addon-actions';
 
 import Navigation from '../view/Navigation';
 import StatusFilter from '../view/StatusFilter';
 import Avatar from '../view/Avatar';
 import Toolbar from '../view/Toolbar';
+import TimePicker from '../view/TimePicker';
+import InputBox from '../view/InputBox';
+import BreadCrumb from '../view/Breadcrumb';
+import AvailabilityInput from '../view/AvailabilityInput';
+import AvaliabilityForm from '../view/forms/AvailabilityForm';
+import CreateUserForm from '../view/forms/CreateUserForm';
+
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'material-expansion-panel/dist/material-expansion-panel.min.css';
 
 BigCalendar.momentLocalizer(moment);
+storiesOf('InputBox', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+  A basic Input box
+  `)(story)(context)
+  )
+  .add('Basic', () => (
+    <InputBox name="title" onChange={action('form submitted')} />
+  ));
+
+storiesOf('CreateUserForm', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+  CreateUserForm
+  `)(story)(context)
+  )
+  .add('Basic', () => <CreateUserForm onSubmit={action('form submitted')} />);
+
+storiesOf('AvaliabilityForm', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+  An form for entering Availability
+  `)(story)(context)
+  )
+  .add('Basic', () => (
+    <AvaliabilityForm onChange={action('availability changed')} />
+  ));
+
+storiesOf('AvailabilityInput', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+    An input form for entering Availability
+    `)(story)(context)
+  )
+  .add('Basic', () => (
+    <AvailabilityInput onChange={action('availability changed')} />
+  ));
+
+storiesOf('BreadCrumb', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+    A Breadcrumb for progressing through steps
+    `)(story)(context)
+  )
+  .add('Basic', () => (
+    <BreadCrumb>
+      <li>Select User</li>
+      <li>Enter Address</li>
+      <li>Assign Driver</li>
+      <li>Verify ride</li>
+    </BreadCrumb>
+  ));
+
+storiesOf('TimePicker', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+    A Time picker for picking a specific time
+    `)(story)(context)
+  )
+  .add('Basic', () => <TimePicker />);
 
 storiesOf('Navigation', module)
   .addDecorator((story, context) =>
@@ -80,14 +148,14 @@ storiesOf('Calendar', module)
     />
   ));
 
-var aIcons = [
+const aIcons = [
   {
     icon: 'delete',
     callback: null,
     additionalParams: null
   }
 ];
-var aButtons = [
+const aButtons = [
   {
     buttonText: 'Save',
     callback: null,
