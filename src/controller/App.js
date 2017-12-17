@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { Route, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Toolbar from '../view/Toolbar';
-import Navigation from '../view/Navigation';
+import Navigation from '../controller/Navigation';
 import StatusFilter from '../view/StatusFilter';
-import ExpansionPanel from 'material-expansion-panel';
 import { Add } from '../view/icons';
 import CreateRide from './CreateRide';
+import Availability from './Availability';
+import Drivers from './Drivers';
+import Schedule from './Schedule';
+import Rides from './Rides';
+import { logout } from '../model/auth';
+import SignIn from './SignIn';
 
 const Fullbleed = styled.div`
   postion: absolute:
@@ -14,10 +21,8 @@ const Fullbleed = styled.div`
 `;
 const Body = styled.div`
   display: flex;
-`;
-const ExpansionList = styled.div`
+  height: 100%;
   width: 100%;
-  margin: 20px 60px;
 `;
 const FAB = styled.button`
   padding: 20px;
@@ -33,76 +38,85 @@ const FAB = styled.button`
     outline: 0;
   }
 `;
+const Sidebar = styled.div`
+  width: 180px;
+`;
 
-export default class App extends Component {
-  state = {
-    sidebarIsOpen: true,
-    isDispatcher: false,
-    isDriver: false,
-    statusFilter: '',
-    createRideIsOpen: false
-  };
+export default withRouter(
+  connect(
+    ({ auth }) => ({
+      isPassanger: auth.isPassanger,
+      isDispatcher: auth.isDispatcher,
+      isDriver: auth.isDriver
+    }),
+    dispatch => ({
+      logout: () => {
+        dispatch(logout());
+      }
+    })
+  )(
+    class App extends Component {
+      state = {
+        sidebarIsOpen: true,
+        statusFilter: '',
+        createRideIsOpen: false
+      };
 
-  toggleSidebar = () => {
-    this.setState(({ sidebarIsOpen }) => ({ sidebarIsOpen: !sidebarIsOpen }));
-  };
+      toggleSidebar = () => {
+        this.setState(({ sidebarIsOpen }) => ({
+          sidebarIsOpen: !sidebarIsOpen
+        }));
+      };
 
-  toggleCreateRide = () => {
-    this.setState(({ createRideIsOpen }) => ({
-      createRideIsOpen: !createRideIsOpen
-    }));
-  };
+      toggleCreateRide = () => {
+        this.setState(({ createRideIsOpen }) => ({
+          createRideIsOpen: !createRideIsOpen
+        }));
+      };
 
-  render() {
-    const {
-      sidebarIsOpen,
-      isDispatcher,
-      isDriver,
-      statusFilter,
-      createRideIsOpen
-    } = this.state;
-    return (
-      <Fullbleed>
-        <Toolbar title="Passanger" onMenuToggle={() => this.toggleSidebar()} />
-        <Body>
-          {sidebarIsOpen && (
-            <div>
-              <Navigation isDispatcher={isDispatcher} isDriver={isDriver} />
-              <hr />
-              <StatusFilter
-                isDispatcher={isDispatcher}
-                isDriver={isDriver}
-                status={statusFilter}
-              />
-            </div>
-          )}
-          <ExpansionList>
-            <ExpansionPanel
-              titleIcon="done_all"
-              title="Panel Title"
-              expandedTitle="Expanded Panel Title"
+      render() {
+        const { sidebarIsOpen, statusFilter, createRideIsOpen } = this.state;
+        const { isDispatcher, isDriver, isPassanger, logout } = this.props;
+        if (!(isDispatcher || isDriver || isPassanger)) {
+          return <SignIn />;
+        }
+        return (
+          <Fullbleed>
+            <Toolbar
+              title="Passanger"
+              isDispatcher={isDispatcher}
+              isDriver={isDriver}
+              onMenuToggle={() => this.toggleSidebar()}
+              onAvatarClick={() => logout()}
             />
-            <ExpansionPanel
-              titleIcon="done_all"
-              title="Panel Title"
-              expandedTitle="Expanded Panel Title"
-            >
-              Content
-            </ExpansionPanel>
-            <ExpansionPanel
-              titleIcon="done_all"
-              title="Panel Title"
-              expandedTitle="Expanded Panel Title"
-            />
-          </ExpansionList>
-        </Body>
-        <FAB onClick={this.toggleCreateRide}>
-          <Add />
-        </FAB>
-        {createRideIsOpen && (
-          <CreateRide onModalClick={this.toggleCreateRide} />
-        )}
-      </Fullbleed>
-    );
-  }
-}
+            <Body>
+              {sidebarIsOpen && (
+                <Sidebar>
+                  <Navigation isDispatcher={isDispatcher} isDriver={isDriver} />
+                  <hr />
+                  <StatusFilter
+                    isDispatcher={isDispatcher}
+                    isDriver={isDriver}
+                    status={statusFilter}
+                  />
+                </Sidebar>
+              )}
+              <Route exact path="/" component={Rides} />
+              {isDriver && (
+                <Route path="/availability" component={Availability} />
+              )}
+              {isDispatcher && <Route path="/drivers" component={Drivers} />}
+              <Route path="/schedule" component={Schedule} />
+            </Body>
+            <FAB onClick={this.toggleCreateRide}>
+              <Add />
+            </FAB>
+            {createRideIsOpen && (
+              <CreateRide onModalClick={this.toggleCreateRide} />
+            )}
+          </Fullbleed>
+        );
+      }
+    }
+  )
+);

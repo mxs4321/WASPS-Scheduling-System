@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { injectGlobal } from 'styled-components';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import 'material-expansion-panel/dist/material-expansion-panel.min.css';
+import store from './model';
 import App from './controller/App';
 import registerServiceWorker from './util/registerServiceWorker';
-import { injectGlobal } from 'styled-components';
-import 'material-expansion-panel/dist/material-expansion-panel.min.css';
 
 injectGlobal`
   html, body, #root {
@@ -18,5 +21,12 @@ injectGlobal`
   }
 `;
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
+  document.getElementById('root')
+);
 registerServiceWorker();

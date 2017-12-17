@@ -20,6 +20,7 @@ const Card = styled.div`
   height: 80%;
   background: white;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  z-index: 1000;
 `;
 const CardHeader = styled.div`
   display: flex;

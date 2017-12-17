@@ -15,7 +15,9 @@ type Props = {
   /** Call back for when the search bar is Focused */
   onSearchFocus: Function,
   /** Call back for when the search bar is Blured */
-  onSearchBlur: Function
+  onSearchBlur: Function,
+  /** Call back for when someone click the Avatar */
+  onAvatarClick: Function
 };
 
 const NoOp = () => {};
@@ -59,7 +61,8 @@ class Toolbar extends Component {
     const {
       isDispatcher = false,
       isDriver = false,
-      onMenuToggle = NoOp
+      onMenuToggle = NoOp,
+      onAvatarClick = NoOp
     } = this.props;
     const { isSearching } = this.state;
     return (
@@ -74,7 +77,7 @@ class Toolbar extends Component {
           onFocus={() => this.setState({ isSearching: true })}
           onBlur={() => this.setState({ isSearching: false })}
         />
-        <Avatar size={36} />
+        <Avatar size={36} onClick={onAvatarClick} />
       </Background>
     );
   }

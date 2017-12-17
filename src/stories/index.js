@@ -5,8 +5,9 @@ import ExpansionPanel from 'material-expansion-panel';
 import { storiesOf } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
 import { action } from '@storybook/addon-actions';
+import StoryRouter from 'storybook-router';
 
-import Navigation from '../view/Navigation';
+import Navigation from '../controller/Navigation';
 import StatusFilter from '../view/StatusFilter';
 import Avatar from '../view/Avatar';
 import Toolbar from '../view/Toolbar';
@@ -83,6 +84,7 @@ storiesOf('TimePicker', module)
   .add('Basic', () => <TimePicker />);
 
 storiesOf('Navigation', module)
+  .addDecorator(StoryRouter())
   .addDecorator((story, context) =>
     withInfo(`
     A component for navigating between different views

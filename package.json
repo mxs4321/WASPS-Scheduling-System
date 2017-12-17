@@ -10,7 +10,11 @@
     "react": "^16.2.0",
     "react-big-calendar": "^0.17.0",
     "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
     "styled-components": "^2.2.4"
   },
   "scripts": {
@@ -41,6 +45,7 @@
     "@storybook/react": "^3.2.17",
     "husky": "^0.14.3",
     "lint-staged": "^6.0.0",
-    "prettier": "^1.9.1"
+    "prettier": "^1.9.1",
+    "storybook-router": "^0.3.2"
   }
 }
