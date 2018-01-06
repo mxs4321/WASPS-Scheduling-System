@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import ReactDOM from 'react-dom';
-import Breadcrumb from '../view/Breadcrumb';
+import Breadcrumb, { Crumb } from '../view/Breadcrumb';
 import CreateUserForm from '../view/forms/CreateUserForm';
+import GoogleRoutesForm from '../view/forms/GoogleRoutesForm';
+import Avatar from '../view/Avatar';
 
 const NoOp = () => {};
 
@@ -45,7 +47,49 @@ const Button = styled.button`
   margin-left: 10px;
 `;
 
+const Step1 = () => (
+  <Flex>
+    <Flex1>
+      <h3>Find User</h3>
+    </Flex1>
+    <Flex1>
+      <h3>Create User</h3>
+      <CreateUserForm />
+    </Flex1>
+  </Flex>
+);
+
+const Step2 = () => (
+  <GoogleRoutesForm
+    apiKey="AIzaSyBvobiFxMVC72Zbd2YmfcxawWMpwG_QLKs"
+    onOriginChanged={console.log.bind(console)}
+    onDestinationChanged={console.log.bind(console)}
+    onRouteChanged={console.log.bind(console)}
+  />
+);
+
+const Step3 = () => (
+  <ul>
+    <li>
+      <Avatar name="Brett Lamy" />Brett Lamy
+    </li>
+    <li>
+      <Avatar name="Brett Lamy" />Brett Lamy
+    </li>
+    <li>
+      <Avatar name="Brett Lamy" />Brett Lamy
+    </li>
+    <li>
+      <Avatar name="Brett Lamy" />Brett Lamy
+    </li>
+  </ul>
+);
+
 export default class CreateRide extends Component {
+  state = {
+    step: 1
+  };
+
   constructor(props) {
     super(props);
     this.overlayContainer = document.createElement('div');
@@ -56,29 +100,48 @@ export default class CreateRide extends Component {
     document.body.removeChild(this.overlayContainer);
   }
 
+  renderStep = () => {
+    switch (this.state.step) {
+      case 1:
+        return <Step1 />;
+      case 2:
+        return <Step2 />;
+      case 3:
+        return <Step3 />;
+      default:
+        return null;
+    }
+  };
+
   render() {
     const { onModalClick = NoOp } = this.props;
+    const { step } = this.state;
     return ReactDOM.createPortal(
       <ModalBackground onClick={onModalClick}>
         <Card onClick={e => e.stopPropagation()}>
           <CardHeader>
             <Breadcrumb style={{ flex: 4 }}>
-              <li>Select User</li>
-              <li>Enter Address</li>
-              <li>Assign Driver</li>
-              <li>Verify ride</li>
+              <Crumb done={step > 1} active={step === 1}>
+                User
+              </Crumb>
+              <Crumb done={step > 2} active={step === 2}>
+                Route
+              </Crumb>
+              <Crumb done={step > 3} active={step === 3}>
+                Driver
+              </Crumb>
+              <Crumb done={step > 4} active={step === 4}>
+                Verify
+              </Crumb>
             </Breadcrumb>
-            <Button style={{ flex: 1 }}>Next</Button>
+            <Button
+              style={{ flex: 1 }}
+              onClick={() => this.setState(({ step }) => ({ step: step + 1 }))}
+            >
+              Next
+            </Button>
           </CardHeader>
-          <Flex>
-            <Flex1>
-              <h3>Find User</h3>
-            </Flex1>
-            <Flex1>
-              <h3>Create User</h3>
-              <CreateUserForm />
-            </Flex1>
-          </Flex>
+          {this.renderStep()}
         </Card>
       </ModalBackground>,
       this.overlayContainer

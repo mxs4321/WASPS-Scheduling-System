@@ -6,6 +6,7 @@ import { storiesOf } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
 import { action } from '@storybook/addon-actions';
 import StoryRouter from 'storybook-router';
+import styled, { injectGlobal } from 'styled-components';
 
 import Navigation from '../controller/Navigation';
 import StatusFilter from '../view/StatusFilter';
@@ -13,15 +14,58 @@ import Avatar from '../view/Avatar';
 import Toolbar from '../view/Toolbar';
 import TimePicker from '../view/TimePicker';
 import InputBox from '../view/InputBox';
-import BreadCrumb from '../view/Breadcrumb';
+import BreadCrumb, { Crumb } from '../view/Breadcrumb';
 import AvailabilityInput from '../view/AvailabilityInput';
 import AvaliabilityForm from '../view/forms/AvailabilityForm';
 import CreateUserForm from '../view/forms/CreateUserForm';
+import PlacesSearchBox from '../view/PlacesSearchbox';
+import GoogleRoutesForm from '../view/forms/GoogleRoutesForm';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'material-expansion-panel/dist/material-expansion-panel.min.css';
 
 BigCalendar.momentLocalizer(moment);
+
+const FullBleed = styled.div`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+`;
+injectGlobal`
+  #root, #root>div, #root>div>div {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+  }
+`;
+
+storiesOf('PlacesSearchBox', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+      Google places autocomplete
+    `)(story)(context)
+  )
+  .add('Basic', () => (
+    <PlacesSearchBox title="title" onAddressPicked={action('address Picked')} />
+  ));
+
+storiesOf('GoogleRoutesForm', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+        Google places autocomplete
+      `)(story)(context)
+  )
+  .add('Basic', () => (
+    <FullBleed>
+      <GoogleRoutesForm
+        apiKey="AIzaSyBvobiFxMVC72Zbd2YmfcxawWMpwG_QLKs"
+        onOriginChanged={action('onOriginChanged')}
+        onDestinationChanged={action('onDestinationChanged')}
+        onRouteChanged={action('onRouteChanged')}
+      />
+    </FullBleed>
+  ));
+
 storiesOf('InputBox', module)
   .addDecorator((story, context) =>
     withInfo(`
@@ -68,10 +112,10 @@ storiesOf('BreadCrumb', module)
   )
   .add('Basic', () => (
     <BreadCrumb>
-      <li>Select User</li>
-      <li>Enter Address</li>
-      <li>Assign Driver</li>
-      <li>Verify ride</li>
+      <Crumb done>User</Crumb>
+      <Crumb active>Route</Crumb>
+      <Crumb>Driver</Crumb>
+      <Crumb>Verify</Crumb>
     </BreadCrumb>
   ));
 
