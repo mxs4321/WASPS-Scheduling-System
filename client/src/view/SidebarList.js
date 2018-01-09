@@ -8,6 +8,8 @@ List.Item = styled.li`
   line-height: 24px;
   display: flex;
   padding: 4px;
+  border-radius: 4px;
+  background-color: ${props => (props.active ? '#E6E6E6' : 'none')};
 `;
 
 export default List;

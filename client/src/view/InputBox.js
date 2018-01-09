@@ -3,11 +3,13 @@ import styled from 'styled-components';
 
 const NoOp = () => {};
 
-const Title = styled.div`
+const Title = styled.b`
   margin-top: 5px;
+  margin-left: 5px;
   font-size: 12px;
 `;
 const Input = styled.input`
+  display: block;
   width: 260px;
   height: 30px;
   font-size: 16px;

@@ -61,7 +61,6 @@ const Step1 = () => (
 
 const Step2 = () => (
   <GoogleRoutesForm
-    apiKey="AIzaSyBvobiFxMVC72Zbd2YmfcxawWMpwG_QLKs"
     onOriginChanged={console.log.bind(console)}
     onDestinationChanged={console.log.bind(console)}
     onRouteChanged={console.log.bind(console)}
@@ -116,6 +115,7 @@ export default class CreateRide extends Component {
   render() {
     const { onModalClick = NoOp } = this.props;
     const { step } = this.state;
+    debugger;
     return ReactDOM.createPortal(
       <ModalBackground onClick={onModalClick}>
         <Card onClick={e => e.stopPropagation()}>
