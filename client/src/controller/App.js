@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { logout } from '../model/auth';
 import Toolbar from '../view/Toolbar';
-import Navigation from '../controller/Navigation';
 import StatusFilter from '../view/StatusFilter';
 import { Add } from '../view/icons';
+import Navigation from './Navigation';
 import CreateRide from './CreateRide';
 import Availability from './Availability';
 import Drivers from './Drivers';
 import Schedule from './Schedule';
 import Rides from './Rides';
-import { logout } from '../model/auth';
 import SignIn from './SignIn';
 
 const Fullbleed = styled.div`
@@ -86,8 +86,8 @@ export default withRouter(
               title="Passanger"
               isDispatcher={isDispatcher}
               isDriver={isDriver}
-              onMenuToggle={() => this.toggleSidebar()}
-              onAvatarClick={() => logout()}
+              onMenuToggle={this.toggleSidebar}
+              onAvatarClick={logout}
             />
             <Body>
               {sidebarIsOpen && (
