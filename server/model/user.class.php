@@ -8,5 +8,4 @@ class User {
     public $city;
     public $zip;
     public $email;
-    public $password;
 }
