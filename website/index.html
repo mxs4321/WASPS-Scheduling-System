@@ -124,14 +124,15 @@ function validateVolunteerForm(){
 	</div>
 	
 	<div id="header">
-		<img id="headerImage" src="images/header.png"/>
-		<div id="headerDiv">
+		<img class="headerImage" src="images/header.png" title="headerWasp"/>
+		<div class="headerDiv">
 			<h2> Call Us! </h2>
 			<p id="phone"> 585-215-7829</p>
 			<button class="headerButtons" id="donateButton"><a href="#joinus">Donate</a></button>
 			<button onclick="openModal()" class="headerButtons" id="reserveButton"><a href="#reserve">Reserve Rides</a></button>
 		</div>
 	</div>
+
 	
 	<div id="requestModal" class="modal">
   		<form onsubmit="return validateRequestForm()" name="requestForm" class="modal-content" method="post">
