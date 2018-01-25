@@ -192,7 +192,7 @@ vertical-align: middle; left: 10px;}
 	/*
 	background-image: url("images/joinUs.png");
 	 */
-	height: 500px;
+	height: 809px;
 	border-top: 7px solid rgba(29, 111, 187, 0.63);
 }
 
@@ -252,8 +252,7 @@ vertical-align: middle; left: 10px;}
 
 #services #servicesHeading{ 
 	color: #4486C3; 
-	font-size: 55px; 
-	 
+	font-size: 55px;
 	position: relative; 
 	text-transform: uppercase; 
 	font-family: Arial, sans-serif; 
@@ -263,11 +262,9 @@ vertical-align: middle; left: 10px;}
 #services {
 	background-color: #F4F2F2; 
 	height: 600px; 
-	position:absolute; 
-	margin: 0; 
+	margin: 0;
 	left: 0; 
 	right: 0; 
-	top:3050px; 
 	border-top: 7px solid rgba(29, 111, 187, 0.63);
 }
 
@@ -287,18 +284,15 @@ vertical-align: middle; left: 10px;}
 #events {
 	background-color: rgba(71, 152, 225, 0.35); 
 	height: 600px; 
-	position:absolute; 
-	margin: 0; 
+	margin: 0;
 	left: 0; 
 	right: 0; 
-	top:3655px; 
 	border-top: 7px solid white;
 }
 
 #events #eventsHeading{ 
 	color: black; 
-	font-size: 55px; 
-	 
+	font-size: 55px;
 	position: relative; 
 	text-transform: uppercase; 
 	font-family: Arial, sans-serif; 
@@ -326,11 +320,9 @@ div.gallery img {
 #contact {
 	background-color: #0A4275; 
 	height: 600px; 
-	position:absolute; 
-	margin: 0; 
+	margin: 0;
 	left: 0; 
 	right: 0; 
-	top:4260px; 
 	border-top: 7px solid white;
 }
 
@@ -470,7 +462,7 @@ span.psw {
 	background-color: white;
 	font-family: Arial, sans-serif; 
 	font-weight: bold;
-	height: 40px;
+	height: 50px;
 	width: 160px;
 	border-radius:5px;
 	margin: 50px;
@@ -483,7 +475,9 @@ span.psw {
 	font-size:17px;
 }
 
-#servicesButtonId {position: relative; left: 300px;}
+#servicesButtonId {
+	padding-left: 100px;
+	height: auto;}
 
 .down {
     transform: rotate(45deg);
