@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>W.A.S.P.S.</title>
+	<link rel="stylesheet" type="text/css" href="style.css"> 
+	
+</head>
+<style>
+</style>
+<?php
+	if (isset($_POST['uname'])) echo $_POST['uname'];
+	if (isset($_POST['fullName'])) echo $_POST['fullName'];
+	if (isset($_POST['number'])) echo $_POST['number'];
+	if (isset($_POST['email'])) echo $_POST['email'];
+	if (isset($_POST['pLocation'])) echo $_POST['pLocation'];
+	if (isset($_POST['pTime'])) echo $_POST['pTime'];
+	if (isset($_POST['dLocation'])) echo $_POST['dLocation'];
+	if (isset($_POST['fName'])) echo $_POST['fName'];
+	if (isset($_POST['lName'])) echo $_POST['lName'];
+?>
+<script>
+function openModal(){
+	document.getElementById('requestModal').style.display='block';
+}	
+
+function closeModal(){
+	document.getElementById('requestModal').style.display='none';
+}
+
+function openVolunteerModal(){
+	document.getElementById('volunteerModal').style.display='block';
+}	
+
+function closeVolunteerModal(){
+	document.getElementById('volunteerModal').style.display='none';
+}
+
+function openLoginModal(){
+	document.getElementById('loginModal').style.display='block';
+}	
+
+function closeLoginModal(){
+	document.getElementById('loginModal').style.display='none';
+}
+function validateLoginForm(){
+	var username = document.forms["loginForm"]["uname"].value;
+	var password = document.forms["loginForm"]["pswrd"].value;
+	if(username == "" || password ==""){
+		alert("Username and password must be filled out");
+	}
+	return false;
+	//if username does not exist in db, return "You do not have permissions to access this. 
+	//please contact the admin for more information"
+}
+
+function validateRequestForm(){
+	var name = document.forms["requestForm"]["fullName"].value;
+	var number = document.forms["requestForm"]["number"].value;
+	var email = document.forms["requestForm"]["email"].value;
+	var pLocation = document.forms["requestForm"]["pLocation"].value;
+	var pTime = document.forms["requestForm"]["pTime"].value;
+	var dLocation = document.forms["requestForm"]["dLocation"].value;
+	if(name == "" || number == "" || email == "" || pLocation == "" || pTime == ""|| dLocation == ""){
+		alert("All fields must be filled out");
+	}
+	return false;
+
+}
+
+function validateVolunteerForm(){
+	var fName = document.forms["volunteerForm"]["fName"].value;
+	var lName = document.forms["volunteerForm"]["lName"].value;
+	var number = document.forms["volunteerForm"]["number"].value;
+	var email = document.forms["volunteerForm"]["email"].value;
+	
+	if(fName == "" || lName == "" || number == "" || email == ""){
+		alert("All fields must be filled out");
+	}
+	return false;
+}
+</script>
+
+<body>
+	<div id="links">
+		<ul>
+			<li onclick="openLoginModal()"><a href="#login">Login</a></li>
+			<li class="red"><a href="#joinus">+Donations</a></li>
+		</ul>	
+	</div>
+	
+	<div id="loginModal" class="modal">
+  		<form onsubmit="return validateLoginForm()" name="loginForm" class="modal-content" method="post">
+    	<span onclick="closeLoginModal()" class="close" title="Close Modal">&times;</span>
+     	<div class="container">
+     		 <label><b>Username</b></label>
+     		 <input class="loginInput" type="text" placeholder="Enter username" name="uname">
+			 <label><b>Password</b></label>
+      		 <input class="loginInput" type="password" placeholder="Enter password" name="pswrd">
+      		 
+        	 <input type="submit" value="Submit">
+       </div>
+
+       <div class="container" style="background-color:#f1f1f1">
+     	 <button type="button" onclick="closeLoginModal()" class="cancelbtn">Cancel</button>
+      	 <span class="psw">Forgot <a href="#">password?</a></span>
+      </div>
+  	  </form>
+	</div>
+	
+	
+	
+	<div id="navigationBar">
+	  <img id="logo" src="images/logo.jpg"/>
+	  <div id="nav">
+  	 	<ul>
+  			<li><a class="active" href="#home">Home</a></li>
+ 			<li><a href="#schedule">Schedule</a></li>
+  			<li><a href="#joinus">Join Us</a></li>
+  			<li><a href="#services">Services</a></li>
+ 			<li><a href="#events">Events</a></li>
+  			<li><a href="#contact">Contact Us</a></li>
+		</ul>
+	  </div>
+	</div>
+	
+	<div id="header">
+		<img id="headerImage" src="images/header.png"/>
+		<div id="headerDiv">
+			<h2> Call Us! </h2>
+			<p id="phone"> 585-215-7829</p>
+			<button class="headerButtons" id="donateButton"><a href="#joinus">Donate</a></button>
+			<button onclick="openModal()" class="headerButtons" id="reserveButton"><a href="#reserve">Reserve Rides</a></button>
+		</div>
+	</div>
+	
+	<div id="requestModal" class="modal">
+  		<form onsubmit="return validateRequestForm()" name="requestForm" class="modal-content" method="post">
+    	<span onclick="closeModal()" class="close" title="Close Modal">&times;</span>
+     	<div class="container">
+     		 <label><b>Name</b></label>
+     		 <input class="reserveInput" type="text" placeholder="Enter first and last name" name="fullName" >
+			 <label><b>Contact Number</b></label>
+      		 <input class="reserveInput" type="text" placeholder="Enter phone number" name="number">
+      		 <label><b>Email</b></label>
+      		 <input class="reserveInput" type="text" placeholder="Enter email" name="email">
+      		 <label><b>Pickup Location</b></label>
+      		 <input class="reserveInput" type="text" placeholder="Enter pickup location" name="pLocation">
+      		 <label><b>Pickup Time</b></label>
+      		 <input class="reserveInput" type="text" placeholder="Enter pickup time" name="pTime">
+      		 <label><b>Destination Location</b></label>
+      		 <input class="reserveInput" type="text" placeholder="Enter destination location" name="dLocation">
+        	 <button type="submit">Reserve</button>
+       </div>
+
+       <div class="container" style="background-color:#f1f1f1">
+     	 <button type="button" onclick="closeModal()" class="cancelbtn">Cancel</button>
+      </div>
+  	  </form>
+	</div>
+	
+	
+	<div id="body">
+		<p id="bodyHeading">W.A.S.P.S.</p>
+		<p class="text">The Webster Association of Senior Program Supporters was started in 
+				  	    August 2010 by John (Bud) Johnston with the intention of giving a
+				    	neighbor a ride to a medical appointment.  It has blossomed into a 
+				    	booming organization that has supported hundreds of seniors who live 
+				    	in the Webster School District. </p> 
+		<p class="text">Whenever a senior, age 60+, is in need of a ride, they can call us 
+						and our dispatcher takes over.  We drive seniors to various 
+						appointments including: medical, dental, dialysis, chemotherapy, 
+						physical therapy, pharmacy visits and health related shopping.</p>
+		<p class="text">As a 501C3 non-profit organization staffed by volunteers, 
+				    	the lending of a hand is enough to give them satisfaction. It gives 
+				    	us great pleasure to have a program that offers a sense of comfort 
+				    	and relief that transportation is no longer a concern.  By simply 
+				    	calling W.A.S.P.S three days in advance of your appointment and 
+				    	informing our dispatcher of the date, time and location, we take over
+				    	and make it happen.  Our friendly staff will greet you warmly and 
+				    	get you safely home. </p>
+		<p class="text">In 2015, we completed 530 trips, covering 6,981 
+				    	miles.  We estimate this amounted to over 526 volunteer hours.  
+				    	We are finding there are a number of seniors that are unable to 
+				    	donate to help cover our expenses.  Rider donations are used to fund 
+				    	operating expenses.  All organization donations are put towards the 
+				    	WASPS operating budget.  We are always grateful for new volunteers.</p>
+ 		<p class="text">Thank you for your continued support. </p>
+ 		<p class="text">Sincerely, </br> John Johnston, President W.A.S.P.S</p>
+	</div><!--closing div id for "body"--> 
+	
+	<div id="schedule">
+		<p id="scheduleHeading">Schedule</p>
+		<img src="images/sche.png"/>
+		<p id="scheduleText"> Call the W.A.S.P.S transportation line 585-216-7829.  
+		The following information will be needed: name, address, phone #, along with the 
+		day, date, time, and street address of the appointment location.  A minimum of 
+		3 days are needed to arrange a ride, not counting weekends or the day of the 
+		appointment.  Messages left at the W.A.S.P.S phone number are checked daily 
+		(Monday - Friday) between 5 - 7pm.</p>
+	</div><!--closing div id for "schedule"--> 
+	
+	<div id="joinus">
+	 <img id="joinusImage" src="images/joinUs.png"/>
+		<p id="joinusHeading">Join Us</p>
+		<p id="joinusText"> W.A.S.P.S is a community service staffed by volunteers.  
+		Please remember this and be respectful when interacting with our drivers.  We are 
+		always looking for more volunteer drivers or dispatchers so please contact us 
+		at 585-216-7829.</p>
+	   <div id="joinusDiv">
+			<button onclick="openVolunteerModal()" class="joinusButtons"><a href="#volunteer">Volunteer as<br> a Driver</a></button>
+			<button class="joinusButtons"><a href="#donations">Donations</a></button>
+	   </div><!--closing div id for "joinusDiv"--> 
+	</div><!--closing div id for "joinus"--> 
+	
+	
+	<div id="volunteerModal" class="modal">
+  		<form onsubmit="return validateVolunteerForm()" name="volunteerForm" class="modal-content animate" method="post">
+    	<span onclick="closeVolunteerModal()" class="close" title="Close Modal">&times;</span>
+     	<div class="container">
+     		 <label><b>First Name</b></label>
+     		 <input class="volunteerInput" type="text" placeholder="Enter first name" name="fName" >
+			 <label><b>Last Name</b></label>
+      		 <input class="volunteerInput" type="text" placeholder="Enter last name" name="lName">
+      		 <label><b>Contact Number</b></label>
+      		 <input class="volunteerInput" type="text" placeholder="Enter number" name="number">
+      		 <label><b>Email</b></label>
+      		 <input class="volunteerInput" type="text" placeholder="Enter email" name="email">
+      		 
+        	 <button type="submit">Volunteer</button>
+       </div>
+
+       <div class="container" style="background-color:#f1f1f1">
+     	 <button type="button" onclick="closeVolunteerModal()" class="cancelbtn">Cancel</button>
+      </div>
+  	  </form>
+	</div>
+	
+	
+	<div id="services">
+		<p id="servicesHeading">Services</p>
+	<div id="servicesButtonId">	
+		<button class="servicesButton"><a href="#">Available</a><i class="down"></i></button>
+		<button class="servicesButton"><a href="#">Policy</a></button>
+		<button class="servicesButton"><a href="#">Free Service</a></button>
+		<button class="servicesButton"><a href="#">Financial Support</a></button>
+	</div>
+		<p id="servicesText">W.A.S.P.S provides transportation to the following appointments:<br><br>
+		Medical<br>Dental<br>Dialysis<br>Chemotherapy<br>Physical Therapy</br>
+		 Pharmacy Visits<br>Health Related Shopping<br></p>
+	</div><!--closing div id for "services"--> 
+	
+	<div id="events">
+		<p id="eventsHeading">Events</p>
+	 	<div class="gal">	
+			<div class="gallery">
+  				<a target="_blank">
+    			<img src="images/image1.png" width="700" height="500">
+  				</a>
+			</div>
+
+			<div class="gallery">
+ 		 		<a target="_blank">
+   		 		<img src="images/image2.png" width="700" height="500">
+  				</a>
+  			</div>
+
+			<div class="gallery">
+ 			 	<a target="_blank">
+   		 		<img src="images/image3.png" width="700" height="500">
+  		 		</a>
+   			</div>
+
+			<div class="gallery">
+  				<a target="_blank">
+   				<img src="images/image4.png" width="700" height="500">
+ 				</a>
+  			</div>
+  			
+  			<div class="gallery">
+  				<a target="_blank">
+   				<img src="images/image5.png" width="700" height="500">
+ 				</a>
+  			</div>
+  		
+  			<div class="gallery">
+  				<a target="_blank">
+   				<img src="images/image6.png" width="700" height="500">
+ 				</a>
+  			</div>
+		</div><!--closing div id for "gal"--> 
+  	</div><!--closing div id for "events"--> 	
+  
+  <div id="contact">
+  		<p id="contactHeading">Contact</p>
+  		<p class="contactDiv"> Call Us!</br>585-215-7829</p>
+  		<form id="contactForm">
+  			<input class="textInput" type="text" name="name" value="Name"><br>
+  			<input class="textInput" type="text" name="email" value="Email"><br>
+  			<textarea rows="24" cols="510">Message</textarea>
+  			<button class="contactSubmitButton"><a href="#contactSubmit">Submit</a></button>
+  		</form>
+  </div><!--closing div id for "contact"--> 
+		
+</body>
+
+</html>
