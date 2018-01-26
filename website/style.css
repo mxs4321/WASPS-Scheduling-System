@@ -246,7 +246,7 @@ vertical-align: middle; left: 10px;}
 
 #joinusImage {
 	position: absolute;
-	padding-top: 110px;
+	padding-top: 25px;
 	width: 100%;
 }
 
@@ -276,7 +276,7 @@ vertical-align: middle; left: 10px;}
 	height: 300px;
 	color: #413F3F;
 	font-family: Arial, sans-serif;
-	padding-left: 240px;
+	padding-left: 340px;
 	position: absolute;
 	padding-top: 10px;
 }	
@@ -367,14 +367,14 @@ font-weight: bold;
 	border-radius: 4px; 
 	position: relative;
 	top: 40px;
-	left: -165px;}
-
-.contactSubmitButton a{
+	left: -165px;
 	text-decoration: none; 
 	color: white;
 	font-size: 25px;
 	font-family: Arial, sans-serif;
 }
+
+
 
 .contactDiv {
 	font-weight:bold; 
@@ -462,21 +462,21 @@ span.psw {
 	background-color: white;
 	font-family: Arial, sans-serif; 
 	font-weight: bold;
-	height: 50px;
-	width: 160px;
+	height: 40px;
+	width: 200px;
 	border-radius:5px;
 	margin: 50px;
+	position: relative;left: -200px;
+	text-decoration: none;
+	 color: #5E5E5E;
+	font-size:17px;
 	
 }
 
-.servicesButton a{
-	text-decoration: none;
-	color: #5E5E5E;
-	font-size:17px;
-}
 
 #servicesButtonId {
-	padding-left: 100px;
+	position: relative;
+	left: 300px;
 	height: auto;}
 
 .down {
