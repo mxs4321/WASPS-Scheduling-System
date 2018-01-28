@@ -19,45 +19,6 @@
 	if (isset($_POST['lName'])) echo $_POST['lName'];
 ?>
 <script>
-function changeText(elementClicked){
-	var policy = document.getElementById('policy');
-	if(elementClicked == policy){
-		document.getElementById('servicesText').innerHTML = "Rides are provided Monday " +
-		"through Friday with the earliest appointment being 9:00am and the latest being " +
-		"2:30pm.  Assistance getting in and out of the vehicle is offered. Clients must " +
-		"be able to move independently from their home to the vehicle and to and from " +
-		"their appointment, with the exception of wheelchair clients.";
-	} 
-	
-	var available = document.getElementById('available');
-	if(elementClicked == available){
-		document.getElementById('servicesText').innerHTML = "W.A.S.P.S provides " + 
-		"transportation to the following appointments:<br><br>" +
-		"Medical<br>Dental<br>Dialysis<br>Chemotherapy<br>Physical Therapy</br>" +
-		 "Pharmacy Visits<br>Health Related Shopping<br>";
-	}
-	
-	var service = document.getElementById('service');
-	if(elementClicked == service){
-		document.getElementById('servicesText').innerHTML = "Donations are an " +
-		"integral part of providing this service and are needed to maintain the " +
-		"transportation system and vehicles.  A minimum donation of $5.00 " +
-		"(round trip) for appointments within the Webster Central School District " +
-		"and $10.00 (round trip) for appointments outside of the Webster Central " +
-		"School District are suggested.  WHEELCHAIR service is NOW available for " + 
-		"$30.00 round trip."; 
-	}
-		
-	var support = document.getElementById('support');
-	if(elementClicked == support){
-		document.getElementById('servicesText').innerHTML = "Donations are " +
-		"encouraged and are gratefully accepted.  Financial support is needed to " +
-		"maintain the transportation system, vehicles and office of W.A.S.P.S.<br><br>" +
-		"Checks may be payable to:<br>Webster Association of Senior Program "+
-		"Supporters<br>1350 Chiyoda Drive<br>Webster, NY 14580";
-	}
-}
-
 function openModal(){
 	document.getElementById('requestModal').style.display='block';
 }	
@@ -116,6 +77,15 @@ function validateVolunteerForm(){
 		alert("All fields must be filled out");
 	}
 	return false;
+}
+
+function myNavigation() {
+    var x = document.getElementById("Navigation");
+    if (x.className === "nav") {
+        x.className += " responsive";
+    } else {
+        x.className = "nav";
+    }
 }
 </script>
 
@@ -279,17 +249,15 @@ function validateVolunteerForm(){
 	
 	<div id="services">
 		<p id="servicesHeading">Services</p>
-	  <div id="servicesButtonId">	
-		<button id="available" onclick="changeText(this)" class="servicesButton">Available<i class="down"></i></button>
-		<button id="policy" onclick="changeText(this)" class="servicesButton">Policy<i class="down"></i></button>
-		<button id="service" onclick="changeText(this)" class="servicesButton">Free Service<i class="down"></i></button>
-		<button id="support" onclick="changeText(this)" class="servicesButton">Financial Support<i class="down"></i></button>
-	  </div>
-	  <div id="servicesText">
-		<p>W.A.S.P.S provides transportation to the following appointments:<br><br>
+	<div id="servicesButtonId">	
+		<button class="servicesButton"><a href="#">Available</a><i class="down"></i></button>
+		<button class="servicesButton"><a href="#">Policy</a></button>
+		<button class="servicesButton"><a href="#">Free Service</a></button>
+		<button class="servicesButton"><a href="#">Financial Support</a></button>
+	</div>
+		<p id="servicesText">W.A.S.P.S provides transportation to the following appointments:<br><br>
 		Medical<br>Dental<br>Dialysis<br>Chemotherapy<br>Physical Therapy</br>
 		 Pharmacy Visits<br>Health Related Shopping<br></p>
-	  </div>
 	</div><!--closing div id for "services"--> 
 	
 	<div id="events">
@@ -340,7 +308,7 @@ function validateVolunteerForm(){
   			<input class="textInput" type="text" name="name" value="Name"><br>
   			<input class="textInput" type="text" name="email" value="Email"><br>
   			<textarea rows="24" cols="510">Message</textarea>
-  			<button class="contactSubmitButton">Submit</button>
+  			<button class="contactSubmitButton"><a href="#contactSubmit">Submit</a></button>
   		</form>
   </div><!--closing div id for "contact"--> 
 		
