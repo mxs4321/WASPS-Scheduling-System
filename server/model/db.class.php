@@ -35,7 +35,7 @@ class DB {
     function getUser($id) {
         try {
             include "user.class.php";
-            $stmt = $this->dbh->prepare("SELECT * FROM users WHERE id = :id");
+            $stmt = $this->dbh->prepare("SELECT `firstName`, `lastName`, `phoneNumber`, `address`, `city`, `zip`, `email` FROM users WHERE id = :id");
             $stmt->execute([':id' => intval($id)]);
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             return $stmt->fetch();
@@ -48,7 +48,7 @@ class DB {
     function getUsers($page = 0, $numberPerPage = 10) {
         try {
             include "user.class.php";
-            $stmt = $this->dbh->prepare("SELECT * FROM users LIMIT :lim OFFSET :offset");
+            $stmt = $this->dbh->prepare("SELECT `firstName`, `lastName`, `phoneNumber`, `address`, `city`, `zip`, `email` FROM users LIMIT :lim OFFSET :offset");
             $stmt->bindParam(':lim', intval($numberPerPage), PDO::PARAM_INT);
             $stmt->bindParam(':offset', intval($page * $numberPerPage), PDO::PARAM_INT);
             $stmt->execute();
