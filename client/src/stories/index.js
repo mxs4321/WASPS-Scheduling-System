@@ -20,6 +20,7 @@ import AvaliabilityForm from '../view/forms/AvailabilityForm';
 import CreateUserForm from '../view/forms/CreateUserForm';
 import PlacesSearchBox from '../view/PlacesSearchbox';
 import GoogleRoutesForm from '../view/forms/GoogleRoutesForm';
+import FindUsers from '../view/FindUsers';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'material-expansion-panel/dist/material-expansion-panel.min.css';
@@ -38,6 +39,19 @@ injectGlobal`
     position: absolute;
   }
 `;
+
+storiesOf('FindUsers', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+      Find a User View
+    `)(story)(context)
+  )
+  .add('Basic', () => (
+    <FindUsers
+      users={['Brett Lamy', 'Foo Bar']}
+      onSearchChanged={action('searchChanged')}
+    />
+  ));
 
 storiesOf('PlacesSearchBox', module)
   .addDecorator((story, context) =>
