@@ -13,13 +13,19 @@ class DB {
         }
     }
 
-    function attemptLogin($email, $password) {
+    function attemptLogin($method, $arg, $password) {
         try {
             include "user.class.php";
-            $stmt = $this->dbh->prepare("SELECT * FROM users WHERE email = :email");
-            $stmt->execute([':email' => $email]);
+            if ($method === "email") {
+                $stmt = $this->dbh->prepare("SELECT * FROM user WHERE email = :email");
+                $stmt->execute([':email' => $arg]);
+            } else {
+                $stmt = $this->dbh->prepare("SELECT * FROM user WHERE phone = :phone");
+                $stmt->execute([':phone' => $arg]);
+            }
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             $user = $stmt->fetch();
+
             if (password_verify($password, $user->password)) {
                 unset($user->password);
                 return $user;
@@ -35,7 +41,7 @@ class DB {
     function getUser($id) {
         try {
             include "user.class.php";
-            $stmt = $this->dbh->prepare("SELECT `firstName`, `lastName`, `phoneNumber`, `address`, `city`, `zip`, `email` FROM users WHERE id = :id");
+            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `userRole`, `lastLogin`, `wantsSMS`, `wantsEmails`, `email`, `registered` FROM user WHERE id = :id");
             $stmt->execute([':id' => intval($id)]);
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             return $stmt->fetch();
@@ -48,7 +54,7 @@ class DB {
     function getUsers($page = 0, $numberPerPage = 10) {
         try {
             include "user.class.php";
-            $stmt = $this->dbh->prepare("SELECT `firstName`, `lastName`, `phoneNumber`, `address`, `city`, `zip`, `email` FROM users LIMIT :lim OFFSET :offset");
+            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `userRole`, `lastLogin`, `wantsSMS`, `wantsEmails`, `email`, `registered` FROM user LIMIT :lim OFFSET :offset");
             $stmt->bindParam(':lim', intval($numberPerPage), PDO::PARAM_INT);
             $stmt->bindParam(':offset', intval($page * $numberPerPage), PDO::PARAM_INT);
             $stmt->execute();
@@ -63,9 +69,9 @@ class DB {
         }
     }
 
-    function createUser($firstName, $lastName, $phoneNumber, $address, $city, $zip, $email, $password) {
+    function createUser($firstName, $lastName, $phone, $userRole, $lastLogin, $zip, $email, $password) {
         include "user.class.php";
-        $stmt = $this->dbh->prepare("INSERT INTO `users` (`firstName`, `lastName`, `phoneNumber`, `address`, `city`, `zip`, `email`, `password`) VALUES
+        $stmt = $this->dbh->prepare("INSERT INTO `users` (`id`, `firstName`, `lastName`, `phone`, `userRole`, `lastLogin`, `wantsSMS`, `wantsEmails`, `email`, `password`) VALUES
         (:firstName, :lastName, 2035254837, '58 Werner Park', 'Rochester, Ny', 14620, 'csmith@g.rit.edu', '$2y$10$TDAwo5v.lcakEOL.ibMRK.G5oTGBPYEmQtMTvm/Bvn1pHsgUfu3r.');
         ");
         $stmt->bindParam(':lim', intval($numberPerPage), PDO::PARAM_INT);
