@@ -2,6 +2,7 @@
 header('Content-Type: application/json');
 
 include '../env.php';
+include '../sanitizationValidation.php';
 require_once "../dao/DriverDAO.class.php";
 $driverDAO = new DriverDAO($host, $port, $name, $user, $pass); // From dbinfo.php
 
@@ -22,38 +23,81 @@ switch ($_SERVER['REQUEST_METHOD']) {
       break;
 
    case "POST":
-      // TODO use json to send data in body for post
-
       $requestBody = file_get_contents('php://input');
       $bodyData = json_decode($requestBody, true);
 
-      print_r($bodyData);
+      //print_r($bodyData);
 
-      /*if (isset($_GET['firstName']) && isset($_POST['lastName']) && isset($_POST['phone']) && isset($_POST['email']))
+      if (isset($bodyData['firstName']) && isset($bodyData['lastName']) && (isset($bodyData['phone'])) && isset($bodyData['email']))
       {
-         echo json_encode($driverDAO->insertDriver($_GET['firstName'], $_GET['lastName'], $_GET['phone'], $_GET['email'], $_GET['requestStatus']?:false));
+         $firstName = $bodyData['firstName'];
+         $lastName = $bodyData['lastName'];
+         $phone = $bodyData['phone'];
+         $email = $bodyData['email'];
+         $requestStatus = $bodyData['requestStatus'] ?? false;
+
+         $firstName = sanitizeAndValidate($firstName, FILTER_SANITIZE_STRING);
+         $lastName = sanitizeAndValidate($lastName, FILTER_SANITIZE_STRING);
+         $phone = sanitizeAndValidate($phone, FILTER_SANITIZE_STRING);
+         $email = sanitizeAndValidate($email, FILTER_SANITIZE_EMAIL, FILTER_VALIDATE_EMAIL);
+         $requestBody = sanitizeAndValidate($requestBody, FILTER_SANITIZE_STRING, FILTER_VALIDATE_BOOLEAN);
+
+         echo json_encode($driverDAO->insertDriver($firstName, $lastName, $phone, $email, $requestStatus));
       }
       else
       {
-         echo "Insufficient amount of parameters provided";
-      }*/
+         echo json_encode("Insufficient amount of parameters provided");
+      }
 
       break;
 
    case "PUT":
-      // TODO use json to send data in body for put
+      $requestBody = file_get_contents('php://input');
+      $bodyData = json_decode($requestBody, true);
 
-      /*if (isset($_GET['id']))
+      //print_r($bodyData);
+
+      if (isset($bodyData['id']))
       {
-         echo json_encode($driverDAO->updateDriver($_GET['id'], $_GET['firstName'], $_GET['lastName'], $_GET['phone'], $_GET['email'], $_GET['requestStatus']));
+         $id = $bodyData['id'];
+         $firstName = $bodyData['firstName'] ?? "";
+         $lastName = $bodyData['lastName'] ?? "";
+         $phone = $bodyData['phone'] ?? "";
+         $email = $bodyData['email'] ?? "";
+         $requestStatus = $bodyData['requestStatus'] ?? ""; //Must be empty string so that it wouldn't update to either true or false
+
+         $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
+         $firstName = sanitizeAndValidate($firstName, FILTER_SANITIZE_STRING);
+         $lastName = sanitizeAndValidate($lastName, FILTER_SANITIZE_STRING);
+         $phone = sanitizeAndValidate($phone, FILTER_SANITIZE_STRING);
+         $email = sanitizeAndValidate($email, FILTER_SANITIZE_EMAIL, FILTER_VALIDATE_EMAIL);
+         $requestBody = sanitizeAndValidate($requestBody, FILTER_SANITIZE_STRING, FILTER_VALIDATE_BOOLEAN);
+
+         echo json_encode($driverDAO->updateDriver($id, $firstName, $lastName, $phone, $email, $requestBody));
       }
       else
       {
-         echo "No driver was specified";
-      }*/
+         echo json_encode("No driver was specified");
+      }
 
       break;
 
    case "DELETE":
+      $requestBody = file_get_contents('php://input');
+      $bodyData = json_decode($requestBody, true);
+
+      if (isset($bodyData['id']))
+      {
+         $id = $bodyData['id'];
+
+         $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
+
+         echo json_encode($driverDAO->deleteDriver($id));
+      }
+      else
+      {
+         echo json_encode("No driver was specified");
+      }
+
       break;
 }

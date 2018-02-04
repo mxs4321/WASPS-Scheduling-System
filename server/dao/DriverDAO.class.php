@@ -7,6 +7,7 @@ class DriverDAO {
    {
       try {
          $this->dbh = new PDO("mysql:host=$host;dbname=$name", $user, $pass);
+         $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
          $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       } catch(PDOException $e) {
          echo $e->getMessage();
@@ -18,14 +19,13 @@ class DriverDAO {
    {
       try
       {
-         include "../model/Driver.class.php";
          $firstName = strval($firstName);
          $lastName = strval($lastName);
          $phone = strval($phone);
          $email = strval($email);
          $requestStatus = boolval($requestStatus);
 
-         $stmt = $this->dbh->prepare("INSERT INTO Driver (`firstname`, `lastname`, `phone`, `email`, `requestStatus`) VALUES (:firstName, :lastName, :phone, :email, :requestStatus);");
+         $stmt = $this->dbh->prepare("INSERT INTO Driver (`firstName`, `lastName`, `phone`, `email`, `requestStatus`) VALUES (:firstName, :lastName, :phone, :email, :requestStatus);");
          $stmt->bindParam(":firstName", $firstName, PDO::PARAM_STR);
          $stmt->bindParam(":lastName", $lastName, PDO::PARAM_STR);
          $stmt->bindParam(":phone", $phone, PDO::PARAM_STR);
@@ -95,8 +95,6 @@ class DriverDAO {
    {
       try
       {
-         include "../model/Driver.class.php";
-
          $id = intval($id);
          $firstName = strval($firstName);
          $lastName = strval($lastName);
@@ -108,10 +106,8 @@ class DriverDAO {
          if ($firstName != "")     $setStr .= "`firstName` = :firstName";
          if ($lastName != "")      $setStr .= ($setStr == "") ? "`lastName` = :lastName" : ", `lastName` = :lastName";
          if ($phone != "")         $setStr .= ($setStr == "") ? "`phone` = :phone" : ", `phone` = :phone";
-         if ($email != "")         $setStr .= ($setStr == "") ? "`email` :email" : ", `email` :email";
-         if ($requestStatus != "") $setStr .= ($setStr == "") ? "`requestStatus` :requestStatus" : ", `requestStatues` = :requestStatus";
-
-         echo "//" .$setStr . "//";
+         if ($email != "")         $setStr .= ($setStr == "") ? "`email` = :email" : ", `email` = :email";
+         if ($requestStatus != "") $setStr .= ($setStr == "") ? "`requestStatus` = :requestStatus" : ", `requestStatus` = :requestStatus";
 
          $stmt = $this->dbh->prepare("UPDATE Driver SET {$setStr} WHERE driverID = :id;");
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
@@ -121,7 +117,25 @@ class DriverDAO {
          if ($email != "")          $stmt->bindParam(":email", $email, PDO::PARAM_STR);
          if ($requestStatus != "")  $stmt->bindParam(":requestStatus", $requestStatus, PDO::PARAM_BOOL);
          $stmt->execute();
-         $stmt->setFetchMode(PDO::FETCH_CLASS, "Driver");
+
+         return $stmt->rowCount() . " row(s) updated";
+      }
+      catch (PDOException $e)
+      {
+         echo $e->getMessage();
+         die();
+      }
+   }
+
+   function deleteDriver($id)
+   {
+      try
+      {
+         $id = intval($id);
+
+         $stmt = $this->dbh->prepare("DELETE FROM Driver WHERE driverID = :id");
+         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+         $stmt->execute();
 
          return $stmt->rowCount() . " row(s) updated";
       }
