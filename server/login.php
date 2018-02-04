@@ -12,13 +12,15 @@ if ($_SESSION['user']) {
 }
 
 $_POST = json_decode(file_get_contents('php://input'), true);
-if (empty($_POST['email']) || empty($_POST['password'])) {
-    http_response_code(401);
-    echo json_encode(["err" => "Username or password invalid"]);
-    die();
-}
 
-$_SESSION['user'] = $db->attemptLogin($_POST['email'], $_POST['password']);
+$isPhoneLogin = !empty($_POST['phone']) && !empty($_POST['password']);
+$isEmailLogin = !empty($_POST['email']) && !empty($_POST['password']);
+
+if ($isPhoneLogin) {
+    $_SESSION['user'] = $db->attemptLogin('phone', $_POST['phone'], $_POST['password']);
+} else if($isEmailLogin) {
+    $_SESSION['user'] = $db->attemptLogin('email', $_POST['email'], $_POST['password']);
+}
 
 if (empty($_SESSION['user'])) {
     http_response_code(401);

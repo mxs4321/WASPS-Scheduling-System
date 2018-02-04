@@ -118,6 +118,30 @@ describe('POST /login.php', () => {
       });
   });
 
+  it('With PhoneNumber', async () => {
+    await request
+      .post('/login.php')
+      .send({
+        phone: '2435254235',
+        password: 'passanger'
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .expect({
+        id: '4',
+        firstName: 'Main',
+        lastName: 'Passanger',
+        userRole: 'passanger',
+        phone: '2435254235',
+        email: 'passanger@websterwasps.com',
+        registered: '2018-01-01 00:00:00',
+        lastLogin: '2018-03-01 00:00:00',
+        wantsSMS: '1',
+        wantsEmails: '1'
+      });
+  });
+
   it('Invalid login', async () => {
     await request
       .post('/login.php')
