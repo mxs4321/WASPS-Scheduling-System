@@ -3,9 +3,11 @@ class User {
     public $id;
     public $firstName;
     public $lastName;
-    public $phoneNumber;
-    public $address;
-    public $city;
-    public $zip;
+    public $userRole;
+    public $phone;
     public $email;
+    public $registered;
+    public $lastLogin;
+    public $wantsSMS;
+    public $wantsEmails;
 }
