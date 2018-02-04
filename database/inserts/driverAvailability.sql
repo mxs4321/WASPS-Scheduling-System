@@ -1,4 +1,6 @@
-INSERT INTO `wasps`.`driveravailability` (`driverID`, `availableStart`, `availableEnd`) VALUES ('2', '2018-01-29 12:30:00', '2018-01-29 16:00:00');
-INSERT INTO `wasps`.`driveravailability` (`driverID`, `availableStart`, `availableEnd`) VALUES ('2', '2018-02-01 08:00:00', '2018-02-01 12:00:00');
-INSERT INTO `wasps`.`driveravailability` (`driverID`, `availableStart`, `availableEnd`) VALUES ('3', '2018-01-29 17:15:00', '2018-01-29 20:15:00');
-INSERT INTO `wasps`.`driveravailability` (`driverID`, `availableStart`, `availableEnd`) VALUES ('3', '2018-02-05 07:00:00', '2018-02-05 10:45:00');
+/*
+-- Query: 
+-- Date: 2018-02-04 16:00
+*/
+INSERT INTO `DriverAvailability` (`id`,`start`,`end`,`days`,`driverID`) VALUES (1,'07:00:00','04:00:00','Mon,Tue,Wed,Thu,Fri',3);
+INSERT INTO `DriverAvailability` (`id`,`start`,`end`,`days`,`driverID`) VALUES (2,'07:00:00','04:00:00','Sat,Sun',5);
