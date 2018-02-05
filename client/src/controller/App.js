@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logout } from '../model/auth';
+import { logout, login } from '../model/auth';
 import Toolbar from '../view/Toolbar';
 import StatusFilter from '../view/StatusFilter';
 import { Add } from '../view/icons';
@@ -45,14 +45,10 @@ const Sidebar = styled.div`
 export default withRouter(
   connect(
     ({ auth }) => ({
-      isPassanger: auth.isPassanger,
-      isDispatcher: auth.isDispatcher,
-      isDriver: auth.isDriver
+      user: auth.user
     }),
     dispatch => ({
-      logout: () => {
-        dispatch(logout());
-      }
+      logout: () => dispatch(logout())
     })
   )(
     class App extends Component {
@@ -76,36 +72,33 @@ export default withRouter(
 
       render() {
         const { sidebarIsOpen, statusFilter, createRideIsOpen } = this.state;
-        const { isDispatcher, isDriver, isPassanger, logout } = this.props;
-        if (!(isDispatcher || isDriver || isPassanger)) {
+        const { user, logout } = this.props;
+        if (!user) {
           return <SignIn />;
         }
         return (
           <Fullbleed>
             <Toolbar
               title="Passanger"
-              isDispatcher={isDispatcher}
-              isDriver={isDriver}
+              userRole={user.userRole}
               onMenuToggle={this.toggleSidebar}
               onAvatarClick={logout}
             />
             <Body>
               {sidebarIsOpen && (
                 <Sidebar>
-                  <Navigation isDispatcher={isDispatcher} isDriver={isDriver} />
+                  <Navigation userRole={user.user} />
                   <hr />
-                  <StatusFilter
-                    isDispatcher={isDispatcher}
-                    isDriver={isDriver}
-                    status={statusFilter}
-                  />
+                  <StatusFilter userRole={user.user} status={statusFilter} />
                 </Sidebar>
               )}
               <Route exact path="/" component={Rides} />
-              {isDriver && (
+              {user.userRole === 'driver' && (
                 <Route path="/availability" component={Availability} />
               )}
-              {isDispatcher && <Route path="/drivers" component={Drivers} />}
+              {user.userRole === 'dispatcher' && (
+                <Route path="/drivers" component={Drivers} />
+              )}
               <Route path="/schedule" component={Schedule} />
             </Body>
             <FAB onClick={this.toggleCreateRide}>

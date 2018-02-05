@@ -5,12 +5,11 @@ import styled from 'styled-components';
 import { Schedule, Car, Group, Timer } from '../view/icons';
 import List from '../view/SidebarList';
 import { withRouter } from 'react-router';
+import type { UserRole } from '../model/types/user';
 
 type Props = {
   /** Will show an Availability tab */
-  isDriver: boolean,
-  /** Will show a Drivers tab */
-  isDispatcher: boolean
+  userRole: UserRole
 };
 
 const UnstyledLink = styled(Link)`
@@ -18,35 +17,33 @@ const UnstyledLink = styled(Link)`
   color: inherit;
 `;
 
-const Navigation = withRouter(
-  ({ location, isDriver = false, isDispatcher = false }: Props) => (
-    <List>
-      <List.Item active={location.pathname === '/'}>
-        <UnstyledLink to="/">
-          <Car />&nbsp;&nbsp;Rides
+const Navigation = withRouter(({ location, userRole = 'passanger' }: Props) => (
+  <List>
+    <List.Item active={location.pathname === '/'}>
+      <UnstyledLink to="/">
+        <Car />&nbsp;&nbsp;Rides
+      </UnstyledLink>
+    </List.Item>
+    {userRole === 'dispatcher' && (
+      <List.Item active={location.pathname === '/drivers'}>
+        <UnstyledLink to="/drivers">
+          <Group />&nbsp;&nbsp;Drivers
         </UnstyledLink>
       </List.Item>
-      {isDispatcher && (
-        <List.Item active={location.pathname === '/drivers'}>
-          <UnstyledLink to="/drivers">
-            <Group />&nbsp;&nbsp;Drivers
-          </UnstyledLink>
-        </List.Item>
-      )}
-      {isDriver && (
-        <List.Item active={location.pathname === '/availability'}>
-          <UnstyledLink to="/availability">
-            <Timer />&nbsp;&nbsp;Availability
-          </UnstyledLink>
-        </List.Item>
-      )}
-      <List.Item active={location.pathname === '/Schedule'}>
-        <UnstyledLink to="/Schedule">
-          <Schedule />&nbsp;&nbsp;Schedule
+    )}
+    {userRole === 'driver' && (
+      <List.Item active={location.pathname === '/availability'}>
+        <UnstyledLink to="/availability">
+          <Timer />&nbsp;&nbsp;Availability
         </UnstyledLink>
       </List.Item>
-    </List>
-  )
-);
+    )}
+    <List.Item active={location.pathname === '/Schedule'}>
+      <UnstyledLink to="/Schedule">
+        <Schedule />&nbsp;&nbsp;Schedule
+      </UnstyledLink>
+    </List.Item>
+  </List>
+));
 
 export default Navigation;
