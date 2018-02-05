@@ -26,13 +26,11 @@ const Button = styled.button`
 export default withRouter(
   connect(
     ({ auth }) => ({
-      isPassanger: auth.isPassanger,
-      isDispatcher: auth.isDispatcher,
-      isDriver: auth.isDriver
+      user: auth.user
     }),
     dispatch => ({
-      login: ({ isPassanger, isDispatcher, isDriver }) => {
-        dispatch(login({ isPassanger, isDispatcher, isDriver }));
+      login: ({ email, password }) => {
+        dispatch(login({ email, password }));
       }
     })
   )(
@@ -45,9 +43,8 @@ export default withRouter(
               background="#EB5757"
               onClick={() =>
                 login({
-                  isDispatcher: true,
-                  isDriver: false,
-                  isPassanger: false
+                  email: 'dispatcher@websterwasps.com',
+                  password: 'dispatcher'
                 })
               }
             >
@@ -57,9 +54,8 @@ export default withRouter(
               background="#27AE60"
               onClick={() =>
                 login({
-                  isDispatcher: false,
-                  isDriver: true,
-                  isPassanger: false
+                  email: 'driver@websterwasps.com',
+                  password: 'driver'
                 })
               }
             >
@@ -69,9 +65,8 @@ export default withRouter(
               background="#4396E3"
               onClick={() =>
                 login({
-                  isDispatcher: false,
-                  isDriver: false,
-                  isPassanger: true
+                  email: 'passanger@websterwasps.com',
+                  password: 'passanger'
                 })
               }
             >

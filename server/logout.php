@@ -2,6 +2,8 @@
 session_start();
 if (session_destroy()) // Destroying All Sessions
 {
-    header("Location: login.php"); // Redirecting To Home Page
+    http_response_code(200);
+    echo json_encode(["status" => "success"]);
+    die();
 }
 ?>

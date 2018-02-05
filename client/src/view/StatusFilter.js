@@ -2,19 +2,20 @@
 import React from 'react';
 import { Help, Warning, Scheduled, Complete, Canceled } from './icons';
 import List from './SidebarList';
+import type { UserRole } from '../model/types/user';
 
 type Props = {
   /** Will toggle weather the unverified and canceled categories appear */
-  isDispatcher: boolean,
+  userRole: UserRole,
   /** The Currently selected Status */
   status: 'Unverified' | 'Pending' | 'Scheduled' | 'Complete' | 'Canceled',
   /** Callback function for when the filter changes states */
   onFilterChange: Function
 };
 
-const StatusFilter = ({ isDispatcher, status, onFilterChange }: Props) => (
+const StatusFilter = ({ userRole, status, onFilterChange }: Props) => (
   <List>
-    {isDispatcher && (
+    {userRole === 'dispatcher' && (
       <List.Item>
         <Help />&nbsp;&nbsp;Unverified
       </List.Item>
@@ -28,7 +29,7 @@ const StatusFilter = ({ isDispatcher, status, onFilterChange }: Props) => (
     <List.Item>
       <Complete />&nbsp;&nbsp;Complete
     </List.Item>
-    {isDispatcher && (
+    {userRole === 'dispatcher' && (
       <List.Item>
         <Canceled />&nbsp;&nbsp;Canceled
       </List.Item>

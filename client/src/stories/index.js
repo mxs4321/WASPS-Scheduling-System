@@ -148,8 +148,8 @@ storiesOf('Navigation', module)
     A component for navigating between different views
     `)(story)(context)
   )
-  .add('Dispatcher', () => <Navigation isDispatcher={true} />)
-  .add('Driver', () => <Navigation isDriver={true} />)
+  .add('Dispatcher', () => <Navigation userRole={'dispatcher'} />)
+  .add('Driver', () => <Navigation userRole={'driver'} />)
   .add('Passanger', () => <Navigation />);
 
 storiesOf('StatusFilter', module)
@@ -159,7 +159,7 @@ storiesOf('StatusFilter', module)
     `)(story)(context)
   )
   .add('Default', () => <StatusFilter />)
-  .add('Dispatcher', () => <StatusFilter isDispatcher={true} />);
+  .add('Dispatcher', () => <StatusFilter userRole={'dispatcher'} />);
 
 storiesOf('Avatar', module)
   .addDecorator((story, context) =>
@@ -178,9 +178,26 @@ storiesOf('Toolbar', module)
     An AppBar which contains a search field, hamburger menu, title and avatar
     `)(story)(context)
   )
-  .add('Dispatcher', () => <Toolbar isDispatcher={true} />)
-  .add('Driver', () => <Toolbar isDriver={true} />)
-  .add('Passanger', () => <Toolbar />);
+  .add('Dispatcher', () => (
+    <Toolbar
+      onMenuToggle={action('menu clicked')}
+      onAvatarClick={action('avatar click')}
+      userRole={'dispatcher'}
+    />
+  ))
+  .add('Driver', () => (
+    <Toolbar
+      onMenuToggle={action('menu clicked')}
+      onAvatarClick={action('avatar click')}
+      userRole={'driver'}
+    />
+  ))
+  .add('Passanger', () => (
+    <Toolbar
+      onAvatarClick={action('avatar click')}
+      onMenuToggle={action('menu clicked')}
+    />
+  ));
 
 storiesOf('Calendar', module)
   .addDecorator((story, context) =>

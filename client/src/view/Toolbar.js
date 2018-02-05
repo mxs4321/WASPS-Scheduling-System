@@ -4,12 +4,11 @@ import styled from 'styled-components';
 import { Menu } from './icons';
 import Avatar from './Avatar';
 import SearchBar from './SearchBar';
+import type { UserRole } from '../model/types/user';
 
 type Props = {
   /** Helps determine the color of the bar */
-  isDispatcher: Boolean,
-  /** Helps determine the color of the bar */
-  isDriver: Boolean,
+  userRole: UserRole,
   /** Call back for when the Hamburger menu button is clicked */
   onMenuToggle: Function,
   /** Call back for when the search bar is Focused */
@@ -22,20 +21,15 @@ type Props = {
 
 const NoOp = () => {};
 
-const getToolbarBackgroundColor = ({
-  isDispatcher = false,
-  isDriver = false,
-  isSearching = false
-}) => {
-  // if (isSearching) return "#f6f6f6";
-  if (isDispatcher) return '#EB5757';
-  if (isDriver) return '#27AE60';
+const getToolbarBackgroundColor = ({ userRole }) => {
+  if (userRole === 'dispatcher') return '#EB5757';
+  if (userRole === 'driver') return '#27AE60';
   return '#4396E3';
 };
 
-const getToolbarTitle = ({ isDispatcher = false, isDriver = false }) => {
-  if (isDispatcher) return 'Dispatcher';
-  if (isDriver) return 'Driver';
+const getToolbarTitle = userRole => {
+  if (userRole === 'dispatcher') return 'Dispatcher';
+  if (userRole === 'driver') return 'Driver';
   return 'Passanger';
 };
 
@@ -53,26 +47,19 @@ const Background = styled.div`
 
 class Toolbar extends Component {
   props: Props;
-  state = {
-    isSearching: false
-  };
+  state = { isSearching: false };
 
   render() {
     const {
-      isDispatcher = false,
-      isDriver = false,
+      userRole = 'passanger',
       onMenuToggle = NoOp,
       onAvatarClick = NoOp
     } = this.props;
     const { isSearching } = this.state;
     return (
-      <Background
-        isDispatcher={isDispatcher}
-        isDriver={isDriver}
-        isSearching={isSearching}
-      >
+      <Background userRole={userRole} isSearching={isSearching}>
         <HamburgerMenu onClick={onMenuToggle} />
-        {getToolbarTitle({ isDispatcher, isDriver })}
+        {getToolbarTitle(userRole)}
         <SearchBar
           onFocus={() => this.setState({ isSearching: true })}
           onBlur={() => this.setState({ isSearching: false })}
