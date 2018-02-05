@@ -162,3 +162,22 @@ describe('POST /login.php', () => {
       .expect(401);
   });
 });
+
+// describe('ride', () => {
+//   it('create', async () => {
+//     await request
+//       .post('/api/rides.php')
+//       .send({
+//         "userID": "4",
+//         "apptStart": "2017-03-01 09:00:00",
+//         "apptEnd": "2017-03-01 10:00:00",
+//         "pickupTime": "2017-03-01 08:30:00",
+//         "wheelchairVan": false,
+//         "pickupStreetAddress": "855 publishers parkway",
+//         "pickupCity": "Webster",
+//         "apptStreetAddress": "45 Webster Commons Blvd #201",
+//         "apptCity": "Webster"
+//       })
+//       .expect(201)
+//   })
+// })
