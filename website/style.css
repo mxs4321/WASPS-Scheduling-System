@@ -633,35 +633,53 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
 
 
     #services {
-        height: 500px;
-        padding-bottom: 20px;
+        background-color: #F4F2F2; 
+	height: 600px; 
+	margin: 0;
+	left: 0; 
+	right: 0; 
+	border-top: 7px solid rgba(29, 111, 187, 0.63);
     }
 
     #servicesButtonId {
-        padding-left: 70px;
+     	position: relative;
+		left: 300px;
+		height: auto;
     }
 
     #services #servicesHeading {
-        font-size: 30px;
-        position: relative;
-        text-transform: uppercase;
-        font-family: Arial, sans-serif;
-        padding-left: 20px;
+        color: #4486C3; 
+	font-size: 55px;
+	position: relative; 
+	text-transform: uppercase; 
+	font-family: Arial, sans-serif; 
+	padding-left: 170px;
     }
 
     #services #servicesText {
-        font-weight: bold;
-        font-size: 13px;
-        width:85%;
-        padding-left: 20px;
-        padding-right: 20px;
-        font-family: Arial, sans-serif;
+    font-weight: bold; 
+	font-size: 20px;
+	width: 800px;
+	height: 300px;
+	color: #413F3F;
+	font-family: Arial, sans-serif;
+	padding-left: 500px;
+	position: absolute;
+	padding-top: 10px;
     }
 
     .servicesButton {
-        height: 45px;
-        margin: 5px;
-        font-size: 13px;
+        background-color: white;
+	font-family: Arial, sans-serif; 
+	font-weight: bold;
+	height: 40px;
+	width: 200px;
+	border-radius:5px;
+	margin: 50px;
+	position: relative;left: -200px;
+	text-decoration: none;
+	 color: #5E5E5E;
+	font-size:17px;
     }
 
 
@@ -758,7 +776,20 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
     }
 
 }
+i {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 5px;
+  position: relative;
+  left: 9px;
+  top: -2px;
+}
 
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
 
 
 @media screen and (max-width: 700px) {

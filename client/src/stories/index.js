@@ -21,6 +21,7 @@ import CreateUserForm from '../view/forms/CreateUserForm';
 import PlacesSearchBox from '../view/PlacesSearchbox';
 import GoogleRoutesForm from '../view/forms/GoogleRoutesForm';
 import FindUsers from '../view/FindUsers';
+import TimeSelectorDropdown from '../view/TimeSelectorDropdown';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'material-expansion-panel/dist/material-expansion-panel.min.css';
@@ -39,6 +40,17 @@ injectGlobal`
     position: absolute;
   }
 `;
+
+storiesOf('TimeSelectorDropdown', module)
+	.addDecorator((story, context) =>
+		withInfo(`
+			Find a User View
+		`)(story)(context)
+	)
+	.add('Basic', () => (
+		<TimeSelectorDropdown/>
+	));
+	
 
 storiesOf('FindUsers', module)
   .addDecorator((story, context) =>
