@@ -31,6 +31,28 @@ class User {
         }
     }
 
+    function findByName($name) {
+        try {
+            $isFullName = count(explode(' ', $name)) > 1;
+            if ($isFullName) {
+                $stmt = $this->dbh->prepare("SELECT * FROM user WHERE CONCAT(firstName, ' ', lastName) LIKE :fullname");
+                $stmt->execute([':fullname' => "%$name%"]);
+            } else {
+                $stmt = $this->dbh->prepare("SELECT * FROM user WHERE firstName LIKE :firstName  OR lastName LIKE :lastName");
+                $stmt->execute([':firstName' => "%$name%", ':lastName' => "%$name%"]);
+            }
+            $stmt->setFetchMode(PDO::FETCH_CLASS, "UserModel");
+            while ($user = $stmt->fetch()) {
+                unset($user->password);
+                $data[] = $user;
+            }
+            return $data;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die();
+        }
+    }
+
     function getPage($page = 0, $numberPerPage = 10) {
         try {
             $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `userRole`, `lastLogin`, `wantsSMS`, `wantsEmails`, `email`, `registered` FROM user LIMIT :lim OFFSET :offset");
@@ -38,8 +60,8 @@ class User {
             $stmt->bindParam(':offset', intval($page * $numberPerPage), PDO::PARAM_INT);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_CLASS, "UserModel");
-            while ($person = $stmt->fetch()) {
-                $data[] = $person;
+            while ($user = $stmt->fetch()) {
+                $data[] = $user;
             }
             return $data;
         } catch (PDOException $e) {

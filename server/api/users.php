@@ -9,6 +9,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
         if ($_GET['id']) {
             echo json_encode($db->user->findById($_GET['id']));
+        } else if ($_GET['name']) {
+            echo json_encode($db->user->findByName($_GET['name']));
         } else {
             echo json_encode($db->user->getPage($_GET['page'], $_GET['number_per_page']?:10));
         }
