@@ -63,9 +63,9 @@ class DriverAvailabilityExceptionDAO
          $stmt->execute();
          $stmt->setFetchMode(PDO::FETCH_CLASS, "DriverAvailabilityException");
 
-         while ($driverAvailability = $stmt->fetch())
+         while ($driverAvailabilityException = $stmt->fetch())
          {
-            $data[] = $driverAvailability->getDriverAvailabilityExceptionInfo();
+            $data[] = $driverAvailabilityException->getDriverAvailabilityExceptionInfo();
          }
 
          return $data;
@@ -115,7 +115,7 @@ class DriverAvailabilityExceptionDAO
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          $stmt->execute();
 
-         return $stmt->rowCount() . " row(s) updated";
+         return $stmt->rowCount() . " row(s) deleted";
       }
       catch (PDOException $e)
       {

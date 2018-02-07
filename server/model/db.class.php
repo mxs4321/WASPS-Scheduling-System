@@ -4,6 +4,8 @@ include "ride.class.php";
 include "comment.class.php";
 include "../dao/DriverAvailabilityDAO.php";
 include "../dao/DriverAvailabilityExceptionDAO.php";
+include "../dao/VolunteerRequestDAO.php";
+include "../dao/SentMessagesLogDAO.php";
 
 class DB {
     private $dbh;
@@ -12,6 +14,8 @@ class DB {
     public $comment;
     public $driverAvailabilityDAO;
     public $driverAvailabilityExceptionDAO;
+    public $volunteerRequestDAO;
+    public $sentMessagesLogDAO;
 
     function __construct($host, $port, $name, $user, $pass) {
         try {
@@ -23,6 +27,8 @@ class DB {
             $this->comment = new Comment($this->dbh);
             $this->driverAvailabilityDAO = new DriverAvailabilityDAO($this->dbh);
             $this->driverAvailabilityExceptionDAO = new DriverAvailabilityExceptionDAO($this->dbh);
+            $this->volunteerRequestDAO = new VolunteerRequestDAO($this->dbh);
+            $this->sentMessagesLogDAO = new SentMessagesLogDAO($this->dbh);
         } catch(PDOException $e) {
             echo $e->getMessage();
             die();
