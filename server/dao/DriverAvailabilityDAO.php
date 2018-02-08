@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/../model/DriverAvailability.php";
 
 class DriverAvailabilityDAO
 {
@@ -33,7 +34,6 @@ class DriverAvailabilityDAO
    {
       try
       {
-         include "../model/DriverAvailability.class.php";
          $id = intval($id);
 
          $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `days`, `driverID` FROM driveravailability WHERE id = :id;");
@@ -54,7 +54,6 @@ class DriverAvailabilityDAO
    {
       try
       {
-         include "../model/DriverAvailability.class.php";
          $numberPerPage = intval($numberPerPage);
          $offset = intval($page * $numberPerPage);
 

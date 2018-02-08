@@ -1,18 +1,7 @@
-<?php
-class UserModel {
-    public $id;
-    public $firstName;
-    public $lastName;
-    public $userRole;
-    public $phone;
-    public $email;
-    public $registered;
-    public $lastLogin;
-    public $wantsSMS;
-    public $wantsEmails;
-}
+<?php 
+require_once __DIR__ . "/../model/User.php";
 
-class User {
+class UserDAO {
     private $dbh;
 
     function __construct($dbh) {
@@ -23,7 +12,7 @@ class User {
         try {
             $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `userRole`, `lastLogin`, `wantsSMS`, `wantsEmails`, `email`, `registered` FROM user WHERE id = :id");
             $stmt->execute([':id' => intval($id)]);
-            $stmt->setFetchMode(PDO::FETCH_CLASS, "UserModel");
+            $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             return $stmt->fetch();
         } catch (PDOException $e) {
             echo $e->getMessage();
@@ -41,7 +30,7 @@ class User {
                 $stmt = $this->dbh->prepare("SELECT * FROM user WHERE firstName LIKE :firstName  OR lastName LIKE :lastName");
                 $stmt->execute([':firstName' => "%$name%", ':lastName' => "%$name%"]);
             }
-            $stmt->setFetchMode(PDO::FETCH_CLASS, "UserModel");
+            $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             while ($user = $stmt->fetch()) {
                 unset($user->password);
                 $data[] = $user;
@@ -59,9 +48,9 @@ class User {
             $stmt->bindParam(':lim', intval($numberPerPage), PDO::PARAM_INT);
             $stmt->bindParam(':offset', intval($page * $numberPerPage), PDO::PARAM_INT);
             $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_CLASS, "UserModel");
+            $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             while ($user = $stmt->fetch()) {
-                $data[] = $user;
+                $data[] = $user->getUserInfo();
             }
             return $data;
         } catch (PDOException $e) {
@@ -77,7 +66,7 @@ class User {
         $stmt->bindParam(':lim', intval($numberPerPage), PDO::PARAM_INT);
         $stmt->bindParam(':offset', intval($page * $numberPerPage), PDO::PARAM_INT);
         $stmt->execute();
-        $stmt->setFetchMode(PDO::FETCH_CLASS, "UserModel");
+        $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
     }
 
     function attemptLogin($method, $arg, $password) {
@@ -89,12 +78,12 @@ class User {
                 $stmt = $this->dbh->prepare("SELECT * FROM user WHERE phone = :phone");
                 $stmt->execute([':phone' => $arg]);
             }
-            $stmt->setFetchMode(PDO::FETCH_CLASS, "UserModel");
+
+            $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             $user = $stmt->fetch();
 
             if (password_verify($password, $user->password)) {
-                unset($user->password);
-                return $user;
+                return $user->getUserInfo();
             } else {
                 return null;
             }

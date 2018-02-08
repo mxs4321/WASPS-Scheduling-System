@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/../model/VolunteerRequest.php";
 
 class VolunteerRequestDAO
 {
@@ -31,7 +32,6 @@ class VolunteerRequestDAO
    {
       try
       {
-         include "../model/VolunteerRequest.php";
          $id = intval($id);
 
          $stmt = $this->dbh->prepare("SELECT `id`, `timestamp`, `userID` FROM volunteerrequest WHERE id = :id;");
@@ -52,7 +52,6 @@ class VolunteerRequestDAO
    {
       try
       {
-         include "../model/VolunteerRequest.php";
          $numberPerPage = intval($numberPerPage);
          $offset = intval($page * $numberPerPage);
 
