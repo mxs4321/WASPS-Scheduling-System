@@ -1,7 +1,6 @@
 <?php
 include "dao/UserDAO.php";
 include "dao/RideDAO.php";
-include "dao/CommentDAO.php";
 include "dao/DriverAvailabilityDAO.php";
 include "dao/DriverAvailabilityExceptionDAO.php";
 include "dao/VolunteerRequestDAO.php";
@@ -11,7 +10,6 @@ class DB {
     private $dbh;
     public $user;
     public $ride;
-    public $comment;
     public $driverAvailability;
     public $driverAvailabilityException;
     public $volunteerRequest;
@@ -24,7 +22,6 @@ class DB {
             $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->user = new UserDAO($this->dbh);
             $this->ride = new RideDAO($this->dbh);
-            $this->comment = new CommentDAO($this->dbh);
             $this->driverAvailability = new DriverAvailabilityDAO($this->dbh);
             $this->driverAvailabilityException = new DriverAvailabilityExceptionDAO($this->dbh);
             $this->volunteerRequest = new VolunteerRequestDAO($this->dbh);
