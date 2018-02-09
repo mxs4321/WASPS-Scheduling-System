@@ -9,13 +9,11 @@ class DriverAvailabilityException
 
    public  function  getDriverAvailabilityExceptionInfo()
    {
-      $array = array(
-         "id" => $this->id,
-         "start" => $this->start,
-         "end" => $this->end,
-         "driverID" => $this->driverID
-      );
-
-      return $array;
+      return [
+        "id" => $this->id,
+        "start" => $this->start,
+        "end" => $this->end,
+        "driverID" => $this->driverID
+      ];
    }
 }

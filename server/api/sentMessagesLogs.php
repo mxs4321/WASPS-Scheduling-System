@@ -3,22 +3,22 @@ header('Content-Type: application/json');
 
 include '../env.php';
 include '../sanitizationValidation.php';
-require_once "../model/db.class.php";
+require_once "../db.class.php";
 $db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
 
 switch ($_SERVER['REQUEST_METHOD']) {
    case "GET":
       if (isset($_GET['id']))
       {
-         echo json_encode($db->sentMessagesLogDAO->getSentMessagesLog($_GET['id']));
+         echo json_encode($db->sentMessagesLog->getSentMessagesLog($_GET['id']));
       }
       else if (isset($_GET['page']) && isset($_GET['number_per_page']))
       {
-         echo json_encode($db->sentMessagesLogDAO->getSentMessagesLogs($_GET['page'], $_GET['number_per_page']?:10));
+         echo json_encode($db->sentMessagesLog->getSentMessagesLogs($_GET['page'], $_GET['number_per_page']?:10));
       }
       else
       {
-         echo json_encode($db->sentMessagesLogDAO->getSentMessagesLogs(0, 100));
+         echo json_encode($db->sentMessagesLog->getSentMessagesLogs(0, 100));
       }
       break;
 
@@ -40,7 +40,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
          $timestamp = date("Y-m-d H:i:s");
 
          http_response_code(201);
-         echo json_encode($db->sentMessagesLogDAO->insertSentMessagesLog($type, $message, $userID, $timestamp));
+         echo json_encode($db->sentMessagesLog->insertSentMessagesLog($type, $message, $userID, $timestamp));
       }
       else
       {
@@ -70,7 +70,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
          $userID = sanitizeAndValidate($userID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
          http_response_code(201);
-         echo json_encode($db->sentMessagesLogDAO->updateSentMessagesLog($id, $type, $message, $userID));
+         echo json_encode($db->sentMessagesLog->updateSentMessagesLog($id, $type, $message, $userID));
       }
       else
       {
@@ -92,7 +92,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
          $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
          http_response_code(201);
-         echo json_encode($db->sentMessagesLogDAO->deleteSentMessagesLog($id));
+         echo json_encode($db->sentMessagesLog->deleteSentMessagesLog($id));
       }
       else
       {

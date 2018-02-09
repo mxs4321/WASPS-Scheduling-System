@@ -3,7 +3,7 @@ session_start(); // Starting Session
 header('Content-Type: application/json');
 
 include './env.php';
-require_once "./model/db.class.php";
+require_once "./db.class.php";
 $db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
 
 if ($_SESSION['user']) {
@@ -12,7 +12,6 @@ if ($_SESSION['user']) {
 }
 
 $_POST = json_decode(file_get_contents('php://input'), true);
-
 $isPhoneLogin = !empty($_POST['phone']) && !empty($_POST['password']);
 $isEmailLogin = !empty($_POST['email']) && !empty($_POST['password']);
 

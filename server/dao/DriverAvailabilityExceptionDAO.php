@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/../model/DriverAvailabilityException.php";
 
 class DriverAvailabilityExceptionDAO
 {
@@ -32,7 +33,6 @@ class DriverAvailabilityExceptionDAO
    {
       try
       {
-         include "../model/DriverAvailabilityException.php";
          $id = intval($id);
 
          $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `driverID` FROM driveravailabilityexception WHERE id = :id;");
@@ -53,7 +53,6 @@ class DriverAvailabilityExceptionDAO
    {
       try
       {
-         include "../model/DriverAvailabilityException.php";
          $numberPerPage = intval($numberPerPage);
          $offset = intval($page * $numberPerPage);
 

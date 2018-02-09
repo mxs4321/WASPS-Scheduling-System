@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/../model/SentMessagesLog.php";
 
 class SentMessagesLogDAO
 {
@@ -33,7 +34,6 @@ class SentMessagesLogDAO
    {
       try
       {
-         include "../model/SentMessagesLog.php";
          $id = intval($id);
 
          $stmt = $this->dbh->prepare("SELECT `id`, `type`, `message`, `userID`, `timestamp` FROM sentmessageslog WHERE id = :id;");
@@ -54,7 +54,6 @@ class SentMessagesLogDAO
    {
       try
       {
-         include "../model/SentMessagesLog.php";
          $numberPerPage = intval($numberPerPage);
          $offset = intval($page * $numberPerPage);
 

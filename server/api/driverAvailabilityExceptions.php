@@ -3,22 +3,22 @@ header('Content-Type: application/json');
 
 include '../env.php';
 include '../sanitizationValidation.php';
-require_once "../model/db.class.php";
+require_once "../db.class.php";
 $db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
 
 switch ($_SERVER['REQUEST_METHOD']) {
    case "GET":
       if (isset($_GET['id']))
       {
-         echo json_encode($db->driverAvailabilityExceptionDAO->getDriverAvailabilityException($_GET['id']));
+         echo json_encode($db->driverAvailabilityException->getDriverAvailabilityException($_GET['id']));
       }
       else if (isset($_GET['page']) && isset($_GET['number_per_page']))
       {
-         echo json_encode($db->driverAvailabilityExceptionDAO->getDriverAvailabilityExceptions($_GET['page'], $_GET['number_per_page']?:10));
+         echo json_encode($db->driverAvailabilityException->getDriverAvailabilityExceptions($_GET['page'], $_GET['number_per_page']?:10));
       }
       else
       {
-         echo json_encode($db->driverAvailabilityExceptionDAO->getDriverAvailabilityExceptions(0, 100));
+         echo json_encode($db->driverAvailabilityException->getDriverAvailabilityExceptions(0, 100));
       }
       break;
 
@@ -39,7 +39,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
          $driverID = sanitizeAndValidate($driverID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
          http_response_code(201);
-         echo json_encode($db->driverAvailabilityExceptionDAO->insertDriverAvailabilityException($startTime, $endTime, $driverID));
+         echo json_encode($db->driverAvailabilityException->insertDriverAvailabilityException($startTime, $endTime, $driverID));
       }
       else
       {
@@ -69,7 +69,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
          $driverID = sanitizeAndValidate($driverID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
          http_response_code(201);
-         echo json_encode($db->driverAvailabilityExceptionDAO->updateDriverAvailabilityException($id, $startTime, $endTime, $driverID));
+         echo json_encode($db->driverAvailabilityException->updateDriverAvailabilityException($id, $startTime, $endTime, $driverID));
       }
       else
       {
@@ -91,7 +91,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
          $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
          http_response_code(201);
-         echo json_encode($db->driverAvailabilityExceptionDAO->deleteDriverAvailabilityException($id));
+         echo json_encode($db->driverAvailabilityException->deleteDriverAvailabilityException($id));
       }
       else
       {
