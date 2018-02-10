@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { fetchRides } from '../model/rides';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
@@ -16,30 +18,31 @@ const Card = styled.div`
 `;
 
 BigCalendar.momentLocalizer(moment);
-class Schedule extends Component {
+
+export class Schedule extends Component {
+  componentDidMount() {
+    this.props.fetchRides();
+  }
+
   render() {
     return (
       <Card>
-        <BigCalendar
-          startAccessor="start"
-          endAccessor="end"
-          events={[
-            {
-              title: 'All Day Event very long title',
-              allDay: true,
-              start: new Date(2017, 11, 11),
-              end: new Date(2017, 11, 11)
-            },
-            {
-              title: 'Long Event',
-              start: new Date(2017, 11, 11, 2, 45, 0),
-              end: new Date(2017, 11, 11, 3, 0, 0)
-            }
-          ]}
-        />
+        <BigCalendar events={this.props.rides} />
       </Card>
     );
   }
 }
 
-export default Schedule;
+export default connect(
+  ({ rides }) => ({
+    rides: Object.values(rides.byId).map(ride => ({
+      ...ride,
+      start: new Date(ride.pickupTime),
+      end: new Date(ride.apptEnd),
+      title: `${ride.pickupStreetAddress} \u2192 ${ride.apptStreetAddress}`
+    }))
+  }),
+  dispatch => ({
+    fetchRides: () => dispatch(fetchRides())
+  })
+)(Schedule);

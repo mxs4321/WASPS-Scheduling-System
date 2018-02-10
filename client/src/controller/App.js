@@ -70,7 +70,6 @@ export class App extends Component {
     return (
       <Fullbleed>
         <Toolbar
-          title="Passanger"
           userRole={user.userRole}
           onMenuToggle={this.toggleSidebar}
           onAvatarClick={logout}
@@ -78,16 +77,16 @@ export class App extends Component {
         <Body>
           {sidebarIsOpen && (
             <Sidebar>
-              <Navigation userRole={user.user} />
+              <Navigation userRole={user.userRole} />
               <hr />
-              <StatusFilter userRole={user.user} status={statusFilter} />
+              <StatusFilter userRole={user.userRole} status={statusFilter} />
             </Sidebar>
           )}
           <Route exact path="/" component={Rides} />
           {user.userRole === 'driver' && (
             <Route path="/availability" component={Availability} />
           )}
-          {user.userRole === 'dispatcher' && (
+          {(user.userRole === 'dispatcher' || user.userRole === 'admin') && (
             <Route path="/drivers" component={Drivers} />
           )}
           <Route path="/schedule" component={Schedule} />
