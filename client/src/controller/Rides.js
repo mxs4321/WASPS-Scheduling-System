@@ -1,36 +1,40 @@
 import React, { Component } from 'react';
 import ExpansionPanel from 'material-expansion-panel';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { fetchRides } from '../model/rides';
 
 const ExpansionList = styled.div`
   width: 100%;
   margin: 20px 60px;
 `;
 
-class Rides extends Component {
+export class Rides extends Component {
+  componentDidMount() {
+    this.props.fetchRides();
+  }
+
   render() {
     return (
       <ExpansionList>
-        <ExpansionPanel
-          titleIcon="done_all"
-          title="Panel Title"
-          expandedTitle="Expanded Panel Title"
-        />
-        <ExpansionPanel
-          titleIcon="done_all"
-          title="Panel Title"
-          expandedTitle="Expanded Panel Title"
-        >
-          Content
-        </ExpansionPanel>
-        <ExpansionPanel
-          titleIcon="done_all"
-          title="Panel Title"
-          expandedTitle="Expanded Panel Title"
-        />
+        {this.props.rides.map(({ pickupStreetAddress, apptStreetAddress }) => (
+          <ExpansionPanel
+            title={`${pickupStreetAddress} \u2192 ${apptStreetAddress}`}
+            expandedTitle={`${pickupStreetAddress} \u2192 ${apptStreetAddress}`}
+          >
+            This is a ride
+          </ExpansionPanel>
+        ))}
       </ExpansionList>
     );
   }
 }
 
-export default Rides;
+export default connect(
+  ({ rides }) => ({
+    rides: Object.values(rides.byId)
+  }),
+  dispatch => ({
+    fetchRides: () => dispatch(fetchRides())
+  })
+)(Rides);

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logout, login } from '../model/auth';
+import { logout } from '../model/auth';
 import Toolbar from '../view/Toolbar';
 import StatusFilter from '../view/StatusFilter';
 import { Add } from '../view/icons';
@@ -42,6 +42,67 @@ const Sidebar = styled.div`
   width: 180px;
 `;
 
+export class App extends Component {
+  state = {
+    sidebarIsOpen: true,
+    statusFilter: '',
+    createRideIsOpen: false
+  };
+
+  toggleSidebar = () => {
+    this.setState(({ sidebarIsOpen }) => ({
+      sidebarIsOpen: !sidebarIsOpen
+    }));
+  };
+
+  toggleCreateRide = () => {
+    this.setState(({ createRideIsOpen }) => ({
+      createRideIsOpen: !createRideIsOpen
+    }));
+  };
+
+  render() {
+    const { sidebarIsOpen, statusFilter, createRideIsOpen } = this.state;
+    const { user, logout } = this.props;
+    if (!user) {
+      return <SignIn />;
+    }
+    return (
+      <Fullbleed>
+        <Toolbar
+          title="Passanger"
+          userRole={user.userRole}
+          onMenuToggle={this.toggleSidebar}
+          onAvatarClick={logout}
+        />
+        <Body>
+          {sidebarIsOpen && (
+            <Sidebar>
+              <Navigation userRole={user.user} />
+              <hr />
+              <StatusFilter userRole={user.user} status={statusFilter} />
+            </Sidebar>
+          )}
+          <Route exact path="/" component={Rides} />
+          {user.userRole === 'driver' && (
+            <Route path="/availability" component={Availability} />
+          )}
+          {user.userRole === 'dispatcher' && (
+            <Route path="/drivers" component={Drivers} />
+          )}
+          <Route path="/schedule" component={Schedule} />
+        </Body>
+        <FAB onClick={this.toggleCreateRide}>
+          <Add />
+        </FAB>
+        {createRideIsOpen && (
+          <CreateRide onModalClick={this.toggleCreateRide} />
+        )}
+      </Fullbleed>
+    );
+  }
+}
+
 export default withRouter(
   connect(
     ({ auth }) => ({
@@ -50,66 +111,5 @@ export default withRouter(
     dispatch => ({
       logout: () => dispatch(logout())
     })
-  )(
-    class App extends Component {
-      state = {
-        sidebarIsOpen: true,
-        statusFilter: '',
-        createRideIsOpen: false
-      };
-
-      toggleSidebar = () => {
-        this.setState(({ sidebarIsOpen }) => ({
-          sidebarIsOpen: !sidebarIsOpen
-        }));
-      };
-
-      toggleCreateRide = () => {
-        this.setState(({ createRideIsOpen }) => ({
-          createRideIsOpen: !createRideIsOpen
-        }));
-      };
-
-      render() {
-        const { sidebarIsOpen, statusFilter, createRideIsOpen } = this.state;
-        const { user, logout } = this.props;
-        if (!user) {
-          return <SignIn />;
-        }
-        return (
-          <Fullbleed>
-            <Toolbar
-              title="Passanger"
-              userRole={user.userRole}
-              onMenuToggle={this.toggleSidebar}
-              onAvatarClick={logout}
-            />
-            <Body>
-              {sidebarIsOpen && (
-                <Sidebar>
-                  <Navigation userRole={user.user} />
-                  <hr />
-                  <StatusFilter userRole={user.user} status={statusFilter} />
-                </Sidebar>
-              )}
-              <Route exact path="/" component={Rides} />
-              {user.userRole === 'driver' && (
-                <Route path="/availability" component={Availability} />
-              )}
-              {user.userRole === 'dispatcher' && (
-                <Route path="/drivers" component={Drivers} />
-              )}
-              <Route path="/schedule" component={Schedule} />
-            </Body>
-            <FAB onClick={this.toggleCreateRide}>
-              <Add />
-            </FAB>
-            {createRideIsOpen && (
-              <CreateRide onModalClick={this.toggleCreateRide} />
-            )}
-          </Fullbleed>
-        );
-      }
-    }
-  )
+  )(App)
 );
