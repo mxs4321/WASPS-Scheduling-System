@@ -20,7 +20,14 @@ describe('GET /api/users.php', () => {
       .expect(200);
   });
 });
-
+describe('DELETE /logout.php', () => {
+  it('Cannot call with GET', async () => {
+    await request.get('/logout.php').expect(405);
+  });
+  it('Works when called with DELETE', async () => {
+    await request.delete('/logout.php').expect(202);
+  });
+});
 describe('POST /login.php', () => {
   it('admin', async () => {
     await request
@@ -30,7 +37,7 @@ describe('POST /login.php', () => {
         email: 'admin@websterwasps.com',
         password: 'admin'
       })
-      .expect(200)
+      .expect(201)
       .expect({
         id: '1',
         firstName: 'Super',
@@ -54,7 +61,7 @@ describe('POST /login.php', () => {
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200)
+      .expect(201)
       .expect({
         id: '2',
         firstName: 'Main',
@@ -78,7 +85,7 @@ describe('POST /login.php', () => {
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200)
+      .expect(201)
       .expect({
         id: '3',
         firstName: 'Main',
@@ -102,7 +109,7 @@ describe('POST /login.php', () => {
         password: 'passanger'
       })
       .expect('Content-Type', /json/)
-      .expect(200)
+      .expect(201)
       .expect({
         id: '4',
         firstName: 'Main',
@@ -126,7 +133,7 @@ describe('POST /login.php', () => {
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200)
+      .expect(201)
       .expect({
         id: '4',
         firstName: 'Main',
