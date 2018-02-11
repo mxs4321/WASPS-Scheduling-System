@@ -44,6 +44,9 @@ const Background = styled.div`
   line-height: 46px;
   color: white;
 `;
+const Unselectable = styled.span`
+  user-select: none;
+`;
 
 class Toolbar extends Component {
   props: Props;
@@ -59,7 +62,7 @@ class Toolbar extends Component {
     return (
       <Background userRole={userRole} isSearching={isSearching}>
         <HamburgerMenu onClick={onMenuToggle} />
-        {getToolbarTitle(userRole)}
+        <Unselectable>{getToolbarTitle(userRole)}</Unselectable>
         <SearchBar
           onFocus={() => this.setState({ isSearching: true })}
           onBlur={() => this.setState({ isSearching: false })}

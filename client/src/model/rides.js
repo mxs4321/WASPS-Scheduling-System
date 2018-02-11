@@ -10,7 +10,7 @@ type State = {
 const DEFAULT_STATE = {
   byId: []
 };
-const NAMESPACE = 'Rides';
+const NAMESPACE = 'RIDES';
 const ADD_RIDES = `${NAMESPACE}/ADD_RIDES`;
 
 export const fetchRides = () => dispatch => {
@@ -20,10 +20,7 @@ export const fetchRides = () => dispatch => {
       dispatch(updateRequest('GET /api/rides.php', 'Success'));
       dispatch({ type: ADD_RIDES, payload: rides });
     })
-    .catch(err => {
-      debugger;
-      dispatch(updateRequest('GET /api/rides.php', 'Error', err));
-    });
+    .catch(err => dispatch(updateRequest('GET /api/rides.php', 'Error', err)));
 };
 
 export default (state: State = DEFAULT_STATE, action) => {
