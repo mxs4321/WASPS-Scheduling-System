@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ExpansionPanel from 'material-expansion-panel';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { fetchUsers } from '../model/users';
 
 const ExpansionList = styled.div`
   width: 100%;
@@ -8,29 +10,33 @@ const ExpansionList = styled.div`
 `;
 
 class Drivers extends Component {
+  componentDidMount() {
+    this.props.fetchUsers();
+  }
+
   render() {
     return (
       <ExpansionList>
-        <ExpansionPanel
-          titleIcon="done_all"
-          title="Panel Title"
-          expandedTitle="Expanded Panel Title"
-        />
-        <ExpansionPanel
-          titleIcon="done_all"
-          title="Panel Title"
-          expandedTitle="Expanded Panel Title"
-        >
-          Content
-        </ExpansionPanel>
-        <ExpansionPanel
-          titleIcon="done_all"
-          title="Panel Title"
-          expandedTitle="Expanded Panel Title"
-        />
+        {this.props.drivers.map(({ firstName, lastName }) => (
+          <ExpansionPanel
+            title={`${firstName} ${lastName}`}
+            expandedTitle={`${firstName} ${lastName}`}
+          >
+            Content
+          </ExpansionPanel>
+        ))}
       </ExpansionList>
     );
   }
 }
 
-export default Drivers;
+export default connect(
+  ({ users }) => ({
+    drivers: Object.values(users.byId).filter(
+      ({ userRole }) => userRole === 'driver'
+    )
+  }),
+  dispatch => ({
+    fetchUsers: () => dispatch(fetchUsers())
+  })
+)(Drivers);

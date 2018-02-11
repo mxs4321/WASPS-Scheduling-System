@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import ReactDOM from 'react-dom';
 import Breadcrumb, { Crumb } from '../view/Breadcrumb';
@@ -40,7 +41,7 @@ const Flex1 = styled.div`
     border-left: 1px solid #000;
   }
 `;
-const Button = styled.button`
+const Button = styled(Link)`
   border-radius: 30px;
   border: none;
   background-color: #e0e5ee;
@@ -84,11 +85,20 @@ const Step3 = () => (
   </ul>
 );
 
-export default class CreateRide extends Component {
-  state = {
-    step: 1
-  };
+const renderStep = step => {
+  switch (step) {
+    case 1:
+      return <Step1 />;
+    case 2:
+      return <Step2 />;
+    case 3:
+      return <Step3 />;
+    default:
+      return null;
+  }
+};
 
+class CreateRide extends Component {
   constructor(props) {
     super(props);
     this.overlayContainer = document.createElement('div');
@@ -99,23 +109,8 @@ export default class CreateRide extends Component {
     document.body.removeChild(this.overlayContainer);
   }
 
-  renderStep = () => {
-    switch (this.state.step) {
-      case 1:
-        return <Step1 />;
-      case 2:
-        return <Step2 />;
-      case 3:
-        return <Step3 />;
-      default:
-        return null;
-    }
-  };
-
   render() {
-    const { onModalClick = NoOp } = this.props;
-    const { step } = this.state;
-    debugger;
+    const { step, onModalClick = NoOp } = this.props;
     return ReactDOM.createPortal(
       <ModalBackground onClick={onModalClick}>
         <Card onClick={e => e.stopPropagation()}>
@@ -134,17 +129,16 @@ export default class CreateRide extends Component {
                 Verify
               </Crumb>
             </Breadcrumb>
-            <Button
-              style={{ flex: 1 }}
-              onClick={() => this.setState(({ step }) => ({ step: step + 1 }))}
-            >
+            <Button to={`/create/${step + 1}`} style={{ flex: 1 }}>
               Next
             </Button>
           </CardHeader>
-          {this.renderStep()}
+          {renderStep(this.props.step)}
         </Card>
       </ModalBackground>,
       this.overlayContainer
     );
   }
 }
+
+export default withRouter(CreateRide);

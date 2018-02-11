@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../model/auth';
+import { toggleSidebar } from '../model/app';
 import Toolbar from '../view/Toolbar';
 import StatusFilter from '../view/StatusFilter';
 import { Add } from '../view/icons';
@@ -13,6 +14,7 @@ import Drivers from './Drivers';
 import Schedule from './Schedule';
 import Rides from './Rides';
 import SignIn from './SignIn';
+import PrivateRoute from './PrivateRoute';
 
 const Fullbleed = styled.div`
   postion: absolute:
@@ -24,7 +26,7 @@ const Body = styled.div`
   height: 100%;
   width: 100%;
 `;
-const FAB = styled.button`
+const FAB = styled(Link)`
   padding: 20px;
   background-color: #f2c94c;
   border-radius: 100%;
@@ -42,73 +44,70 @@ const Sidebar = styled.div`
   width: 180px;
 `;
 
-export class App extends Component {
-  state = {
-    sidebarIsOpen: true,
-    statusFilter: '',
-    createRideIsOpen: false
-  };
-
-  toggleSidebar = () => {
-    this.setState(({ sidebarIsOpen }) => ({
-      sidebarIsOpen: !sidebarIsOpen
-    }));
-  };
-
-  toggleCreateRide = () => {
-    this.setState(({ createRideIsOpen }) => ({
-      createRideIsOpen: !createRideIsOpen
-    }));
-  };
-
-  render() {
-    const { sidebarIsOpen, statusFilter, createRideIsOpen } = this.state;
-    const { user, logout } = this.props;
-    if (!user) {
-      return <SignIn />;
-    }
-    return (
-      <Fullbleed>
-        <Toolbar
-          userRole={user.userRole}
-          onMenuToggle={this.toggleSidebar}
-          onAvatarClick={logout}
-        />
-        <Body>
-          {sidebarIsOpen && (
-            <Sidebar>
-              <Navigation userRole={user.userRole} />
-              <hr />
-              <StatusFilter userRole={user.userRole} status={statusFilter} />
-            </Sidebar>
-          )}
-          <Route exact path="/" component={Rides} />
-          {user.userRole === 'driver' && (
-            <Route path="/availability" component={Availability} />
-          )}
-          {(user.userRole === 'dispatcher' || user.userRole === 'admin') && (
-            <Route path="/drivers" component={Drivers} />
-          )}
-          <Route path="/schedule" component={Schedule} />
-        </Body>
-        <FAB onClick={this.toggleCreateRide}>
-          <Add />
-        </FAB>
-        {createRideIsOpen && (
-          <CreateRide onModalClick={this.toggleCreateRide} />
-        )}
-      </Fullbleed>
-    );
+export const App = ({
+  user,
+  logout,
+  isSidebarOpen,
+  toggleSidebar,
+  rideFilter
+}) => {
+  if (!user) {
+    return <SignIn />;
   }
-}
+  return (
+    <Fullbleed>
+      <Toolbar
+        userRole={user.userRole}
+        onMenuToggle={toggleSidebar}
+        onAvatarClick={logout}
+      />
+      <Body>
+        {isSidebarOpen && (
+          <Sidebar>
+            <Navigation userRole={user.userRole} />
+            <hr />
+            <StatusFilter userRole={user.userRole} status={rideFilter} />
+          </Sidebar>
+        )}
+        <Route exact path="/" component={Rides} />
+        <PrivateRoute
+          allowedRoles={['driver']}
+          path="/availability"
+          component={Availability}
+        />
+        <PrivateRoute
+          allowedRoles={['dispatcher', 'admin']}
+          path="/drivers"
+          component={Drivers}
+        />
+        <Route path="/schedule" component={Schedule} />
+      </Body>
+      <FAB to="/create/1">
+        <Add />
+      </FAB>
+      <Route
+        path="/create/:step"
+        component={({ match }) => (
+          <CreateRide
+            step={Number.parseInt(match.params.step, 10)}
+            onModalClick={this.toggleCreateRide}
+          />
+        )}
+      />
+    </Fullbleed>
+  );
+};
 
 export default withRouter(
   connect(
-    ({ auth }) => ({
-      user: auth.user
+    ({ auth, app }) => ({
+      user: auth.user,
+      isSidebarOpen: app.isSidebarOpen,
+      rideFilter: app.rideFilter
     }),
     dispatch => ({
-      logout: () => dispatch(logout())
+      logout: () => dispatch(logout()),
+      toggleSidebar: () => dispatch(toggleSidebar())
     })
   )(App)
 );

@@ -5,7 +5,7 @@ import type { User } from './types/user';
 
 type State = { user: ?User };
 
-const NAMESPACE = 'auth';
+const NAMESPACE = 'AUTH';
 
 const LOGIN_SUCCESSFUL = `${NAMESPACE}/LOGIN_SUCCESSFUL`;
 const ATTEMPT_LOGOUT = `${NAMESPACE}/ATTEMPT_LOGOUT`;
