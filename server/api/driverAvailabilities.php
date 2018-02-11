@@ -10,15 +10,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
    case "GET":
       if (isset($_GET['id']))
       {
-         echo json_encode($db->driverAvailability->getDriverAvailability($_GET['id']));
+         echo json_encode($db->availability->getAvailability($_GET['id']));
       }
       else if (isset($_GET['page']) && isset($_GET['number_per_page']))
       {
-         echo json_encode($db->driverAvailability->getDriverAvailabilities($_GET['page'], $_GET['number_per_page']?:10));
+         echo json_encode($db->availability->getAvailabilities($_GET['page'], $_GET['number_per_page']?:10));
       }
       else
       {
-         echo json_encode($db->driverAvailability->getDriverAvailabilities(0, 100));
+         echo json_encode($db->availability->getAvailabilities(0, 100));
       }
       break;
 
@@ -41,7 +41,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
          $driverID = sanitizeAndValidate($driverID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
          http_response_code(201);
-         echo json_encode($db->driverAvailability->insertDriverAvailability($startTime, $endTime, $days, $driverID));
+         echo json_encode($db->availability->insertAvailability($startTime, $endTime, $days, $driverID));
       }
       else
       {
@@ -73,7 +73,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
          $driverID = sanitizeAndValidate($driverID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
          http_response_code(201);
-         echo json_encode($db->driverAvailability->updateDriverAvailability($id, $startTime, $endTime, $days, $driverID));
+         echo json_encode($db->availability->updateAvailability($id, $startTime, $endTime, $days, $driverID));
       }
       else
       {
@@ -95,7 +95,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
          $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
          http_response_code(201);
-         echo json_encode($db->driverAvailability->deleteDriverAvailability($id));
+         echo json_encode($db->availability->deleteAvailability($id));
       }
       else
       {

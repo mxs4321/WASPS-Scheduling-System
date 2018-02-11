@@ -1,6 +1,6 @@
 <?php
 
-class SentMessagesLog
+class Notification
 {
     private $id;
     private $type;
@@ -8,7 +8,7 @@ class SentMessagesLog
     private $userID;
     private $timestamp;
 
-    public function getSentMessagesLogInfo()
+    public function getNotificationInfo()
     {
         return [
             "id" => $this->id,

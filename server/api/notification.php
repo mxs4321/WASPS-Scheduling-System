@@ -10,15 +10,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
    case "GET":
       if (isset($_GET['id']))
       {
-         echo json_encode($db->sentMessagesLog->getSentMessagesLog($_GET['id']));
+         echo json_encode($db->notification->getNotification($_GET['id']));
       }
       else if (isset($_GET['page']) && isset($_GET['number_per_page']))
       {
-         echo json_encode($db->sentMessagesLog->getSentMessagesLogs($_GET['page'], $_GET['number_per_page']?:10));
+         echo json_encode($db->notification->getNotifications($_GET['page'], $_GET['number_per_page']?:10));
       }
       else
       {
-         echo json_encode($db->sentMessagesLog->getSentMessagesLogs(0, 100));
+         echo json_encode($db->notification->getNotifications(0, 100));
       }
       break;
 
@@ -40,12 +40,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
          $timestamp = date("Y-m-d H:i:s");
 
          http_response_code(201);
-         echo json_encode($db->sentMessagesLog->insertSentMessagesLog($type, $message, $userID, $timestamp));
+         echo json_encode($db->notification->insertNotification($type, $message, $userID, $timestamp));
       }
       else
       {
          http_response_code(404);
-         echo json_encode(["err" => "Could not create sent messages log"]);
+         echo json_encode(["err" => "Could not create notification"]);
          die();
       }
 
@@ -65,17 +65,17 @@ switch ($_SERVER['REQUEST_METHOD']) {
          $userID = $bodyData['userID'] ?? "";
 
          $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
-         $type = sanitizeAndValidate($type, FILTER_SANITIZE_STRING);
-         $message = sanitizeAndValidate($message, FILTER_SANITIZE_STRING);
-         $userID = sanitizeAndValidate($userID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
+         if ($type != "")    $type = sanitizeAndValidate($type, FILTER_SANITIZE_STRING);
+         if ($message != "") $message = sanitizeAndValidate($message, FILTER_SANITIZE_STRING);
+         if ($userID != "")  $userID = sanitizeAndValidate($userID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
          http_response_code(201);
-         echo json_encode($db->sentMessagesLog->updateSentMessagesLog($id, $type, $message, $userID));
+         echo json_encode($db->notification->updateNotification($id, $type, $message, $userID));
       }
       else
       {
          http_response_code(404);
-         echo json_encode(["err" => "Could not update sent messages log"]);
+         echo json_encode(["err" => "Could not update notification"]);
          die();
       }
 
@@ -92,12 +92,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
          $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
          http_response_code(201);
-         echo json_encode($db->sentMessagesLog->deleteSentMessagesLog($id));
+         echo json_encode($db->notification->deleteNotification($id));
       }
       else
       {
          http_response_code(404);
-         echo json_encode(["err" => "Could not delete sent messages log"]);
+         echo json_encode(["err" => "Could not delete notification"]);
          die();
       }
 

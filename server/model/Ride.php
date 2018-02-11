@@ -2,7 +2,8 @@
 class Ride
 {
     private $id;
-    private $userID;
+    private $passengerID;
+    private $driverID;
     private $apptStart;
     private $apptEnd;
     private $numMiles;
@@ -21,7 +22,7 @@ class Ride
     {
         return [
             "id" => $this->id,
-            "userID" => $this->userID,
+            "userID" => $this->passengerID,
             "apptStart" => $this->apptStart,
             "apptEnd" => $this->apptEnd,
             "numMiles" => $this->numMiles,

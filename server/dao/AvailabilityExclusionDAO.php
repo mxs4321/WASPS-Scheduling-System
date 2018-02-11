@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . "/../model/DriverAvailabilityException.php";
+require_once __DIR__ . "/../model/AvailabilityExclusion.php";
 
-class DriverAvailabilityExceptionDAO
+class AvailabilityExclusionDAO
 {
    private $dbh;
 
@@ -10,11 +10,13 @@ class DriverAvailabilityExceptionDAO
       $this->dbh = $dbh;
    }
 
-   function insertDriverAvailabilityException($startTime, $endTime, $driverID)
+   function insertAvailabilityExclusion($startTime, $endTime, $driverID)
    {
       try
       {
-         $stmt = $this->dbh->prepare("INSERT INTO driveravailabilityexception (`start`, `end`, `driverID`) VALUES (:startTime, :endTime, :driverID);");
+         $driverID = intval($driverID);
+
+         $stmt = $this->dbh->prepare("INSERT INTO availabilityexclusion (`start`, `end`, `driverID`) VALUES (:startTime, :endTime, :driverID);");
          $stmt->bindParam(":startTime", $startTime);
          $stmt->bindParam(":endTime", $endTime);
          $stmt->bindParam(":driverID", $driverID, PDO::PARAM_INT);
@@ -29,18 +31,18 @@ class DriverAvailabilityExceptionDAO
       }
    }
 
-   function getDriverAvailabilityException($id)
+   function getAvailabilityExclusion($id)
    {
       try
       {
          $id = intval($id);
 
-         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `driverID` FROM driveravailabilityexception WHERE id = :id;");
+         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `driverID` FROM availabilityexclusion WHERE id = :id;");
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          $stmt->execute();
-         $stmt->setFetchMode(PDO::FETCH_CLASS, "DriverAvailabilityException");
+         $stmt->setFetchMode(PDO::FETCH_CLASS, "AvailabilityExclusion");
 
-         return $stmt->fetch()->getDriverAvailabilityExceptionInfo();
+         return $stmt->fetch()->getAvailabilityExclusionInfo();
       }
       catch (PDOException $e)
       {
@@ -49,22 +51,22 @@ class DriverAvailabilityExceptionDAO
       }
    }
 
-   function getDriverAvailabilityExceptions($page = 0, $numberPerPage = 10)
+   function getAvailabilityExclusions($page = 0, $numberPerPage = 10)
    {
       try
       {
          $numberPerPage = intval($numberPerPage);
          $offset = intval($page * $numberPerPage);
 
-         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `driverID` FROM driveravailabilityexception LIMIT :lim OFFSET :offset;");
+         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `driverID` FROM availabilityexclusion LIMIT :lim OFFSET :offset;");
          $stmt->bindParam(":lim", $numberPerPage, PDO::PARAM_INT);
          $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
          $stmt->execute();
-         $stmt->setFetchMode(PDO::FETCH_CLASS, "DriverAvailabilityException");
+         $stmt->setFetchMode(PDO::FETCH_CLASS, "AvailabilityExclusion");
 
          while ($driverAvailabilityException = $stmt->fetch())
          {
-            $data[] = $driverAvailabilityException->getDriverAvailabilityExceptionInfo();
+            $data[] = $driverAvailabilityException->getAvailabilityExclusionInfo();
          }
 
          return $data;
@@ -76,7 +78,7 @@ class DriverAvailabilityExceptionDAO
       }
    }
 
-   function updateDriverAvailabilityException($id, $startTime = "", $endTime = "", $driverID = "")
+   function updateAvailabilityExclusion($id, $startTime = "", $endTime = "", $driverID = "")
    {
       try
       {
@@ -88,7 +90,7 @@ class DriverAvailabilityExceptionDAO
          if ($endTime != "")      $setStr .= ($setStr == "") ? "`end` = :endTime" : ", `end` = :endTime";
          if ($driverID != "")     $setStr .= ($setStr == "") ? "`driverID` = :driverID" : ", `driverID` = :driverID";
 
-         $stmt = $this->dbh->prepare("UPDATE driveravailabilityexception SET {$setStr} WHERE id = :id;");
+         $stmt = $this->dbh->prepare("UPDATE availabilityexclusion SET {$setStr} WHERE id = :id;");
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          if ($startTime != "")     $stmt->bindParam(":startTime", $startTime);
          if ($endTime!= "")        $stmt->bindParam(":endTime", $endTime);
@@ -104,13 +106,13 @@ class DriverAvailabilityExceptionDAO
       }
    }
 
-   function deleteDriverAvailabilityException($id)
+   function deleteAvailabilityExclusion($id)
    {
       try
       {
          $id = intval($id);
 
-         $stmt = $this->dbh->prepare("DELETE FROM driveravailabilityexception WHERE id = :id");
+         $stmt = $this->dbh->prepare("DELETE FROM availabilityexclusion WHERE id = :id");
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          $stmt->execute();
 

@@ -1,13 +1,13 @@
 <?php
 
-class DriverAvailabilityException
+class AvailabilityExclusion
 {
    private $id;
    private $start;
    private $end;
    private $driverID;
 
-   public  function  getDriverAvailabilityExceptionInfo()
+   public  function  getAvailabilityExclusionInfo()
    {
       return [
         "id" => $this->id,
