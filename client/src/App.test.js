@@ -20,6 +20,7 @@ describe('GET /api/users.php', () => {
       .expect(200);
   });
 });
+
 describe('DELETE /logout.php', () => {
   it('Cannot call with GET', async () => {
     await request.get('/logout.php').expect(405);
@@ -28,8 +29,9 @@ describe('DELETE /logout.php', () => {
     await request.delete('/logout.php').expect(202);
   });
 });
+
 describe('POST /login.php', () => {
-  it('admin', async () => {
+  it('Should be able to log into the admin account', async () => {
     await request
       .post('/login.php')
       .set('Accept', 'application/json')
@@ -39,20 +41,20 @@ describe('POST /login.php', () => {
       })
       .expect(201)
       .expect({
-        id: '1',
+        id: 1,
         firstName: 'Super',
         lastName: 'Admin',
-        userRole: 'admin',
+        role: 'admin',
         phone: '5852167829',
         email: 'admin@websterwasps.com',
         registered: '2018-01-01 00:00:00',
         lastLogin: '2018-03-01 00:00:00',
-        wantsSMS: '1',
-        wantsEmails: '1'
+        wantsSMS: 1,
+        wantsEmail: 1
       });
   });
 
-  it('dispatcher', async () => {
+  it('Should be able to log into the dispatcher account', async () => {
     await request
       .post('/login.php')
       .send({
@@ -63,20 +65,20 @@ describe('POST /login.php', () => {
       .expect('Content-Type', /json/)
       .expect(201)
       .expect({
-        id: '2',
+        id: 2,
         firstName: 'Main',
         lastName: 'Dispatcher',
-        userRole: 'dispatcher',
+        role: 'dispatcher',
         phone: '5852167819',
         email: 'dispatcher@websterwasps.com',
         registered: '2018-01-01 00:00:00',
         lastLogin: '2018-03-01 00:00:00',
-        wantsSMS: '1',
-        wantsEmails: '1'
+        wantsSMS: 1,
+        wantsEmail: 1
       });
   });
 
-  it('driver', async () => {
+  it('Should be able to log into the driver account', async () => {
     await request
       .post('/login.php')
       .send({
@@ -87,20 +89,20 @@ describe('POST /login.php', () => {
       .expect('Content-Type', /json/)
       .expect(201)
       .expect({
-        id: '3',
+        id: 3,
         firstName: 'Main',
         lastName: 'Driver',
-        userRole: 'driver',
+        role: 'driver',
         phone: '2035254835',
         email: 'driver@websterwasps.com',
         registered: '2018-01-01 00:00:00',
         lastLogin: '2018-03-01 00:00:00',
-        wantsSMS: '1',
-        wantsEmails: '1'
+        wantsSMS: 1,
+        wantsEmail: 1
       });
   });
 
-  it('passenger', async () => {
+  it('Should be able to log into the passanger Account', async () => {
     await request
       .post('/login.php')
       .set('Accept', 'application/json')
@@ -111,20 +113,20 @@ describe('POST /login.php', () => {
       .expect('Content-Type', /json/)
       .expect(201)
       .expect({
-        id: '4',
+        id: 4,
         firstName: 'Main',
-        lastName: 'Passanger',
-        userRole: 'passanger',
+        lastName: 'Passenger',
+        role: 'passenger',
         phone: '2435254235',
         email: 'passanger@websterwasps.com',
         registered: '2018-01-01 00:00:00',
         lastLogin: '2018-03-01 00:00:00',
-        wantsSMS: '1',
-        wantsEmails: '1'
+        wantsSMS: 1,
+        wantsEmail: 1
       });
   });
 
-  it('With PhoneNumber', async () => {
+  it('Should allow login with phone number', async () => {
     await request
       .post('/login.php')
       .send({
@@ -135,20 +137,20 @@ describe('POST /login.php', () => {
       .expect('Content-Type', /json/)
       .expect(201)
       .expect({
-        id: '4',
+        id: 4,
         firstName: 'Main',
-        lastName: 'Passanger',
-        userRole: 'passanger',
+        lastName: 'Passenger',
+        role: 'passenger',
         phone: '2435254235',
         email: 'passanger@websterwasps.com',
         registered: '2018-01-01 00:00:00',
         lastLogin: '2018-03-01 00:00:00',
-        wantsSMS: '1',
-        wantsEmails: '1'
+        wantsSMS: 1,
+        wantsEmail: 1
       });
   });
 
-  it('Invalid login', async () => {
+  it('Should fail with invalid login', async () => {
     await request
       .post('/login.php')
       .send({
@@ -160,7 +162,7 @@ describe('POST /login.php', () => {
       .expect(401);
   });
 
-  it('No data', async () => {
+  it('Should fail if no post data sent', async () => {
     await request
       .post('/login.php')
       .set('Accept', 'application/json')
