@@ -28,8 +28,10 @@ class RideDAO
     {
         try {
             $stmt = $this->dbh->prepare("SELECT * FROM ride LIMIT :lim OFFSET :offset");
-            $stmt->bindParam(':lim', intval($numberPerPage), PDO::PARAM_INT);
-            $stmt->bindParam(':offset', intval($page * $numberPerPage), PDO::PARAM_INT);
+            $lim = intval($numberPerPage);
+            $offset = intval($page * $numberPerPage);
+            $stmt->bindParam(':lim', $lim, PDO::PARAM_INT);
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_CLASS, "Ride");
             while ($ride = $stmt->fetch()) {

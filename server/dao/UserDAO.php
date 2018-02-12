@@ -10,7 +10,7 @@ class UserDAO {
 
     function findById($id) {
         try {
-            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `userRole`, `lastLogin`, `wantsSMS`, `wantsEmails`, `email`, `registered` FROM user WHERE id = :id");
+            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `lastLogin`, `wantsSMS`, `wantsEmails`, `email`, `registered` FROM user WHERE id = :id");
             $stmt->execute([':id' => intval($id)]);
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             return $stmt->fetch();
@@ -45,8 +45,10 @@ class UserDAO {
     function getUsers($page = 0, $numberPerPage = 10) {
         try {
             $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `lastLogin`, `wantsSMS`, `wantsEmail`, `email`, `registered` FROM user LIMIT :lim OFFSET :offset");
-            $stmt->bindParam(':lim', intval($numberPerPage), PDO::PARAM_INT);
-            $stmt->bindParam(':offset', intval($page * $numberPerPage), PDO::PARAM_INT);
+            $lim = intval($numberPerPage);
+            $offset = intval($page * $numberPerPage);
+            $stmt->bindParam(':lim', $lim, PDO::PARAM_INT);
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             while ($user = $stmt->fetch()) {
