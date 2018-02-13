@@ -1,19 +1,19 @@
 <?php
 include "dao/UserDAO.php";
 include "dao/RideDAO.php";
-include "dao/DriverAvailabilityDAO.php";
-include "dao/DriverAvailabilityExceptionDAO.php";
+include "dao/AvailabilityDAO.php";
+include "dao/AvailabilityExclusionDAO.php";
 include "dao/VolunteerRequestDAO.php";
-include "dao/SentMessagesLogDAO.php";
+include "dao/NotificationDAO.php";
 
 class DB {
     private $dbh;
     public $user;
     public $ride;
-    public $driverAvailability;
-    public $driverAvailabilityException;
+    public $availability;
+    public $availabilityExclusion;
     public $volunteerRequest;
-    public $sentMessagesLog;
+    public $notification;
 
     function __construct($host, $port, $name, $user, $pass) {
         try {
@@ -22,10 +22,10 @@ class DB {
             $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->user = new UserDAO($this->dbh);
             $this->ride = new RideDAO($this->dbh);
-            $this->driverAvailability = new DriverAvailabilityDAO($this->dbh);
-            $this->driverAvailabilityException = new DriverAvailabilityExceptionDAO($this->dbh);
+            $this->availability = new AvailabilityDAO($this->dbh);
+            $this->availabilityExclusion = new AvailabilityExclusionDAO($this->dbh);
             $this->volunteerRequest = new VolunteerRequestDAO($this->dbh);
-            $this->sentMessagesLog = new SentMessagesLogDAO($this->dbh);
+            $this->notification = new NotificationDAO($this->dbh);
         } catch(PDOException $e) {
             echo $e->getMessage();
             die();

@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . "/../model/DriverAvailability.php";
+require_once __DIR__ . "/../model/Availability.php";
 
-class DriverAvailabilityDAO
+class AvailabilityDAO
 {
    private $dbh;
 
@@ -10,11 +10,13 @@ class DriverAvailabilityDAO
       $this->dbh = $dbh;
    }
 
-   function insertDriverAvailability($startTime, $endTime, $days, $driverID)
+   function insertAvailability($startTime, $endTime, $days, $driverID)
    {
       try
       {
-         $stmt = $this->dbh->prepare("INSERT INTO driveravailability (`start`, `end`, `days`, `driverID`) VALUES (:startTime, :endTime, :days, :driverID);");
+         $driverID = intval($driverID);
+
+         $stmt = $this->dbh->prepare("INSERT INTO availability (`start`, `end`, `days`, `driverID`) VALUES (:startTime, :endTime, :days, :driverID);");
          $stmt->bindParam(":startTime", $startTime);
          $stmt->bindParam(":endTime", $endTime);
          $stmt->bindParam(":days", $days);
@@ -30,18 +32,18 @@ class DriverAvailabilityDAO
       }
    }
 
-   function getDriverAvailability($id)
+   function getAvailability($id)
    {
       try
       {
          $id = intval($id);
 
-         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `days`, `driverID` FROM driveravailability WHERE id = :id;");
+         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `days`, `driverID` FROM availability WHERE id = :id;");
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          $stmt->execute();
-         $stmt->setFetchMode(PDO::FETCH_CLASS, "DriverAvailability");
+         $stmt->setFetchMode(PDO::FETCH_CLASS, "Availability");
 
-         return $stmt->fetch()->getDriverAvailabilityInfo();
+         return $stmt->fetch()->getAvailabilityInfo();
       }
       catch (PDOException $e)
       {
@@ -50,22 +52,22 @@ class DriverAvailabilityDAO
       }
    }
 
-   function getDriverAvailabilities($page = 0, $numberPerPage = 10)
+   function getAvailabilities($page = 0, $numberPerPage = 10)
    {
       try
       {
          $numberPerPage = intval($numberPerPage);
          $offset = intval($page * $numberPerPage);
 
-         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `days`, `driverID` FROM driveravailability LIMIT :lim OFFSET :offset;");
+         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `days`, `driverID` FROM availability LIMIT :lim OFFSET :offset;");
          $stmt->bindParam(":lim", $numberPerPage, PDO::PARAM_INT);
          $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
          $stmt->execute();
-         $stmt->setFetchMode(PDO::FETCH_CLASS, "DriverAvailability");
+         $stmt->setFetchMode(PDO::FETCH_CLASS, "Availability");
 
          while ($driverAvailability = $stmt->fetch())
          {
-            $data[] = $driverAvailability->getDriverAvailabilityInfo();
+            $data[] = $driverAvailability->getAvailabilityInfo();
          }
 
          return $data;
@@ -77,7 +79,7 @@ class DriverAvailabilityDAO
       }
    }
 
-   function updateDriverAvailability($id, $startTime = "", $endTime = "", $days = "", $driverID = "")
+   function updateAvailability($id, $startTime = "", $endTime = "", $days = "", $driverID = "")
    {
       try
       {
@@ -90,7 +92,7 @@ class DriverAvailabilityDAO
          if ($days != "")         $setStr .= ($setStr == "") ? "`days` = :days" : ", `days` = :days";
          if ($driverID != "")     $setStr .= ($setStr == "") ? "`driverID` = :driverID" : ", `driverID` = :driverID";
 
-         $stmt = $this->dbh->prepare("UPDATE driveravailability SET {$setStr} WHERE id = :id;");
+         $stmt = $this->dbh->prepare("UPDATE availability SET {$setStr} WHERE id = :id;");
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          if ($startTime != "")     $stmt->bindParam(":startTime", $startTime);
          if ($endTime!= "")        $stmt->bindParam(":endTime", $endTime);
@@ -107,13 +109,13 @@ class DriverAvailabilityDAO
       }
    }
 
-   function deleteDriverAvailability($id)
+   function deleteAvailability($id)
    {
       try
       {
          $id = intval($id);
 
-         $stmt = $this->dbh->prepare("DELETE FROM driveravailability WHERE id = :id");
+         $stmt = $this->dbh->prepare("DELETE FROM availability WHERE id = :id");
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          $stmt->execute();
 

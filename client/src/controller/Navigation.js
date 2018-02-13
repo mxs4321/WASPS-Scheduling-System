@@ -17,7 +17,7 @@ const UnstyledLink = styled(Link)`
   color: inherit;
 `;
 
-const Navigation = withRouter(({ location, userRole = 'passanger' }: Props) => (
+const Navigation = withRouter(({ location, userRole = 'passenger' }: Props) => (
   <List>
     <List.Item active={location.pathname === '/'}>
       <UnstyledLink to="/">

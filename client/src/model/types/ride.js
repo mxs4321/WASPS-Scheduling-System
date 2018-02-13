@@ -8,7 +8,7 @@ export type RideStatus =
 
 export type Ride = {
   id: number,
-  userID: number,
+  passengerID: number,
   driverID: number,
   apptStart: string,
   apptEnd: string,

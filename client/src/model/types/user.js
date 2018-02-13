@@ -3,7 +3,7 @@ export type UserRole = 'admin' | 'driver' | 'dispatcher' | 'passanger';
 
 export type User = {
   id: string,
-  userRole: UserRole,
+  role: UserRole,
   firstName: string,
   lastName: string,
   phone: string,
@@ -11,5 +11,5 @@ export type User = {
   registered: Date,
   lastLogin: boolean,
   wantsSMS: boolean,
-  wantsEmails: boolean
+  wantsEmail: boolean
 };

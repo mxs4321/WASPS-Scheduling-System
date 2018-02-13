@@ -18,13 +18,70 @@ USE `wasps`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `comments`
+-- Table structure for table `availability`
 --
 
-DROP TABLE IF EXISTS `comments`;
+DROP TABLE IF EXISTS `availability`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `comments` (
+CREATE TABLE `availability` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '	',
+  `start` time NOT NULL,
+  `end` time NOT NULL,
+  `days` set('Sun','Mon','Tue','Wed','Thu','Fri','Sat') NOT NULL,
+  `driverID` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_DriverAvailability_User1_idx` (`driverID`),
+  CONSTRAINT `fk_DriverAvailability_User1` FOREIGN KEY (`driverID`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `availability`
+--
+
+LOCK TABLES `availability` WRITE;
+/*!40000 ALTER TABLE `availability` DISABLE KEYS */;
+INSERT INTO `availability` VALUES (1,'07:00:00','04:00:00','Mon,Tue,Wed,Thu,Fri',3),(2,'07:00:00','04:00:00','Sun,Sat',5),(3,'07:30:00','04:00:00','Mon,Tue,Wed,Thu,Fri',5);
+/*!40000 ALTER TABLE `availability` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `availabilityexclusion`
+--
+
+DROP TABLE IF EXISTS `availabilityexclusion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `availabilityexclusion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '	',
+  `start` datetime NOT NULL,
+  `end` datetime NOT NULL,
+  `driverID` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_DriverAvailabilityException_User1_idx` (`driverID`),
+  CONSTRAINT `fk_DriverAvailabilityException_User1` FOREIGN KEY (`driverID`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `availabilityexclusion`
+--
+
+LOCK TABLES `availabilityexclusion` WRITE;
+/*!40000 ALTER TABLE `availabilityexclusion` DISABLE KEYS */;
+INSERT INTO `availabilityexclusion` VALUES (1,'2018-04-20 00:00:00','2018-04-21 00:00:00',3),(3,'2018-04-20 00:00:11','2018-04-21 00:00:00',3);
+/*!40000 ALTER TABLE `availabilityexclusion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `comment`
+--
+
+DROP TABLE IF EXISTS `comment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `comment` varchar(2048) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -40,70 +97,42 @@ CREATE TABLE `comments` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `comments`
+-- Dumping data for table `comment`
 --
 
-LOCK TABLES `comments` WRITE;
-/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
-INSERT INTO `comments` VALUES (1,'This is a comment by admin on ride 1','2018-02-01 08:01:00',1,1,'2018-02-05 14:51:09'),(2,'This is a comment by dispatcher on ride 1','2018-02-01 08:02:00',2,1,'2018-02-05 14:51:09'),(3,'This is a comment by admin on ride 3','2018-02-01 08:03:00',1,3,'2018-02-05 14:51:09');
-/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
+LOCK TABLES `comment` WRITE;
+/*!40000 ALTER TABLE `comment` DISABLE KEYS */;
+INSERT INTO `comment` VALUES (1,'This is a comment by admin on ride 1','2018-02-01 08:01:00',1,1,'2018-02-05 14:51:09'),(2,'This is a comment by dispatcher on ride 1','2018-02-01 08:02:00',2,1,'2018-02-05 14:51:09'),(3,'This is a comment by admin on ride 3','2018-02-01 08:03:00',1,3,'2018-02-05 14:51:09');
+/*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `driveravailability`
+-- Table structure for table `notification`
 --
 
-DROP TABLE IF EXISTS `driveravailability`;
+DROP TABLE IF EXISTS `notification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `driveravailability` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '	',
-  `start` time NOT NULL,
-  `end` time NOT NULL,
-  `days` set('Sun','Mon','Tue','Wed','Thu','Fri','Sat') NOT NULL,
-  `driverID` int(11) NOT NULL,
+CREATE TABLE `notification` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` enum('sms','email') DEFAULT NULL,
+  `message` varchar(2048) DEFAULT NULL,
+  `userID` int(11) NOT NULL,
+  `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `fk_DriverAvailability_User1_idx` (`driverID`),
-  CONSTRAINT `fk_DriverAvailability_User1` FOREIGN KEY (`driverID`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `driveravailability`
---
-
-LOCK TABLES `driveravailability` WRITE;
-/*!40000 ALTER TABLE `driveravailability` DISABLE KEYS */;
-INSERT INTO `driveravailability` VALUES (1,'07:00:00','04:00:00','Mon,Tue,Wed,Thu,Fri',3),(2,'07:00:00','04:00:00','Sun,Sat',5),(3,'07:30:00','04:00:00','Mon,Tue,Wed,Thu,Fri',5);
-/*!40000 ALTER TABLE `driveravailability` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `driveravailabilityexception`
---
-
-DROP TABLE IF EXISTS `driveravailabilityexception`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `driveravailabilityexception` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '	',
-  `start` datetime NOT NULL,
-  `end` datetime NOT NULL,
-  `driverID` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_DriverAvailabilityException_User1_idx` (`driverID`),
-  CONSTRAINT `fk_DriverAvailabilityException_User1` FOREIGN KEY (`driverID`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_SentMessagesLog_User1_idx` (`userID`),
+  CONSTRAINT `fk_SentMessagesLog_User1` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `driveravailabilityexception`
+-- Dumping data for table `notification`
 --
 
-LOCK TABLES `driveravailabilityexception` WRITE;
-/*!40000 ALTER TABLE `driveravailabilityexception` DISABLE KEYS */;
-INSERT INTO `driveravailabilityexception` VALUES (1,'2018-04-20 00:00:00','2018-04-21 00:00:00',3),(3,'2018-04-20 00:00:11','2018-04-21 00:00:00',3);
-/*!40000 ALTER TABLE `driveravailabilityexception` ENABLE KEYS */;
+LOCK TABLES `notification` WRITE;
+/*!40000 ALTER TABLE `notification` DISABLE KEYS */;
+INSERT INTO `notification` VALUES (1,'sms','Would you like to drive blah blah blah',3,'2018-02-01 08:01:00'),(3,'sms','test test test',3,'2018-02-07 19:55:04');
+/*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -115,7 +144,7 @@ DROP TABLE IF EXISTS `ride`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ride` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userID` int(11) NOT NULL,
+  `passengerID` int(11) NOT NULL,
   `driverID` int(11) DEFAULT NULL,
   `apptStart` datetime NOT NULL,
   `apptEnd` datetime NOT NULL,
@@ -131,10 +160,10 @@ CREATE TABLE `ride` (
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `fk_Ride_User` (`userID`),
   KEY `fk_Ride_Driver` (`driverID`),
+  KEY `fk_Ride_User` (`passengerID`),
   CONSTRAINT `fk_Ride_Driver` FOREIGN KEY (`driverID`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Ride_User` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_Ride_User` FOREIGN KEY (`passengerID`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -149,35 +178,6 @@ INSERT INTO `ride` VALUES (1,4,3,'2018-04-23 09:00:00','2018-04-23 10:00:00',NUL
 UNLOCK TABLES;
 
 --
--- Table structure for table `sentmessageslog`
---
-
-DROP TABLE IF EXISTS `sentmessageslog`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sentmessageslog` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` enum('sms','email') DEFAULT NULL,
-  `message` varchar(2048) DEFAULT NULL,
-  `userID` int(11) NOT NULL,
-  `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `fk_SentMessagesLog_User1_idx` (`userID`),
-  CONSTRAINT `fk_SentMessagesLog_User1` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sentmessageslog`
---
-
-LOCK TABLES `sentmessageslog` WRITE;
-/*!40000 ALTER TABLE `sentmessageslog` DISABLE KEYS */;
-INSERT INTO `sentmessageslog` VALUES (1,'sms','Would you like to drive blah blah blah',3,'2018-02-01 08:01:00'),(3,'sms','test test test',3,'2018-02-07 19:55:04');
-/*!40000 ALTER TABLE `sentmessageslog` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `user`
 --
 
@@ -187,7 +187,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `password` varchar(100) NOT NULL,
-  `userRole` enum('admin','driver','dispatcher','passanger') NOT NULL,
+  `role` enum('admin','driver','dispatcher','passenger') NOT NULL,
   `firstName` varchar(45) NOT NULL,
   `lastName` varchar(45) NOT NULL,
   `phone` varchar(10) NOT NULL,
@@ -195,7 +195,7 @@ CREATE TABLE `user` (
   `registered` datetime NOT NULL,
   `lastLogin` datetime DEFAULT NULL,
   `wantsSMS` tinyint(1) DEFAULT NULL,
-  `wantsEmails` tinyint(1) DEFAULT NULL,
+  `wantsEmail` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `userID_UNIQUE` (`id`),
   UNIQUE KEY `phone_UNIQUE` (`phone`),
@@ -209,7 +209,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'$2b$10$FAwacfpZVEEUKcbA1Hgcou.SQrtClJxUI4itEjACONP/d71kXl6YK','admin','Super','Admin','5852167829','admin@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1),(2,'$2b$10$SqfJMr261d3VBpvVZ1l8PeILqBn.E88Eghfq8BwDBwSn3csf5xUpy','dispatcher','Main','Dispatcher','5852167819','dispatcher@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1),(3,'$2b$10$6AnBy.iXxh2r9keggcxAZO1TpaYLAE7l2JXWUfHYIwze5CVe1L31C','driver','Main','Driver','2035254835','driver@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1),(4,'$2b$10$x5/o./v8KWXgnrbxYOKWIOBKj0kxVWfjUcIiHNPEcYseJXr16Ybqq','passanger','Main','Passanger','2435254235','passanger@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1),(5,'$2b$10$6AnBy.iXxh2r9keggcxAZO1TpaYLAE7l2JXWUfHYIwze5CVe1L31C','driver','Weekend','Driver','5852167818','weekendDriver@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1),(6,'$2b$10$x5/o./v8KWXgnrbxYOKWIOBKj0kxVWfjUcIiHNPEcYseJXr16Ybqq','passanger','WannaBe','Driver','2432253835','wannabeDriver@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1),(7,'$2b$10$6AnBy.iXxh2r9keggcxAZO1TpaYLAE7l2JXWUfHYIwze5CVe1L31C','driver','Weekday','Driver','5852167813','weekdayDriver@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1);
+INSERT INTO `user` VALUES (1,'$2b$10$FAwacfpZVEEUKcbA1Hgcou.SQrtClJxUI4itEjACONP/d71kXl6YK','admin','Super','Admin','5852167829','admin@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1),(2,'$2b$10$SqfJMr261d3VBpvVZ1l8PeILqBn.E88Eghfq8BwDBwSn3csf5xUpy','dispatcher','Main','Dispatcher','5852167819','dispatcher@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1),(3,'$2b$10$6AnBy.iXxh2r9keggcxAZO1TpaYLAE7l2JXWUfHYIwze5CVe1L31C','driver','Main','Driver','2035254835','driver@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1),(4,'$2b$10$x5/o./v8KWXgnrbxYOKWIOBKj0kxVWfjUcIiHNPEcYseJXr16Ybqq','passenger','Main','Passenger','2435254235','passanger@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1),(5,'$2b$10$6AnBy.iXxh2r9keggcxAZO1TpaYLAE7l2JXWUfHYIwze5CVe1L31C','driver','Weekend','Driver','5852167818','weekendDriver@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1),(6,'$2b$10$x5/o./v8KWXgnrbxYOKWIOBKj0kxVWfjUcIiHNPEcYseJXr16Ybqq','passenger','WannaBe','Driver','2432253835','wannabeDriver@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1),(7,'$2b$10$6AnBy.iXxh2r9keggcxAZO1TpaYLAE7l2JXWUfHYIwze5CVe1L31C','driver','Weekday','Driver','5852167813','weekdayDriver@websterwasps.com','2018-01-01 00:00:00','2018-03-01 00:00:00',1,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -257,4 +257,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-07 20:02:45
+-- Dump completed on 2018-02-11 16:50:38

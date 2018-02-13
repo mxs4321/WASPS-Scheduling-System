@@ -1,6 +1,6 @@
 <?php
 
-class DriverAvailability
+class Availability
 {
     private $id;
     private $start;
@@ -8,7 +8,7 @@ class DriverAvailability
     private $days;
     private $driverID;
 
-    public function getDriverAvailabilityInfo()
+    public function getAvailabilityInfo()
     {
         return [
             "id" => $this->id,
