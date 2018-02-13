@@ -2,11 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { injectGlobal } from 'styled-components';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { ConnectedRouter } from 'react-router-redux';
 import 'material-expansion-panel/dist/material-expansion-panel.min.css';
-import store from './model';
+import store, { history } from './model';
 import App from './controller/App';
 import registerServiceWorker from './util/registerServiceWorker';
+import { Switch, Route } from 'react-router';
+import SignIn from './controller/SignIn';
 
 injectGlobal`
   html, body, #root {
@@ -23,9 +25,12 @@ injectGlobal`
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <ConnectedRouter history={history}>
+      <Switch>
+        <Route exact path="/login" render={SignIn} />
+        <Route render={App} />
+      </Switch>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById('root')
 );

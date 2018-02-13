@@ -34,13 +34,20 @@ export class Schedule extends Component {
 }
 
 export default connect(
-  ({ rides }) => ({
-    rides: Object.values(rides.byId).map(ride => ({
-      ...ride,
-      start: new Date(ride.pickupTime),
-      end: new Date(ride.apptEnd),
-      title: `${ride.pickupStreetAddress} \u2192 ${ride.apptStreetAddress}`
-    }))
+  ({ rides, app }) => ({
+    rides: Object.values(rides.byId)
+      .filter(({ status }) => {
+        if (app.rideFilter === '') {
+          return true;
+        }
+        return status === app.rideFilter;
+      })
+      .map(ride => ({
+        ...ride,
+        start: new Date(ride.pickupTime),
+        end: new Date(ride.apptEnd),
+        title: `${ride.pickupStreetAddress} \u2192 ${ride.apptStreetAddress}`
+      }))
   }),
   dispatch => ({
     fetchRides: () => dispatch(fetchRides())

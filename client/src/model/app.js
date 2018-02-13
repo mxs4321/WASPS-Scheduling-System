@@ -29,10 +29,12 @@ export default (state: State = DEFAULT_STATE, action) => {
   switch (action.type) {
     case TOGGLE_SIDEBAR:
       return {
+        ...state,
         isSidebarOpen: !state.isSidebarOpen
       };
     case CHANGE_RIDE_FILTER:
       return {
+        ...state,
         rideFilter: action.payload
       };
     default:
