@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Route, withRouter, Link } from 'react-router-dom';
+import { Route, Redirect, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../model/auth';
 import { toggleSidebar, changeRideFilter } from '../model/app';
@@ -50,10 +50,18 @@ export const App = ({
   isSidebarOpen,
   toggleSidebar,
   rideFilter,
-  changeRideFilter
+  changeRideFilter,
+  location
 }) => {
   if (!user) {
-    return <SignIn />;
+    return (
+      <Redirect
+        to={{
+          pathname: '/login',
+          state: { referrer: location }
+        }}
+      />
+    );
   }
   return (
     <Fullbleed>

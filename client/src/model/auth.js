@@ -1,4 +1,5 @@
 // @flow
+import { push } from 'react-router-redux';
 import { postJSON, deleteJSON } from '../util/fetch';
 import { updateRequest } from './ajax';
 import type { User } from './types/user';
@@ -10,7 +11,7 @@ const NAMESPACE = 'AUTH';
 const LOGIN_SUCCESSFUL = `${NAMESPACE}/LOGIN_SUCCESSFUL`;
 const ATTEMPT_LOGOUT = `${NAMESPACE}/ATTEMPT_LOGOUT`;
 
-export const login = ({ email, password }) => dispatch => {
+export const login = ({ email, password, referrer }) => dispatch => {
   dispatch(updateRequest('POST /login.php', 'Pending'));
   return postJSON('/login.php', { email, password })
     .then(user => {
@@ -19,6 +20,7 @@ export const login = ({ email, password }) => dispatch => {
         type: LOGIN_SUCCESSFUL,
         payload: user
       });
+      dispatch(push(referrer));
     })
     .catch(err => dispatch(updateRequest('POST /login.php', 'Error', err)));
 };

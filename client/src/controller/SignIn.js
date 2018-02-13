@@ -23,58 +23,63 @@ const Button = styled.button`
   background-color: ${props => props.background};
 `;
 
+export class SignIn extends Component {
+  render() {
+    const { login, location } = this.props;
+    const useReferrer = location.state && location.state.referrer !== '/login';
+    const referrer = useReferrer ? location.state.referrer : '/';
+    return (
+      <Card>
+        <Button
+          background="#EB5757"
+          onClick={() =>
+            login({
+              email: 'dispatcher@websterwasps.com',
+              password: 'dispatcher',
+              referrer
+            })
+          }
+        >
+          Dispatcher
+        </Button>
+        <Button
+          background="#27AE60"
+          onClick={() =>
+            login({
+              email: 'driver@websterwasps.com',
+              password: 'driver',
+              referrer
+            })
+          }
+        >
+          Driver
+        </Button>
+        <Button
+          background="#4396E3"
+          onClick={() =>
+            login({
+              email: 'passanger@websterwasps.com',
+              password: 'passanger',
+              referrer
+            })
+          }
+        >
+          Passanger
+        </Button>
+      </Card>
+    );
+  }
+}
+
 export default withRouter(
   connect(
     ({ auth }) => ({
       user: auth.user
     }),
     dispatch => ({
-      login: ({ email, password }) => {
-        dispatch(login({ email, password }));
+      login: ({ email, password, referrer }) => {
+        dispatch(login({ email, password, referrer }));
       }
     })
-  )(
-    class SignIn extends Component {
-      render() {
-        const { login } = this.props;
-        return (
-          <Card>
-            <Button
-              background="#EB5757"
-              onClick={() =>
-                login({
-                  email: 'dispatcher@websterwasps.com',
-                  password: 'dispatcher'
-                })
-              }
-            >
-              Dispatcher
-            </Button>
-            <Button
-              background="#27AE60"
-              onClick={() =>
-                login({
-                  email: 'driver@websterwasps.com',
-                  password: 'driver'
-                })
-              }
-            >
-              Driver
-            </Button>
-            <Button
-              background="#4396E3"
-              onClick={() =>
-                login({
-                  email: 'passanger@websterwasps.com',
-                  password: 'passanger'
-                })
-              }
-            >
-              Passanger
-            </Button>
-          </Card>
-        );
-      }
-    }
-  )
+  )(SignIn)
 );
