@@ -7,10 +7,10 @@ $db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
-        if ($_GET['id']) {
+        if (isset($_GET['id'])) {
             echo json_encode($db->ride->findById($_GET['id']));
         } else {
-            echo json_encode($db->ride->getRides($_GET['page'], $_GET['number_per_page'] ?: 10));
+            echo json_encode($db->ride->getRides($_GET['page']??0, $_GET['number_per_page']??10));
         }
         break;
 

@@ -1,10 +1,10 @@
 <?php
 include "dao/UserDAO.php";
 include "dao/RideDAO.php";
-include "dao/DriverAvailabilityDAO.php";
-include "dao/DriverAvailabilityExceptionDAO.php";
+include "dao/AvailabilityDAO.php";
+include "dao/AvailabilityExclusionDAO.php";
 include "dao/VolunteerRequestDAO.php";
-include "dao/SentMessagesLogDAO.php";
+include "dao/NotificationDAO.php";
 
 class DB {
     private $dbh;

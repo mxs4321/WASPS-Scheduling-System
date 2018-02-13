@@ -6,14 +6,14 @@ include './env.php';
 require_once "./db.class.php";
 $db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
 
-if ($_SESSION['user']) {
+if (isset($_SESSION['user'])) {
     echo json_encode($_SESSION['user']);
     die();
 }
 
 $_POST = json_decode(file_get_contents('php://input'), true);
-$isPhoneLogin = !empty($_POST['phone']) && !empty($_POST['password']);
-$isEmailLogin = !empty($_POST['email']) && !empty($_POST['password']);
+$isPhoneLogin = isset($_POST['phone']) && isset($_POST['password']);
+$isEmailLogin = isset($_POST['email']) && isset($_POST['password']);
 
 if ($isPhoneLogin) {
     $_SESSION['user'] = $db->user->attemptLogin('phone', $_POST['phone'], $_POST['password']);

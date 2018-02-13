@@ -32,9 +32,7 @@ class Drivers extends Component {
 
 export default connect(
   ({ users }) => ({
-    drivers: Object.values(users.byId).filter(
-      ({ userRole }) => userRole === 'driver'
-    )
+    drivers: Object.values(users.byId).filter(({ role }) => role === 'driver')
   }),
   dispatch => ({
     fetchUsers: () => dispatch(fetchUsers())

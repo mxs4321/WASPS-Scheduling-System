@@ -57,16 +57,16 @@ export const App = ({
   return (
     <Fullbleed>
       <Toolbar
-        userRole={user.userRole}
+        userRole={user.role}
         onMenuToggle={toggleSidebar}
         onAvatarClick={logout}
       />
       <Body>
         {isSidebarOpen && (
           <Sidebar>
-            <Navigation userRole={user.userRole} />
+            <Navigation userRole={user.role} />
             <hr />
-            <StatusFilter userRole={user.userRole} status={rideFilter} />
+            <StatusFilter userRole={user.role} status={rideFilter} />
           </Sidebar>
         )}
         <Route exact path="/" component={Rides} />
