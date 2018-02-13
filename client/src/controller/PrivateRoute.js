@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const PrivateRoute = ({ user, allowedRoles, ...args }) => {
-  if (allowedRoles.includes(user.userRole)) {
+  if (allowedRoles.includes(user.role)) {
     return <Route {...args} />;
   }
   return null;

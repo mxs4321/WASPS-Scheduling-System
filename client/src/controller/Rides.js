@@ -9,6 +9,22 @@ const ExpansionList = styled.div`
   margin: 20px 60px;
 `;
 
+const colorForStatus = {
+  Unverified: '#EB5757',
+  Pending: '#F2994A',
+  Scheduled: '#6FCF97',
+  Complete: '#27AE60',
+  Canceled: '#828282'
+};
+
+const iconsForStatus = {
+  Unverified: 'error_outline',
+  Pending: 'warning',
+  Scheduled: 'event',
+  Complete: 'done',
+  Canceled: 'cancel'
+};
+
 export class Rides extends Component {
   componentDidMount() {
     this.props.fetchRides();
@@ -17,22 +33,30 @@ export class Rides extends Component {
   render() {
     return (
       <ExpansionList>
-        {this.props.rides.map(({ pickupStreetAddress, apptStreetAddress }) => (
-          <ExpansionPanel
-            title={`${pickupStreetAddress} \u2192 ${apptStreetAddress}`}
-            expandedTitle={`${pickupStreetAddress} \u2192 ${apptStreetAddress}`}
-          >
-            This is a ride
-          </ExpansionPanel>
-        ))}
+        {this.props.rides.map(
+          ({ pickupStreetAddress, apptStreetAddress, status }) => (
+            <ExpansionPanel
+              titleIcon={iconsForStatus[status]}
+              title={`${pickupStreetAddress} \u2192 ${apptStreetAddress}`}
+              expandedTitle={`${pickupStreetAddress} \u2192 ${apptStreetAddress}`}
+            >
+              This is a ride
+            </ExpansionPanel>
+          )
+        )}
       </ExpansionList>
     );
   }
 }
 
 export default connect(
-  ({ rides }) => ({
-    rides: Object.values(rides.byId)
+  ({ rides, app }) => ({
+    rides: Object.values(rides.byId).filter(({ status }) => {
+      if (app.rideFilter === '') {
+        return true;
+      }
+      return status === app.rideFilter;
+    })
   }),
   dispatch => ({
     fetchRides: () => dispatch(fetchRides())
