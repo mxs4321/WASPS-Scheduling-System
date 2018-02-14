@@ -22,6 +22,10 @@ import PlacesSearchBox from '../view/PlacesSearchbox';
 import GoogleRoutesForm from '../view/forms/GoogleRoutesForm';
 import FindUsers from '../view/FindUsers';
 import TimeSelectorDropdown from '../view/TimeSelectorDropdown';
+import AvailableDrivers from '../view/AvailableDrivers';
+import AssignedDriver from '../view/AssignedDriver';
+import AcceptRide from '../view/AcceptRide';
+import DriverProfile from '../view/DriverProfile';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'material-expansion-panel/dist/material-expansion-panel.min.css';
@@ -40,7 +44,46 @@ injectGlobal`
     position: absolute;
   }
 `;
+storiesOf('AvailableDrivers', module)
+	.addDecorator((story, context) =>
+		withInfo(`
+			Find a User View
+		`)(story)(context)
+	)
+	.add('Basic', () => (
+		<AvailableDrivers />
+	));
+	
+storiesOf('AssignedDriver', module)
+	.addDecorator((story, context) =>
+		withInfo(`
+			Find a User View
+		`)(story)(context)
+	)
+	.add('Basic', () => (
+		<AssignedDriver />
+	));
+	
+storiesOf('AcceptRide', module)
+	.addDecorator((story, context) =>
+		withInfo(`
+			Find a User View
+		`)(story)(context)
+	)
+	.add('Basic', () => (
+		<AcceptRide />
+	));	
 
+storiesOf('DriverProfile', module)
+	.addDecorator((story, context) =>
+		withInfo(`
+			Find a User View
+		`)(story)(context)
+	)
+	.add('Basic', () => (
+		<DriverProfile />
+	));	
+	
 storiesOf('TimeSelectorDropdown', module)
 	.addDecorator((story, context) =>
 		withInfo(`
