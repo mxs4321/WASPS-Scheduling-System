@@ -24,7 +24,6 @@ const DivLeft = styled.div`
 
 const Map = styled.div`
 	float: right;
-	border: 1px solid black;
 `
 
 const AvailableDiv = styled.div`
@@ -76,18 +75,21 @@ const Buttons = styled.div`
 
 const Iframe = styled.iframe`
   position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 80%;
+  left: 449px;
+  bottom: 3px;
+  width: 370px;
+  height: 210px;
   z-index: 1;
 `;
 
-//const placeIframe = `https://www.google.com/maps/embed/v1/search?key=${apiKey}&q=${origin}`;
-//const directionIframe = `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${origin}&destination=${destination}`;
+
+ 
+export default ({origin, destination, onAccept, onDecline, apiKey = "AIzaSyBvobiFxMVC72Zbd2YmfcxawWMpwG_QLKs", ...otherArgs}) => {
+const placeIframe = `https://www.google.com/maps/embed/v1/search?key=${apiKey}&q=${origin}`;
+const directionIframe = `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${origin}&destination=${destination}`;
 //const { apiKey = window.REACT_APP_PLACES_API_KEY } = this.props;
- 
-export default () => (
- 
+
+return(
 <Wrapper>
 	<WrapperTop>
 		<DivLeft>
@@ -97,23 +99,25 @@ export default () => (
 			<Phone />203 525 4835<br/><br/>
 		</DivLeft>
 		
-		<Map>
-		Map goes here
-	/*	<Iframe
+	
+	<Map>
+		Map
+		<Iframe
           key={apiKey}
           title="directions"
           frameborder="0"
           src={destination === '' ?placeIframe : directionIframe}
           allowfullscreen
-        /> */
-        
+        /> 
+       
 		</Map>
+		
 	</WrapperTop>
 	
 	<AvailableDiv>
 		<Buttons>
-			<Accept>ACCEPT RIDE</Accept>
-			<Decline>DECLINE RIDE</Decline>
+			<Accept onClick={onAccept}>ACCEPT RIDE</Accept>
+			<Decline onClick={onDecline}>DECLINE RIDE</Decline>
 		</Buttons>
 	</AvailableDiv>
 	
@@ -122,7 +126,10 @@ export default () => (
 	</ReplyDiv>
 
 </Wrapper>
-)
+);
+}
+ 
+ 
 
 
 

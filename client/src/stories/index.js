@@ -51,7 +51,7 @@ storiesOf('AvailableDrivers', module)
 		`)(story)(context)
 	)
 	.add('Basic', () => (
-		<AvailableDrivers />
+		<AvailableDrivers origin="1900 empire blvd, Webster, NY" destination="55 North Ave, Webster, NY" drivers={["Niharika Nakka", "Brett Lamy", "Mohammad Suhail"]}/>
 	));
 	
 storiesOf('AssignedDriver', module)
@@ -61,7 +61,7 @@ storiesOf('AssignedDriver', module)
 		`)(story)(context)
 	)
 	.add('Basic', () => (
-		<AssignedDriver />
+		<AssignedDriver origin="1900 empire blvd, Webster, NY" destination="55 North Ave, Webster, NY" users={['Niharika Nakka']} />
 	));
 	
 storiesOf('AcceptRide', module)
@@ -71,7 +71,7 @@ storiesOf('AcceptRide', module)
 		`)(story)(context)
 	)
 	.add('Basic', () => (
-		<AcceptRide />
+		<AcceptRide onAccept={action('Ride Accepted')} onDecline={action('Ride Declined')} origin="1900 empire blvd, Webster, NY" destination="55 North Ave, Webster, NY" />
 	));	
 
 storiesOf('DriverProfile', module)
