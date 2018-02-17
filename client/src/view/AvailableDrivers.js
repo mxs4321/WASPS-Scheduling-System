@@ -24,7 +24,6 @@ const DivLeft = styled.div`
 
 const Map = styled.div`
 	float: right;
-	border: 1px solid black;
 `
 
 const AvailableDiv = styled.div`
@@ -48,7 +47,23 @@ const ReplyDiv = styled.div`
 const Reply = styled.p`
 	font-size: 12px;
 `
-export default () => (
+
+const Iframe = styled.iframe`
+  position: absolute;
+  left: 449px;
+  bottom: 3px;
+  width: 370px;
+  height: 210px;
+  z-index: 1;
+`;
+
+
+export default ({origin, destination, apiKey = "AIzaSyBvobiFxMVC72Zbd2YmfcxawWMpwG_QLKs", ...otherArgs}) => {
+const placeIframe = `https://www.google.com/maps/embed/v1/search?key=${apiKey}&q=${origin}`;
+const directionIframe = `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${origin}&destination=${destination}`;
+//const { apiKey = window.REACT_APP_PLACES_API_KEY } = this.props;
+
+return(
 <Wrapper>
 	<WrapperTop>
 		<DivLeft>
@@ -59,15 +74,22 @@ export default () => (
 		</DivLeft>
 		
 		<Map>
-			Map goes here
+			Map
+		 <Iframe
+          key={apiKey}
+          title="directions"
+          frameborder="0"
+          src={destination === '' ?placeIframe : directionIframe}
+          allowfullscreen
+        /> 
 		</Map>
 	</WrapperTop>
 	
 	<AvailableDiv>
 		Available Drivers<br/>
-		<Avatar size={45} name="Niharika Nakka"/>
-		<Avatar size={45} name="Brett Lamy"/>
-		<Avatar size={45} name="Mohammad Suhail"/>
+			{["Niharika Nakka", "Brett Lamy", "Mohammad Suhail"].map(name =>
+				<Avatar size={45} name={name}/>
+			)}
 	</AvailableDiv>
 	
 	<ReplyDiv>
@@ -75,7 +97,8 @@ export default () => (
 	</ReplyDiv>
 
 </Wrapper>
-)
+);
+}
 
 
 
