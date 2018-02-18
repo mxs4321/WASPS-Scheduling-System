@@ -42,6 +42,36 @@ class UserDAO {
         }
     }
 
+    function findAvailableDrivers($dayOfTheWeek, $timeOfDayStart, $timeOfDayEnd, $datetimeStart, $datetimeEnd)
+    {
+       try {
+          $query = "SELECT user.id, user.firstName, user.lastName, user.phone, user.email FROM user 
+            LEFT JOIN (availability) ON (user.id = availability.driverID) 
+            LEFT JOIN (availabilityexclusion) ON (user.id = availabilityexclusion.driverID)
+            WHERE user.role = 'driver'
+              AND FIND_IN_SET(:dayOfTheWeek, availability.days)>0
+              AND availability.start <= :timeOfDayStart AND availability.end >= :timeOfDayEnd
+              AND (availabilityexclusion.id IS NULL OR availabilityexclusion.end < :datetimeStart OR availabilityexclusion.start > :datetimeEnd)";
+
+
+          $stmt = $this->dbh->prepare($query);
+          $stmt->bindParam(':dayOfTheWeek', $dayOfTheWeek);
+          $stmt->bindParam(':timeOfDayStart', $timeOfDayStart);
+          $stmt->bindParam(':timeOfDayEnd', $timeOfDayEnd);
+          $stmt->bindParam(':datetimeStart', $datetimeStart);
+          $stmt->bindParam(':datetimeEnd', $datetimeEnd);
+          $stmt->execute();
+          $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
+          while ($user = $stmt->fetch()) {
+             $data[] = $user->getDriverContactInfo();
+          }
+          return $data;
+       } catch (PDOException $e) {
+          echo $e->getMessage();
+          die();
+       }
+    }
+
     function getUsers($page = 0, $numberPerPage = 10) {
         try {
             $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `lastLogin`, `wantsSMS`, `wantsEmail`, `email`, `registered` FROM user LIMIT :lim OFFSET :offset");
