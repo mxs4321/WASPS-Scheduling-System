@@ -28,4 +28,15 @@ class User
             "wantsEmail" => $this->wantsEmail
         ];
     }
+
+    public function getDriverContactInfo()
+    {
+      return [
+         "id" => $this->id,
+         "firstName" => $this->firstName,
+         "lastName" => $this->lastName,
+         "phone" => $this->phone,
+         "email" => $this->email
+      ];
+    }
 }

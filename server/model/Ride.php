@@ -22,7 +22,8 @@ class Ride
     {
         return [
             "id" => $this->id,
-            "userID" => $this->passengerID,
+            "passengerID" => $this->passengerID,
+            "driverID" => $this->driverID,
             "apptStart" => $this->apptStart,
             "apptEnd" => $this->apptEnd,
             "numMiles" => $this->numMiles,

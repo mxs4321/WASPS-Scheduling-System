@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../model/Ride.php";
+require_once __DIR__ . "/../model/User.php";
 
 class RideDAO
 {
@@ -10,21 +11,28 @@ class RideDAO
         $this->dbh = $dbh;
     }
 
-    public function findById($id)
+    public function findById($id, $populate)
     {
         try {
             $stmt = $this->dbh->prepare("SELECT * FROM ride WHERE id = :id");
             $stmt->execute([':id' => intval($id)]);
             $stmt->setFetchMode(PDO::FETCH_CLASS, "Ride");
             $ride = $stmt->fetch();
-            return $ride->getRideInfo();
+            $ride = $ride->getRideInfo();
+
+            if ($populate)
+            {
+               $this->populateIDs($ride);
+            }
+
+           return $ride;
         } catch (PDOException $e) {
             echo $e->getMessage();
             die();
         }
     }
 
-    public function getRides($page = 0, $numberPerPage = 10)
+    public function getRides($page = 0, $numberPerPage = 10, $populate)
     {
         try {
             $stmt = $this->dbh->prepare("SELECT * FROM ride LIMIT :lim OFFSET :offset");
@@ -35,7 +43,14 @@ class RideDAO
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_CLASS, "Ride");
             while ($ride = $stmt->fetch()) {
-                $data[] = $ride->getRideInfo();
+                $ride = $ride->getRideInfo();
+
+                if ($populate)
+                {
+                   $this->populateIDs($ride);
+                }
+
+                $data[] = $ride;
             }
             return $data;
         } catch (PDOException $e) {
@@ -164,6 +179,31 @@ class RideDAO
       {
          echo $e->getMessage();
          die();
+      }
+   }
+
+   private function populateIDs(&$ride)
+   {
+      if ($ride['passengerID'] != null)
+      {
+         $stmt = $this->dbh->prepare("SELECT * FROM user WHERE id = :id");
+         $stmt->execute([':id' => intval($ride['passengerID'])]);
+         $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
+         $user = $stmt->fetch();
+         $ride['passengerID'] = $user->getUserInfo();
+         $ride['passenger'] = $ride['passengerID'];
+         unset($ride['passengerID']);
+      }
+
+      if ($ride['driverID'] != null)
+      {
+         $stmt = $this->dbh->prepare("SELECT * FROM user WHERE id = :id");
+         $stmt->execute([':id' => intval($ride['driverID'])]);
+         $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
+         $user = $stmt->fetch();
+         $ride['driverID'] = $user->getUserInfo();
+         $ride['driver'] = $ride['driverID'];
+         unset($ride['driverID']);
       }
    }
 }
