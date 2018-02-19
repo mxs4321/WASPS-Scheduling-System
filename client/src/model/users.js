@@ -13,12 +13,17 @@ const DEFAULT_STATE = {
 const NAMESPACE = 'USERS';
 const ADD_USERS = `${NAMESPACE}/ADD_USERS`;
 
+export const addUsers = (users: Array<User>) => ({
+  type: ADD_USERS,
+  payload: users
+});
+
 export const fetchUsers = () => dispatch => {
   dispatch(updateRequest('GET /api/users.php', 'Pending'));
   return getJSON('/api/users.php')
     .then(users => {
       dispatch(updateRequest('GET /api/users.php', 'Success'));
-      dispatch({ type: ADD_USERS, payload: users });
+      dispatch(addUsers(users));
     })
     .catch(err => dispatch(updateRequest('GET /api/users.php', 'Error', err)));
 };

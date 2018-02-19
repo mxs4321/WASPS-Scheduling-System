@@ -13,7 +13,6 @@ import Availability from './Availability';
 import Drivers from './Drivers';
 import Schedule from './Schedule';
 import Rides from './Rides';
-import SignIn from './SignIn';
 import PrivateRoute from './PrivateRoute';
 
 const Fullbleed = styled.div`
@@ -103,18 +102,20 @@ export const App = ({
         />
         <Route path="/schedule" component={Schedule} />
       </Body>
-      <FAB to="/create/1">
-        <Add />
-      </FAB>
-      <Route
-        path="/create/:step"
-        component={({ match }) => (
-          <CreateRide
-            step={Number.parseInt(match.params.step, 10)}
-            onModalClick={this.toggleCreateRide}
-          />
-        )}
-      />
+      {user.role !== 'driver' && [
+        <FAB to="/create/1">
+          <Add />
+        </FAB>,
+        <Route
+          path="/create/:step"
+          component={({ match }) => (
+            <CreateRide
+              step={Number.parseInt(match.params.step, 10)}
+              onModalClick={this.toggleCreateRide}
+            />
+          )}
+        />
+      ]}
     </Fullbleed>
   );
 };
