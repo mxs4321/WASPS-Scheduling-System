@@ -32,18 +32,19 @@ class AvailabilityDAO
       }
    }
 
-   function getAvailability($id)
+   function getAvailabilityForDriver($driverID)
    {
       try
       {
-         $id = intval($id);
-
-         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `days`, `driverID` FROM availability WHERE id = :id;");
-         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `days`, `driverID` FROM availability WHERE driverID = :id;");
+         $stmt->bindParam(":id", $driverID, PDO::PARAM_INT);
          $stmt->execute();
          $stmt->setFetchMode(PDO::FETCH_CLASS, "Availability");
-
-         return $stmt->fetch()->getAvailabilityInfo();
+         while ($user = $stmt->fetch()) {
+            unset($user->password);
+            $data[] = $user->getAvailabilityInfo();
+        }
+        return $data;
       }
       catch (PDOException $e)
       {
@@ -52,32 +53,6 @@ class AvailabilityDAO
       }
    }
 
-   function getAvailabilities($page = 0, $numberPerPage = 10)
-   {
-      try
-      {
-         $numberPerPage = intval($numberPerPage);
-         $offset = intval($page * $numberPerPage);
-
-         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `days`, `driverID` FROM availability LIMIT :lim OFFSET :offset;");
-         $stmt->bindParam(":lim", $numberPerPage, PDO::PARAM_INT);
-         $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
-         $stmt->execute();
-         $stmt->setFetchMode(PDO::FETCH_CLASS, "Availability");
-
-         while ($driverAvailability = $stmt->fetch())
-         {
-            $data[] = $driverAvailability->getAvailabilityInfo();
-         }
-
-         return $data;
-      }
-      catch (PDOException $e)
-      {
-         echo $e->getMessage();
-         die();
-      }
-   }
 
    function updateAvailability($id, $startTime = "", $endTime = "", $days = "", $driverID = "")
    {
@@ -123,6 +98,37 @@ class AvailabilityDAO
       }
       catch (PDOException $e)
       {
+         echo $e->getMessage();
+         die();
+      }
+   }
+
+
+   function findAvailableDrivers($dayOfTheWeek, $timeOfDayStart, $timeOfDayEnd, $datetimeStart, $datetimeEnd)
+   {
+      try {
+         $query = "SELECT user.id, user.firstName, user.lastName, user.phone, user.email FROM user 
+           LEFT JOIN (availability) ON (user.id = availability.driverID) 
+           LEFT JOIN (availabilityexclusion) ON (user.id = availabilityexclusion.driverID)
+           WHERE user.role = 'driver'
+             AND FIND_IN_SET(:dayOfTheWeek, availability.days)>0
+             AND availability.start <= :timeOfDayStart AND availability.end >= :timeOfDayEnd
+             AND (availabilityexclusion.id IS NULL OR availabilityexclusion.end < :datetimeStart OR availabilityexclusion.start > :datetimeEnd)";
+
+
+         $stmt = $this->dbh->prepare($query);
+         $stmt->bindParam(':dayOfTheWeek', $dayOfTheWeek);
+         $stmt->bindParam(':timeOfDayStart', $timeOfDayStart);
+         $stmt->bindParam(':timeOfDayEnd', $timeOfDayEnd);
+         $stmt->bindParam(':datetimeStart', $datetimeStart);
+         $stmt->bindParam(':datetimeEnd', $datetimeEnd);
+         $stmt->execute();
+         $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
+         while ($user = $stmt->fetch()) {
+            $data[] = $user->getDriverContactInfo();
+         }
+         return $data;
+      } catch (PDOException $e) {
          echo $e->getMessage();
          die();
       }

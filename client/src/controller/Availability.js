@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 import AvailabilityForm from '../view/forms/AvailabilityForm';
+import {
+  fetchDriverAvailability,
+  updateDriverAvailability
+} from '../model/availability';
 
 const Card = styled.div`
   position: relative;
@@ -13,13 +18,28 @@ const Card = styled.div`
 `;
 
 class Availability extends Component {
+  componentDidMount() {
+    this.props.fetchDriverAvailability();
+  }
   render() {
     return (
       <Card>
-        <AvailabilityForm />
+        <AvailabilityForm
+          onChange={this.props.updateDriverAvailability}
+          availabilities={this.props.availabilities}
+        />
       </Card>
     );
   }
 }
 
-export default Availability;
+export default connect(
+  ({ availability, auth }) => ({
+    availabilities: availability.byDriverId[auth.user.id]
+  }),
+  dispatch => ({
+    fetchDriverAvailability: () => dispatch(fetchDriverAvailability()),
+    updateDriverAvailability: availability =>
+      dispatch(updateDriverAvailability(availability))
+  })
+)(Availability);

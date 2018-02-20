@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import AvailabilityInput from '../AvailabilityInput';
 import TimePicker from '../TimePicker';
-import { Close } from '../icons';
 
 const Flex = styled.div`
   display: Flex;
@@ -17,16 +16,31 @@ const Button = styled.button`
   }
 `;
 
-const AvaliabilityForm = () => (
-  <div>
-    <AvailabilityInput />
-    <Flex>
-      <TimePicker />
-      <TimePicker />
-      <Close />
-    </Flex>
-    <Button>ADD HOURS</Button>
-  </div>
-);
+export class AvaliabilityForm extends Component {
+  render() {
+    const { availabilities = [], onSubmit, onChange } = this.props;
+    return (
+      <Fragment>
+        {availabilities.map(availability => (
+          <Fragment>
+            <AvailabilityInput
+              days={availability.days.split(',')}
+              onChange={days => {
+                onChange({
+                  ...availability,
+                  days: days.join(',')
+                });
+              }}
+            />
+            <Flex>
+              <input value={availability.start} />
+              <input value={availability.end} />
+            </Flex>
+          </Fragment>
+        ))}
+      </Fragment>
+    );
+  }
+}
 
 export default AvaliabilityForm;

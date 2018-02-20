@@ -26,8 +26,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
       $requestBody = file_get_contents('php://input');
       $bodyData = json_decode($requestBody, true);
 
-      //print_r($bodyData);
-
       if (isset($bodyData['start']) && isset($bodyData['end']) && isset($bodyData['driverID']))
       {
          $startTime = $bodyData['start'];
@@ -53,8 +51,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
    case "PUT":
       $requestBody = file_get_contents('php://input');
       $bodyData = json_decode($requestBody, true);
-
-      //print_r($bodyData);
 
       if (isset($bodyData['id']))
       {
