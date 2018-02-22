@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PlacesSearchBox from '../PlacesSearchbox';
+import PlacesSearchBox from '../../view/PlacesSearchbox';
 import styled from 'styled-components';
 
 type Props = {

@@ -1,10 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import AvailabilityInput from '../AvailabilityInput';
-import TimePicker from '../TimePicker';
+import AvailabilityInput from '../../viewAvailabilityInput';
 import { Close } from '../../view/icons';
-import InputBox from '../../view/InputBox';
 import {
   fetchDriverAvailability,
   updateDriverAvailability,
@@ -47,7 +45,6 @@ export class AvaliabilityForm extends Component {
     const {
       availabilities = [],
       driverID,
-      onSubmit,
       updateDriverAvailability,
       createDriverAvailability,
       deleteDriverAvailability

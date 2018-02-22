@@ -1,7 +1,6 @@
-import { groupBy, prop, map, reduce, flatten, indexBy } from 'ramda';
+import { prop, flatten, indexBy } from 'ramda';
 import { getJSON, postJSON, putJSON, deleteJSON } from '../util/fetch';
 import { updateRequest } from './ajax';
-import { addUsers } from './users';
 
 type State = {
   byId: Array<Ride>

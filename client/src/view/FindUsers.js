@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Avatar from './Avatar';
-import SearchIcon from './icons/Search';
+import { Search } from './icons';
 
 type Props = {
   onSearchChanged: Function,
@@ -30,7 +30,7 @@ const ListItem = styled.li``;
 export default ({ onSearchChanged, users }) => (
   <Box>
     <Flex>
-      <SearchIcon />
+      <Search />
       <Input onChange={event => onSearchChanged(event.target.value)} />
     </Flex>
     <List>
