@@ -51,10 +51,10 @@ const Button = styled(Link)`
 const Step1 = () => (
   <Flex>
     <Flex1>
-      <h3>Find User</h3>
+      <h3>Find Passenger</h3>
     </Flex1>
     <Flex1>
-      <h3>Create User</h3>
+      <h3>Create Passenger</h3>
       <CreateUserForm />
     </Flex1>
   </Flex>
