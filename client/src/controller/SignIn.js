@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login } from '../model/auth';
 import styled from 'styled-components';
@@ -25,9 +25,12 @@ const Button = styled.button`
 
 export class SignIn extends Component {
   render() {
-    const { login, location } = this.props;
+    const { user, login, location } = this.props;
     const useReferrer = location.state && location.state.referrer !== '/login';
     const referrer = useReferrer ? location.state.referrer : '/';
+    if (user) {
+      return <Redirect to={referrer} />;
+    }
     return (
       <Card>
         <Button
