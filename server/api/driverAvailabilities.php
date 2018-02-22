@@ -72,7 +72,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $days = sanitizeAndValidate($days, FILTER_SANITIZE_STRING);
             $driverID = sanitizeAndValidate($driverID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
-            http_response_code(201);
+            http_response_code(200);
             echo json_encode($db->availability->updateAvailability($id, $startTime, $endTime, $days, $driverID));
         } else {
             http_response_code(400);
@@ -83,15 +83,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 
     case "DELETE":
-        $requestBody = file_get_contents('php://input');
-        $bodyData = json_decode($requestBody, true);
-
-        if (isset($bodyData['id'])) {
-            $id = $bodyData['id'];
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
 
             $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
-            http_response_code(201);
+            http_response_code(200);
             echo json_encode($db->availability->deleteAvailability($id));
         } else {
             http_response_code(400);

@@ -18,9 +18,9 @@ const Input = styled.input`
   margin-bottom: 5px;
 `;
 
-const InputBox = ({ name = '', onChange = NoOp }) => [
+const InputBox = ({ name = '', onChange = NoOp, ...args }) => [
   <Title>{name}</Title>,
-  <Input name={name} onChange={onChange} />
+  <Input name={name} onChange={onChange} {...args} />
 ];
 
 export default InputBox;

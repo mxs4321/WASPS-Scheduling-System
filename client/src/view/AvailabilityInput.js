@@ -30,12 +30,11 @@ class AvailabilityInput extends Component {
             key={i}
             selected={days.includes(day)}
             onClick={() => {
-              const isActive = days.includes(day);
-              if (isActive) {
+              if (days.includes(day)) {
                 onChange(days.filter(_day => _day !== day));
               } else {
                 onChange(
-                  daysOfTheWeek.filter(_day => ![...days, day].includes(_day))
+                  daysOfTheWeek.filter(_day => [...days, day].includes(_day))
                 );
               }
             }}
