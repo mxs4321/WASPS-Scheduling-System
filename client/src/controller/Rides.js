@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import ExpansionPanel from 'material-expansion-panel';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { fetchRides } from '../model/rides';
+import { fetchRidesWithUsers } from '../model/rides';
 import AvailableDrivers from '../view/AvailableDrivers';
 import AssignedDriver from '../view/AssignedDriver';
 import AcceptRide from '../view/AcceptRide';
@@ -60,11 +60,10 @@ const Panel = ({ user, status }) => {
 
 export class Rides extends Component {
   componentDidMount() {
-    this.props.fetchRides();
+    this.props.fetchRidesWithUsers();
   }
 
   render() {
-    console.log(this.props.rides);
     return (
       <ExpansionList>
         {this.props.rides.map(
@@ -103,13 +102,13 @@ export default connect(
         }
         return status === app.rideFilter;
       })
-      .map(ride => {
-        ride.passenger = users.byId[ride.passengerID];
-        ride.driver = users.byId[ride.driverID];
-        return ride;
-      })
+      .map(ride => ({
+        ...ride,
+        passenger: users.byId[ride.passengerID],
+        driver: users.byId[ride.driverID]
+      }))
   }),
   dispatch => ({
-    fetchRides: () => dispatch(fetchRides())
+    fetchRidesWithUsers: () => dispatch(fetchRidesWithUsers())
   })
 )(Rides);

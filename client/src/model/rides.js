@@ -22,7 +22,7 @@ export const addRides = rides => ({
 /**
  * Will Make an AJAX Request to the server and keep the redux store in sync with eacy step of the process.
  */
-export const fetchRides = () => dispatch => {
+export const fetchRidesWithUsers = () => dispatch => {
   dispatch(updateRequest('GET /api/rides.php?populate=true', 'Pending'));
   return getJSON('/api/rides.php?populate=true')
     .then(rides => {

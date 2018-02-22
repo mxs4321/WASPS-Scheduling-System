@@ -3,7 +3,7 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { fetchRides } from '../model/rides';
+import { fetchRidesWithUsers } from '../model/rides';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
@@ -21,7 +21,7 @@ BigCalendar.momentLocalizer(moment);
 
 export class Schedule extends Component {
   componentDidMount() {
-    this.props.fetchRides();
+    this.props.fetchRidesWithUsers();
   }
 
   render() {
@@ -50,6 +50,6 @@ export default connect(
       }))
   }),
   dispatch => ({
-    fetchRides: () => dispatch(fetchRides())
+    fetchRidesWithUsers: () => dispatch(fetchRidesWithUsers())
   })
 )(Schedule);

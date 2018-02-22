@@ -12,14 +12,8 @@ const Card = styled.div`
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 `;
 
-class Availability extends Component {
-  render() {
-    return (
-      <Card>
-        <AvailabilityForm />
-      </Card>
-    );
-  }
-}
-
-export default Availability;
+export default () => (
+  <Card>
+    <AvailabilityForm />
+  </Card>
+);

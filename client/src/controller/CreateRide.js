@@ -98,6 +98,8 @@ const renderStep = step => {
   }
 };
 
+const CreateRideUser = () => <div>hello world</div>;
+
 class CreateRide extends Component {
   constructor(props) {
     super(props);
