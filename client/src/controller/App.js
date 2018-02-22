@@ -65,6 +65,7 @@ export const App = ({
   return (
     <Fullbleed>
       <Toolbar
+        userName={`${user.firstName} ${user.lastName}`}
         userRole={user.role}
         onMenuToggle={toggleSidebar}
         onAvatarClick={logout}

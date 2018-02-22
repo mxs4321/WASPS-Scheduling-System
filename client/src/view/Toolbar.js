@@ -54,7 +54,8 @@ class Toolbar extends Component {
 
   render() {
     const {
-      userRole = 'passanger',
+      userRole = 'passenger',
+      userName,
       onMenuToggle = NoOp,
       onAvatarClick = NoOp
     } = this.props;
@@ -67,7 +68,7 @@ class Toolbar extends Component {
           onFocus={() => this.setState({ isSearching: true })}
           onBlur={() => this.setState({ isSearching: false })}
         />
-        <Avatar size={36} onClick={onAvatarClick} />
+        <Avatar size={36} name={userName} onClick={onAvatarClick} />
       </Background>
     );
   }
