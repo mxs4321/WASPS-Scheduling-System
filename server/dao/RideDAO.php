@@ -44,12 +44,59 @@ class RideDAO
             $stmt->setFetchMode(PDO::FETCH_CLASS, "Ride");
             while ($ride = $stmt->fetch()) {
                 $ride = $ride->getRideInfo();
-
-                if ($populate)
-                {
+                if ($populate) {
                    $this->populateIDs($ride);
                 }
+                $data[] = $ride;
+            }
+            return $data;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die();
+        }
+    }
 
+    public function getRidesByDriverID($driverID, $page = 0, $numberPerPage = 10, $populate)
+    {
+        try {
+            $stmt = $this->dbh->prepare("SELECT * FROM ride WHERE driverID = :driverID LIMIT :lim OFFSET :offset");
+            $lim = intval($numberPerPage);
+            $offset = intval($page * $numberPerPage);
+            $stmt->bindParam(':driverID', $driverID, PDO::PARAM_INT);
+            $stmt->bindParam(':lim', $lim, PDO::PARAM_INT);
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_CLASS, "Ride");
+            while ($ride = $stmt->fetch()) {
+                $ride = $ride->getRideInfo();
+                if ($populate) {
+                   $this->populateIDs($ride);
+                }
+                $data[] = $ride;
+            }
+            return $data;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die();
+        }
+    }
+
+    public function getRidesByPassengerID($passengerID, $page = 0, $numberPerPage = 10, $populate)
+    {
+        try {
+            $stmt = $this->dbh->prepare("SELECT * FROM ride WHERE passengerID = :passengerID LIMIT :lim OFFSET :offset");
+            $lim = intval($numberPerPage);
+            $offset = intval($page * $numberPerPage);
+            $stmt->bindParam(':passengerID', $passengerID, PDO::PARAM_INT);
+            $stmt->bindParam(':lim', $lim, PDO::PARAM_INT);
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_CLASS, "Ride");
+            while ($ride = $stmt->fetch()) {
+                $ride = $ride->getRideInfo();
+                if ($populate) {
+                   $this->populateIDs($ride);
+                }
                 $data[] = $ride;
             }
             return $data;

@@ -1,4 +1,5 @@
 <?php
+session_start(); // Starting Session
 header('Content-Type: application/json');
 
 include '../env.php';
@@ -7,10 +8,21 @@ $db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
-        if (isset($_GET['id'])) {
-            echo json_encode($db->ride->findById($_GET['id'], $_GET['populate'] ?? false));
-        } else {
-            echo json_encode($db->ride->getRides($_GET['page'] ?? 0, $_GET['number_per_page'] ?? 10, $_GET['populate'] ?? false));
+        switch ($_SESSION['user']['role']) {
+            case "admin":
+            case "dispatcher":
+                echo json_encode($db->ride->getRides($_GET['page'] ?? 0, $_GET['number_per_page'] ?? 10, $_GET['populate'] ?? false));
+            break;
+            case 'driver':
+                echo json_encode($db->ride->getRidesByDriverID($_SESSION['user']['id'], $_GET['page'] ?? 0, $_GET['number_per_page'] ?? 10, $_GET['populate'] ?? false));
+            break;
+            case 'passenger':
+                echo json_encode($db->ride->getRidesByPassengerID($_SESSION['user']['id'], $_GET['page'] ?? 0, $_GET['number_per_page'] ?? 10, $_GET['populate'] ?? false));
+            break;
+            default:
+                http_response_code(403/*Forbidden*/);
+                echo json_encode(["err" => "Could get requested resource"]);
+            break;
         }
         break;
 
