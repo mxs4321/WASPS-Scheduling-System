@@ -61,6 +61,31 @@ class UserDAO {
         }
     }
 
+   public function getDriverExportInfo()
+   {
+      try
+      {
+         $query = "SELECT user.id, firstName, lastName, phone, email, wantsSMS, wantsEmail, start, end, days FROM user
+                      LEFT JOIN availability ON (user.id = availability.driverID)
+                      WHERE role = 'driver'";
+         $stmt = $this->dbh->prepare($query);
+         $stmt->execute();
+         $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+         while ($row = $stmt->fetch())
+         {
+            $data[] = $row;
+         }
+
+         return $data;
+      }
+      catch (PDOException $e)
+      {
+         echo $e->getMessage();
+         die();
+      }
+   }
+
     function insertUser($password, $role, $firstName, $lastName, $phone, $email, $registered, $lastLogin = "",
                         $wantsSMS = true, $wantsEmail = true)
     {

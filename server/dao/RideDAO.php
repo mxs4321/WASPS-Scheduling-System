@@ -32,7 +32,7 @@ class RideDAO
         }
     }
 
-    public function getRides($page = 0, $numberPerPage = 10, $populate)
+    public function getRides($page = 0, $numberPerPage = 10, $populate = false)
     {
         try {
             $stmt = $this->dbh->prepare("SELECT * FROM ride LIMIT :lim OFFSET :offset");
@@ -104,6 +104,27 @@ class RideDAO
             echo $e->getMessage();
             die();
         }
+    }
+
+    public function getRideColumnNames()
+    {
+       try
+       {
+          $stmt = $this->dbh->prepare("SHOW columns FROM ride");
+          $stmt->execute();
+
+          while ($row = $stmt->fetch())
+          {
+             $data[] = $row['Field'];
+          }
+
+          return $data;
+       }
+       catch (PDOException $e)
+       {
+          echo $e->getMessage();
+          die();
+       }
     }
 
     public function insertRide(
