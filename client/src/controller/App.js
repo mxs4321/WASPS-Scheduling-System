@@ -14,6 +14,7 @@ import Drivers from './Drivers';
 import Schedule from './Schedule';
 import Rides from './Rides';
 import PrivateRoute from './PrivateRoute';
+import Reports from './Reports';
 
 const Fullbleed = styled.div`
   postion: absolute:
@@ -50,7 +51,8 @@ export const App = ({
   toggleSidebar,
   rideFilter,
   changeRideFilter,
-  location
+  location,
+  history
 }) => {
   if (!user) {
     return (
@@ -101,6 +103,11 @@ export const App = ({
           path="/drivers"
           component={Drivers}
         />
+        <PrivateRoute
+          allowedRoles={['admin']}
+          path="/reports"
+          component={Reports}
+        />
         <Route path="/schedule" component={Schedule} />
       </Body>
       {user.role !== 'driver' && [
@@ -112,7 +119,7 @@ export const App = ({
           component={({ match }) => (
             <CreateRide
               step={Number.parseInt(match.params.step, 10)}
-              onModalClick={this.toggleCreateRide}
+              onModalClick={() => history.push('/')}
             />
           )}
         />

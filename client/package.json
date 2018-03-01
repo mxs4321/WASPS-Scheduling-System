@@ -5,11 +5,13 @@
   "proxy": "http://localhost:8000",
   "homepage": "https://mxs4321.github.io/WASPS-Scheduling-System",
   "dependencies": {
+    "antd": "^3.2.2",
     "flow-bin": "^0.60.1",
     "gh-pages": "^1.1.0",
     "history": "^4.7.2",
     "material-expansion-panel": "^1.0.0",
     "moment": "^2.20.1",
+    "query-string": "^5.1.0",
     "ramda": "^0.25.0",
     "react": "^16.2.0",
     "react-big-calendar": "^0.17.0",

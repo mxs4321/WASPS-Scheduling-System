@@ -7,7 +7,8 @@ type State = {
 };
 
 const DEFAULT_STATE = {
-  byId: []
+  byId: [],
+  drivers: []
 };
 
 const NAMESPACE = 'AVAILABILITY';
@@ -81,10 +82,29 @@ export const deleteDriverAvailability = availability => dispatch => {
     .catch(err => dispatch(updateRequest(`DELETE ${url}`, 'Error', err)));
 };
 
+/**
+ * TEMPORARY:
+ * Function for getting Available Driver
+ */
+export const fetchAvailableDriver = (date, startTime, endTime) => dispatch => {
+  const url = `/api/driverAvailabilities.php?start=${date}%20${startTime}&end=${date}%20${endTime}`;
+  dispatch(updateRequest(`GET ${url}`, 'Pending'));
+  return getJSON(url)
+    .then(drivers => {
+      dispatch(updateRequest(`GET ${url}`, 'Success'));
+      dispatch({
+        type: 'SET_DRIVERS',
+        payload: drivers
+      });
+    })
+    .catch(err => dispatch(updateRequest(`GET ${url}`, 'Error', err)));
+};
+
 export default (state: State = DEFAULT_STATE, action) => {
   switch (action.type) {
     case ADD_AVAILABILITY:
       return {
+        ...state,
         byId: indexBy(
           prop('id'),
           flatten([...Object.values(state.byId), ...action.payload])
@@ -92,10 +112,16 @@ export default (state: State = DEFAULT_STATE, action) => {
       };
     case DELETE_AVAILABILITY:
       return {
+        ...state,
         byId: indexBy(
           prop('id'),
           Object.values(state.byId).filter(({ id }) => id !== action.payload.id)
         )
+      };
+    case 'SET_DRIVERS':
+      return {
+        ...state,
+        drivers: action.payload
       };
     default:
       return state;

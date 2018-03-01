@@ -20,7 +20,7 @@ const Input = styled.input`
 
 const InputBox = ({ name = '', onChange = NoOp, ...args }) => [
   <Title>{name}</Title>,
-  <Input name={name} onChange={onChange} {...args} />
+  <Input name={name} onChange={e => onChange(e.target.value, e)} {...args} />
 ];
 
 export default InputBox;

@@ -8,13 +8,23 @@ import ajax from './ajax';
 import rides from './rides';
 import users from './users';
 import availability from './availability';
+import reports from './reports';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const history = createHistory();
 
 export default createStore(
-  combineReducers({ ajax, app, auth, availability, rides, router, users }),
+  combineReducers({
+    ajax,
+    app,
+    auth,
+    availability,
+    rides,
+    router,
+    users,
+    reports
+  }),
   composeEnhancers(
     applyMiddleware(thunkMiddleware),
     applyMiddleware(routerMiddleware(history))

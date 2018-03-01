@@ -102,13 +102,13 @@ describe('POST /login.php', () => {
       });
   });
 
-  it('Should be able to log into the passanger Account', async () => {
+  it('Should be able to log into the passenger Account', async () => {
     await request
       .post('/login.php')
       .set('Accept', 'application/json')
       .send({
-        email: 'passanger@websterwasps.com',
-        password: 'passanger'
+        email: 'passenger@websterwasps.com',
+        password: 'passenger'
       })
       .expect('Content-Type', /json/)
       .expect(201)
@@ -118,7 +118,7 @@ describe('POST /login.php', () => {
         lastName: 'Passenger',
         role: 'passenger',
         phone: '2435254235',
-        email: 'passanger@websterwasps.com',
+        email: 'passenger@websterwasps.com',
         registered: '2018-01-01 00:00:00',
         lastLogin: '2018-03-01 00:00:00',
         wantsSMS: 1,
@@ -131,7 +131,7 @@ describe('POST /login.php', () => {
       .post('/login.php')
       .send({
         phone: '2435254235',
-        password: 'passanger'
+        password: 'passenger'
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -142,7 +142,7 @@ describe('POST /login.php', () => {
         lastName: 'Passenger',
         role: 'passenger',
         phone: '2435254235',
-        email: 'passanger@websterwasps.com',
+        email: 'passenger@websterwasps.com',
         registered: '2018-01-01 00:00:00',
         lastLogin: '2018-03-01 00:00:00',
         wantsSMS: 1,
@@ -176,7 +176,7 @@ describe('ride', () => {
     await request
       .post('/api/rides.php')
       .send({
-        userID: '4',
+        passengerID: '4',
         apptStart: '2017-03-01 09:00:00',
         apptEnd: '2017-03-01 10:00:00',
         pickupTime: '2017-03-01 08:30:00',
@@ -186,6 +186,24 @@ describe('ride', () => {
         apptStreetAddress: '45 Webster Commons Blvd #201',
         apptCity: 'Webster'
       })
+      .expect(201);
+  });
+});
+
+describe('driverAvailabilities.php', () => {
+  it('get', async () => {
+    await request
+      .get(
+        '/api/driverAvailabilities.php?start=2018-04-02%2009:00:00&end=2018-04-01%2010:00:00'
+      )
+      .expect(201);
+  });
+
+  it('get', async () => {
+    await request
+      .get(
+        '/api/driverAvailabilities.php?start=2018-04-02%2009:00:00&end=2018-04-01%2010:00:00'
+      )
       .expect(201);
   });
 });

@@ -133,33 +133,47 @@ class RideDAO
     {
        try
        {
-          $passengerID = intval($passengerID);
-          $wheelchairVan = boolval($wheelchairVan);
-          $status = strval($status);
-          $pickupStreetAddress = strval($pickupStreetAddress);
-          $pickupCity = strval($pickupCity);
-          $apptStreetAddress = strval($apptStreetAddress);
-          $apptCity = strval($apptCity);
+        //   $passengerID = intval("4");
+        //   $apptStart = "2017-03-01 09:00:00";
+        //   $apptEnd = "2017-03-01 10:00:00";
+        //   $pickupTime = "2017-03-01 08:30:00";
+        //   $wheelchairVan = 0;
+        //   $status = "Unverified";
+        //   $pickupStreetAddress = "855 publishers parkway";
+        //   $pickupCity = "Webster";
+        //   $apptStreetAddress = "45 Webster Commons Blvd #201";
+        //   $apptCity = "Webster";
 
-          $stmt = $this->dbh->prepare("INSERT INTO `wasps`.`ride` (`passengerID`, `apptStart`, `apptEnd`,  
-              `pickupTime`, `wheelchairVan`, `status`, `pickupStreetAddress`, `pickupCity`, `apptStreetAddress`, `apptCity`,
-              `created`, `modified`) VALUES (:passengerID, :apptStart, :apptEnd, :pickupTime, :wheelchairVan, 
-              :status, :pickupStreetAddress, :pickupCity, :apptStreetAddress, :apptCity, :created, :modified)");
-          $stmt->bindParam(':passengerID', intval($passengerID), PDO::PARAM_INT);
+          $stmt = $this->dbh->prepare("INSERT INTO ride (`passengerID`, `apptStart`, `apptEnd`,  
+              `pickupTime`, `wheelchairVan`, `status`, `pickupStreetAddress`, `pickupCity`, `apptStreetAddress`, `apptCity`) VALUES (:passengerID, :apptStart, :apptEnd, :pickupTime, :wheelchairVan, 
+              :status, :pickupStreetAddress, :pickupCity, :apptStreetAddress, :apptCity)");
+ 
+          $stmt->bindParam(':passengerID', $passengerID, PDO::PARAM_INT);
           $stmt->bindParam(':apptStart', $apptStart, PDO::PARAM_STR);
           $stmt->bindParam(':apptEnd', $apptEnd, PDO::PARAM_STR);
           $stmt->bindParam(':pickupTime', $pickupTime, PDO::PARAM_STR);
-          $stmt->bindParam(':wheelchairVan', $wheelchairVan, PDO::PARAM_BOOL);
+          $stmt->bindParam(':wheelchairVan', $wheelchairVan, PDO::PARAM_INT);
           $stmt->bindParam(':status', $status, PDO::PARAM_STR);
           $stmt->bindParam(':pickupStreetAddress', $pickupStreetAddress, PDO::PARAM_STR);
           $stmt->bindParam(':pickupCity', $pickupCity, PDO::PARAM_STR);
           $stmt->bindParam(':apptStreetAddress', $apptStreetAddress, PDO::PARAM_STR);
           $stmt->bindParam(':apptCity', $apptCity, PDO::PARAM_STR);
-          $stmt->bindParam(':created', $created, PDO::PARAM_STR);
-          $stmt->bindParam(':modified', $modified, PDO::PARAM_STR);
-          $stmt->execute();
 
-          return $stmt->rowCount() . " row(s) inserted";
+        //   $stmt->bindParam(':passengerID', "4", PDO::PARAM_INT);
+        //   $stmt->bindParam(':apptStart', "2017-03-01 09:00:00", PDO::PARAM_STR);
+        //   $stmt->bindParam(':apptEnd', "2017-03-01 10:00:00", PDO::PARAM_STR);
+        //   $stmt->bindParam(':pickupTime', "2017-03-01 08:30:00", PDO::PARAM_STR);
+        //   $stmt->bindParam(':wheelchairVan', 0, PDO::PARAM_INT);
+        //   $stmt->bindParam(':stat', "Unverified", PDO::PARAM_STR);
+        //   $stmt->bindParam(':pickupStreetAddress', "855 publishers parkway", PDO::PARAM_STR);
+        //   $stmt->bindParam(':pickupCity', "Webster", PDO::PARAM_STR);
+        //   $stmt->bindParam(':apptStreetAddress', "45 Webster Commons Blvd #201", PDO::PARAM_STR);
+        //   $stmt->bindParam(':apptCity', "Webster", PDO::PARAM_STR);
+        //   $stmt->bindParam(':created', $created, PDO::PARAM_STR);
+        //   $stmt->bindParam(':modified', $modified, PDO::PARAM_STR);
+          $stmt->execute();
+          $id = $this->dbh->lastInsertId();
+          return $this->findById($id, true);
        }
        catch (PDOException $e)
        {

@@ -10,7 +10,7 @@ class UserDAO {
 
     function findById($id) {
         try {
-            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `lastLogin`, `wantsSMS`, `wantsEmails`, `email`, `registered` FROM user WHERE id = :id");
+            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `lastLogin`, `wantsSMS`, `wantsEmail`, `email`, `registered` FROM user WHERE id = :id");
             $stmt->execute([':id' => intval($id)]);
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             return $stmt->fetch();
@@ -84,38 +84,35 @@ class UserDAO {
          echo $e->getMessage();
          die();
       }
-   }
+    }
 
-    function insertUser($password, $role, $firstName, $lastName, $phone, $email, $registered, $lastLogin = "",
-                        $wantsSMS = true, $wantsEmail = true)
+    function insertUser($password, $role="passenger", $firstName, $lastName, $phone, $email, $wantsSMS = true, $wantsEmail = true)
     {
         try
         {
-           $password = strval($password);
-           $role = strval($role);
+           $password = password_hash($password, PASSWORD_BCRYPT);
+           $role = "passenger";//strval($role);
            $firstName = strval($firstName);
-           $lastLogin = strval($lastName);
            $phone = strval($phone);
            $email = strval($email);
            $wantsSMS = boolval($wantsSMS);
            $wantsEmail = boolval($wantsEmail);
+           $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-           $stmt = $this->dbh->prepare("INSERT INTO `user` (`password`, `role`, `firstName`, `lastName`, `phone`, `email`, `registered`, `lastLogin`, `wantsSMS`, `wantsEmail`) 
-            VALUES (:password, :role, :firstName, :lastName, :phone, :email, :registered, :lastLogin, :wantsSMS, :wantsEmail);");
-           $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-           $stmt->bindParam(':role', $role, PDO::PARAM_STR);
+           $stmt = $this->dbh->prepare("INSERT INTO user (`password`, `role`, `firstName`, `lastName`, `phone`, `email`, `wantsSMS`, `wantsEmail`) 
+            VALUES (:pass, :userRole, :firstName, :lastName, :phone, :email, :wantsSMS, :wantsEmail);");
+           $stmt->bindParam(':pass', $password, PDO::PARAM_STR);
+           $stmt->bindParam(':userRole', $role, PDO::PARAM_STR);
            $stmt->bindParam(':firstName', $firstName, PDO::PARAM_STR);
            $stmt->bindParam(':lastName', $lastName, PDO::PARAM_STR);
            $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-           $stmt->bindParam(':registered', $registered, PDO::PARAM_STR);
-           $stmt->bindParam(':lastLogin', $lastLogin, PDO::PARAM_STR);
            $stmt->bindParam(':wantsSMS', $wantsSMS, PDO::PARAM_BOOL);
            $stmt->bindParam(':wantsEmail', $wantsEmail, PDO::PARAM_BOOL);
-
-           $stmt->execute();
-
-           return $stmt->rowCount() . " row(s) inserted";
+           $err = $stmt->execute();
+        //    error_log('query failed: ERROR['.$pdo->errorCode().':'.print_r($pdo->errorInfo(), true).'] QUERY['.$sql.']');
+           $id = $this->dbh->lastInsertId();
+           return $this->dbh->errorInfo();
         }
         catch (PDOException $e)
         {

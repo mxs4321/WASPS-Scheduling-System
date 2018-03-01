@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Schedule, Car, Group, Timer } from '../view/icons';
+import { Schedule, Car, Group, Timer, BarChart } from '../view/icons';
 import List from '../view/SidebarList';
 import { withRouter } from 'react-router';
 import type { UserRole } from '../model/types/user';
@@ -24,7 +24,14 @@ const Navigation = withRouter(({ location, userRole = 'passenger' }: Props) => (
         <Car />&nbsp;&nbsp;Rides
       </UnstyledLink>
     </List.Item>
-    {userRole === 'dispatcher' && (
+    {userRole === 'admin' && (
+      <List.Item active={location.pathname === '/reports'}>
+        <UnstyledLink to="/reports">
+          <BarChart />&nbsp;&nbsp;Reports
+        </UnstyledLink>
+      </List.Item>
+    )}
+    {(userRole === 'dispatcher' || userRole === 'admin') && (
       <List.Item active={location.pathname === '/drivers'}>
         <UnstyledLink to="/drivers">
           <Group />&nbsp;&nbsp;Drivers

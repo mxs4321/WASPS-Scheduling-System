@@ -47,7 +47,16 @@ const computeInitials = (name = 'NA') => {
   );
 };
 
+const getBorderColor = role => {
+  if (role === 'admin') return '#24292e';
+  if (role === 'dispatcher') return '#EB5757';
+  if (role === 'driver') return '#27AE60';
+  if (role === 'passenger') return '#4396E3';
+  return 'white';
+};
+
 const UserIcon = styled.button`
+  line-height: ${props => `${props.size}px` || '46px'};
   border-radius: 100%;
   padding: 0;
   margin: 5px;
@@ -55,7 +64,7 @@ const UserIcon = styled.button`
   height: ${props => `${props.size}px` || '46px'};
   font-size: ${props => `${props.size / 3}px` || '16px'};
   color: white;
-  border: 1px solid white;
+  border: 1px solid ${props => getBorderColor(props.role)};
   background-color: ${props => computeColor(props.name)};
   text-align: center;
   :focus {

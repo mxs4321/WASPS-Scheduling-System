@@ -2,9 +2,11 @@ import styled from 'styled-components';
 
 const List = styled.ul`
   list-style: none;
+  width: 100px;
 `;
 
 List.Item = styled.li`
+  width: 120px;
   line-height: 24px;
   display: flex;
   user-select: none;

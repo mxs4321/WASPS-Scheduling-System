@@ -15,10 +15,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
             case "dispatcher":
             case "admin":
-                if (isset($_GET['dayOfTheWeek']) && isset($_GET['timeOfDayStart']) && isset($_GET['timeOfDayEnd'])
-                    && isset($_GET['datetimeStart']) && isset($_GET['datetimeEnd'])) {
-                    echo json_encode($db->availability->findAvailableDrivers($_GET['dayOfTheWeek'], $_GET['timeOfDayStart'],
-                        $_GET['timeOfDayStart'], $_GET['datetimeStart'], $_GET['datetimeEnd']));
+                if (isset($_GET['start']) && isset($_GET['end'])) {
+                    echo json_encode($db->availability->findAvailableDrivers($_GET['start'], $_GET['end']));
                 } else {
                   http_response_code(400);
                   echo json_encode(["err" => "Invalid Arguments"]);  

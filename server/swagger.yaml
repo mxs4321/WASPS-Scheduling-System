@@ -1,0 +1,518 @@
+openapi: 3.0.0
+info:
+  description: Docs for the wasps api
+  title: WASPS API
+  version: 0.0.1
+servers:
+- url: http://localhost:8000/
+
+paths:
+  /login.php:
+    post:
+      tags: [/]
+      summary: Login to user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example: { "email": "dispatcher@websterwasps.com", "password": "dispatcher"}
+              oneOf:
+                - $ref: '#/components/schemas/EmailLogin'
+                - $ref: '#/components/schemas/PhoneLogin'
+      responses:        
+        201:
+          description: Session Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+            
+  /logout.php:
+    delete:
+      tags: [/]
+      summary: Log user out
+      responses:
+        202:
+          description: Session Destroyed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        405:
+          description: Method Not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          
+  /api/rides.php:
+    get:
+      tags: [Rides]
+      summary: List Rides
+      parameters:
+        - name: populate
+          in: query
+          description: items to populate
+          schema:
+            type: string
+            enum: 
+              - Drivers
+              - Users
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ride'
+    post:
+      tags: [Rides]
+      summary: Create new Ride
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Ride'
+      responses:
+        404:
+          description: "Invalid Event type"
+        201:
+          description: "Success"
+          
+    put: 
+      tags: [Rides]
+      summary: Update Exisiting Ride
+      parameters:
+        - name: id
+          in: query
+          description: The id of the ride to update
+          schema:
+            type: number
+            example: 2
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Ride'
+      responses:
+        404:
+          description: "Invalid Event type"
+        201:
+          description: "Success"
+    delete:
+      tags: [Rides]
+      summary: Delete Ride
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        404:
+          description: "Invalid Event type"
+        201:
+          description: "Success"
+          
+                  
+  /api/users.php:
+    get:
+      tags: [Users]
+      summary: List Users
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        404:
+          description: "Invalid Event type"
+        201:
+          description: "Success"
+    post:
+      tags: [Users]
+      summary: Create new user
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        404:
+          description: "Invalid Event type"
+        201:
+          description: "Success"
+    put: 
+      tags: [Users]
+      summary: Update Existing user
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        404:
+          description: "Invalid Event type"
+        201:
+          description: "Success"
+    delete:
+      tags: [Users]
+      summary: Delete user
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        404:
+          description: "Invalid Event type"
+        201:
+          description: "Success"
+  /api/drivers.php:
+    get:
+      tags: [Drivers]
+      summary: List Available Drivers
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: '#/components/schemas/User'
+    post:
+      tags: [Drivers]
+      summary: Add Availability
+      responses:
+        200:
+          description: "Success"            
+    put:
+      tags: [Drivers]
+      summary: Update Availability
+      responses:
+        200:
+          description: "Success"   
+          
+    delete:
+      tags: [Drivers]
+      summary: Remove Availability
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        404:
+          description: "Invalid Event type"
+        201:
+          description: "Success"   
+          
+  /api/volunteers.php:
+    get:
+      tags: [Volunteers]
+      summary: List Volunteer Request
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        404:
+          description: "Invalid Event type"
+        201:
+          description: "Success"
+    post: 
+      tags: [Volunteers]
+      summary: Create Volunteer Request
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        404:
+          description: "Invalid Event type"
+        201:
+          description: "Success"
+    delete:
+      tags: [Volunteers]
+      summary: Delete Volunteer Request
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        404:
+          description: "Invalid Event type"
+        201:
+          description: "Success"
+ 
+  /api/notifications.php:
+    get:
+      tags: [Notifications]
+      summary: Log of sent emails/sms
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        404:
+          description: "Invalid Event type"
+        201:
+          description: "Success"
+
+  
+  /api/search.php:
+    get:
+      tags: [Search]
+      summary: name, phone number, email, locations
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        404:
+          description: "Invalid Event type"
+        201:
+          description: "Success"   
+
+components:
+  schemas:
+    Comment: 
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        comment:
+          type: string
+          example: This is a comment
+        timestamp:
+          type: string
+          example: "2018-02-01 08:01:00"
+        userID:
+          type: number
+          example: 1
+        rideID:
+          type: number
+          example: 1
+          
+    DriverAvalability:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        start:
+          type: string
+          example: "08:01:00" 
+        end:
+          type: string
+          example: "09:01:00"
+        days:
+          type: array
+          items: 
+            type: string
+          enum:
+            - Sun
+            - Mon
+            - Tue
+            - Wed
+            - Thu
+            - Fri
+            - Sat
+        driverID:
+          type: number
+          example: 1
+
+    DriverAvalabilityException:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        start:
+          type: string
+          example: "2018-02-01 08:01:00" 
+        end:
+          type: string
+          example: "2018-02-01 09:01:00"
+        driverID:
+          type: number
+          example: 1
+          
+    Notification:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        type:
+          type: string
+          enum: 
+          - phone
+          - sms
+        message:
+          type: string
+          example: "This is a message that was sent"
+        userID:
+          type: number
+          example: 1
+        timestamp:
+          type: string
+          example: "2018-02-01 08:01:00"
+          
+    User:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        firstName:
+          type: string
+          example: brett
+        lastName:
+          type: string
+          example: lamy
+        userRole:
+          type: string
+          enum:
+          - admin
+          - dispatcher
+          - driver
+          - passanger
+        phone: 
+          type: string
+          example: 2035254835
+        email:
+          type: string
+          example: bel9708@g.rit.edu
+        registered: 
+          type: string
+          example: "2018-02-01 08:01:00"
+        lastLogin:
+          type: string
+          example: "2018-02-01 08:01:00"
+        wantsSMS:
+          type: boolean
+          example: true
+        wantsEmails: 
+          type: boolean
+          example: true
+ 
+    Ride:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        userID:
+          type: number
+          example: 1
+        driverID:
+          type: number
+          example: 1
+        apptStart:
+          type: string
+          example: "2018-02-01 08:01:00"
+        apptEnd: 
+          type: string
+          example: "2018-02-01 08:01:00"
+        numMiles:
+          type: number
+          example: 1.2
+        totalMinutes: 
+          type: number
+          example: 90
+        pickupTime:
+          type: string
+          example: "2018-02-01 08:01:00"
+        wheelchairVan:
+          type: boolean
+          example: false
+        status: 
+          type: string
+          enum: 
+            - Unverified
+            - Pending
+            - Scheduled
+            - Complete
+            - Canceled
+        pickupStreetAddress:
+          type: string
+          example: 59 Werner Park
+        pickupCity: 
+          type: string
+          example: Rochester
+        apptStreetAddress:
+          type: string
+          example: 59 Werner Park
+        apptCity: 
+          type: string
+          example: Rochester
+        created:
+          type: string
+          example: "2018-02-01 08:01:00"
+        modified:
+          type: string
+          example: "2018-02-01 08:01:00"
+          
+    VolunteerRequest:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        timestamp:
+          type: string
+          example: "2018-02-01 08:01:00"
+        userID:
+          type: number
+          example: 8
+    
+    Error:
+      type: object
+      properties: 
+        err: 
+          type: string
+          example: This is an example of an error
+        
+    Success:
+      type: object
+      properties: 
+        status: 
+          type: string
+          enum: 
+            - Success
+          
+    EmailLogin: 
+      type: object
+      properties:
+        email:
+          type: string
+          example: dispatcher@websterwasps.com
+        password: 
+          type: string
+          example: dispatcher
+
+    PhoneLogin: 
+      type: object
+      properties:
+        phone:
+          type: string
+          example: 5852167819
+        password: 
+          type: string
+          example: dispatcher 

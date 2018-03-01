@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import AvailabilityInput from '../../viewAvailabilityInput';
+import AvailabilityInput from '../../view/AvailabilityInput';
 import { Close } from '../../view/icons';
 import {
   fetchDriverAvailability,
@@ -9,6 +9,9 @@ import {
   createDriverAvailability,
   deleteDriverAvailability
 } from '../../model/availability';
+import { DatePicker, TimePicker } from 'antd';
+import { parse, stringify as queryify } from 'query-string';
+import moment from 'moment';
 
 const Flex = styled.div`
   display: Flex;
@@ -65,22 +68,38 @@ export class AvaliabilityForm extends Component {
                   }}
                 />
                 <Flex>
-                  <Input
-                    value={availability.start}
-                    onChange={({ target }) => {
-                      updateDriverAvailability({
-                        ...availability,
-                        start: target.value
-                      });
+                  <TimePicker
+                    value={
+                      availability.start
+                        ? moment(availability.start, 'HH:mm')
+                        : null
+                    }
+                    use12Hours
+                    format="h:mm a"
+                    onChange={startTime => {
+                      if (startTime) {
+                        updateDriverAvailability({
+                          ...availability,
+                          start: startTime.format('HH:mm')
+                        });
+                      }
                     }}
                   />
-                  <Input
-                    value={availability.end}
-                    onChange={({ target }) => {
-                      updateDriverAvailability({
-                        ...availability,
-                        end: target.value
-                      });
+                  <TimePicker
+                    value={
+                      availability.end
+                        ? moment(availability.end, 'HH:mm')
+                        : null
+                    }
+                    use12Hours
+                    format="h:mm a"
+                    onChange={endTime => {
+                      if (endTime) {
+                        updateDriverAvailability({
+                          ...availability,
+                          end: endTime.format('HH:mm')
+                        });
+                      }
                     }}
                   />
                 </Flex>

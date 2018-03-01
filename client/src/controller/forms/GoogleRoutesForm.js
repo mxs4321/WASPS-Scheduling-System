@@ -70,7 +70,6 @@ class GoogleRoutesForm extends Component {
     return (
       <Wrapper>
         <Iframe
-          key={'hello'}
           title="directions"
           frameborder="0"
           src={destination === '' ? placeIframe : directionIframe}
