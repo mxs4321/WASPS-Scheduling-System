@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import AvailabilityForm from '../view/forms/AvailabilityForm';
+import AvailabilityForm from './forms/AvailabilityForm';
 
 const Card = styled.div`
   position: relative;

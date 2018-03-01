@@ -34,6 +34,18 @@ export class SignIn extends Component {
     return (
       <Card>
         <Button
+          background="#24292e"
+          onClick={() =>
+            login({
+              email: 'admin@websterwasps.com',
+              password: 'admin',
+              referrer
+            })
+          }
+        >
+          Admin
+        </Button>
+        <Button
           background="#EB5757"
           onClick={() =>
             login({
@@ -61,13 +73,13 @@ export class SignIn extends Component {
           background="#4396E3"
           onClick={() =>
             login({
-              email: 'passanger@websterwasps.com',
-              password: 'passanger',
+              email: 'passenger@websterwasps.com',
+              password: 'passenger',
               referrer
             })
           }
         >
-          Passanger
+          Passenger
         </Button>
       </Card>
     );

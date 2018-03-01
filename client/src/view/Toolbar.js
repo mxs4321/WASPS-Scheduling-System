@@ -22,12 +22,14 @@ type Props = {
 const NoOp = () => {};
 
 const getToolbarBackgroundColor = ({ userRole }) => {
+  if (userRole === 'admin') return '#24292e';
   if (userRole === 'dispatcher') return '#EB5757';
   if (userRole === 'driver') return '#27AE60';
   return '#4396E3';
 };
 
 const getToolbarTitle = userRole => {
+  if (userRole === 'admin') return 'Administrator';
   if (userRole === 'dispatcher') return 'Dispatcher';
   if (userRole === 'driver') return 'Driver';
   return 'Passanger';

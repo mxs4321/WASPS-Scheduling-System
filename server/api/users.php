@@ -22,32 +22,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         //print_r($bodyData);
 
-        if (isset($bodyData['password']) && isset($bodyData['role']) && isset($bodyData['firstName'])
+        if (isset($bodyData['password'])  && isset($bodyData['firstName'])
            && isset($bodyData['lastName']) && isset($bodyData['phone']) && isset($bodyData['email']))
         {
            $password = $bodyData['password'];
-           $role = $bodyData['role'];
+           $role = "passenger";
            $firstName = $bodyData['firstName'];
            $lastName = $bodyData['lastName'];
            $phone = $bodyData['phone'];
            $email = $bodyData['email'];
-           $registered = date("Y-m-d H:i:s");
-           $lastLogin = date("Y-m-d H:i:s");
            $wantsSMS = $bodyData['wantsSMS'] ?? true;
            $wantsEmail = $bodyData['wantsEmail'] ?? true;
 
-           $password = sanitizeAndValidate($password, FILTER_SANITIZE_STRING);
-           $role = sanitizeAndValidate($role, FILTER_SANITIZE_STRING);
-           $firstName = sanitizeAndValidate($firstName, FILTER_SANITIZE_STRING);
-           $lastLogin = sanitizeAndValidate($lastLogin, FILTER_SANITIZE_STRING);
-           $phone = sanitizeAndValidate($phone, FILTER_SANITIZE_STRING);
-           $email = sanitizeAndValidate($email, FILTER_SANITIZE_EMAIL, FILTER_VALIDATE_EMAIL);
-           if ($wantsSMS != true)   $wantsSMS = sanitizeAndValidate($wantsSMS, -1, FILTER_VALIDATE_BOOLEAN);
-           if ($wantsEmail != true) $wantsEmail = sanitizeAndValidate($wantsEmail, -1, FILTER_VALIDATE_BOOLEAN);
-
+           echo json_encode($db->user->insertUser($password, $role, $firstName, $lastName, $phone, $email, $wantsSMS, $wantsEmail));
            http_response_code(201);
-           echo json_encode($db->user->insertUser($password, $role, $firstName, $lastName, $phone, $email, $registered,
-              $lastLogin, $wantsSMS, $wantsEmail));
         }
         else
         {

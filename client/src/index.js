@@ -9,6 +9,7 @@ import App from './controller/App';
 import registerServiceWorker from './util/registerServiceWorker';
 import { Switch, Route } from 'react-router';
 import SignIn from './controller/SignIn';
+import './view/antd.css';
 
 injectGlobal`
   html, body, #root {

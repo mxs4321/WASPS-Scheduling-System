@@ -29,7 +29,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case "POST":
         $_POST = json_decode(file_get_contents('php://input'), true);
 
-        if (empty($_POST['userID']) || empty($_POST['apptStart']) || empty($_POST['apptEnd'])
+        if (empty($_POST['passengerID']) || empty($_POST['apptStart']) || empty($_POST['apptEnd'])
             || empty($_POST['pickupTime']) || empty($_POST['pickupStreetAddress'])
             || empty($_POST['pickupCity']) || empty($_POST['apptStreetAddress']) || empty($_POST['apptCity'])
         ) {
@@ -38,7 +38,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             die();
         }
 
-        $status = $_POST['status'] ?? "Unverified";
+        $status = isset($_POST['driverID']) ? "Pending" : "Unverified";
         $created = date("Y-m-d H:i:s");
         $modified = date("Y-m-d H:i:s");
 

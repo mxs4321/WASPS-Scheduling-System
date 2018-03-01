@@ -1,5 +1,5 @@
 import { indexBy, prop, map, reduce } from 'ramda';
-import { getJSON } from '../util/fetch';
+import { getJSON, postJSON } from '../util/fetch';
 import { updateRequest } from './ajax';
 import { addUsers } from './users';
 import type { Ride } from './types/ride';
@@ -18,6 +18,55 @@ export const addRides = rides => ({
   type: ADD_RIDES,
   payload: rides
 });
+
+export const createRide = ({
+  passengerID,
+  driverID,
+  apptStart,
+  apptEnd,
+  origin,
+  destination
+}) => (dispatch, getState) => {
+  const url = '/api/rides.php';
+  dispatch(updateRequest(`GET ${url}`, 'Pending'));
+  const [pickupStreetAddress, pickupCity] = origin.split(', ');
+  const [apptStreetAddress, apptCity] = destination.split(', ');
+  return postJSON(url, {
+    passengerID,
+    apptStart,
+    apptEnd,
+    pickupTime: apptStart,
+    pickupStreetAddress,
+    pickupCity,
+    apptStreetAddress,
+    apptCity,
+    wheelchairVan: false,
+    driverID
+  })
+    .then(rides => {
+      const { users } = getState();
+      dispatch(updateRequest(`GET ${url}`, 'Success'));
+      dispatch(
+        addRides([
+          {
+            id: 100,
+            passengerID,
+            apptStart,
+            apptEnd,
+            status: 'Pending',
+            pickupTime: apptStart,
+            pickupStreetAddress,
+            pickupCity,
+            apptStreetAddress,
+            apptCity,
+            wheelchairVan: false,
+            driverID
+          }
+        ])
+      );
+    })
+    .catch(err => dispatch(updateRequest(`GET ${url}`, 'Error', err)));
+};
 
 /**
  * Will Make an AJAX Request to the server and keep the redux store in sync with eacy step of the process.

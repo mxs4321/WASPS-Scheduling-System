@@ -29,7 +29,6 @@ class AvailabilityDAO
     {
         try
         {
-            $driverID = intval($driverID);
             $stmt = $this->dbh->prepare("INSERT INTO availability (`start`, `end`, `days`, `driverID`) VALUES (:startTime, :endTime, :days, :driverID);");
             $stmt->bindParam(":startTime", $startTime);
             $stmt->bindParam(":endTime", $endTime);
@@ -131,16 +130,24 @@ class AvailabilityDAO
         }
     }
 
-    public function findAvailableDrivers($dayOfTheWeek, $timeOfDayStart, $timeOfDayEnd, $datetimeStart, $datetimeEnd)
+    public function findAvailableDrivers($datetimeStart, $datetimeEnd)
     {
         try {
+            $timeOfDayStart = explode(' ', $datetimeStart)[1];
+            $timeOfDayEnd = explode(' ', $datetimeEnd)[1];
+            $daysOfTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            $dayOfTheWeekIndex = date('w', strtotime($datetimeStart));
+            $dayOfTheWeek = $daysOfTheWeek[$dayOfTheWeekIndex];
+
             $query = "SELECT user.id, user.firstName, user.lastName, user.phone, user.email FROM user
            LEFT JOIN (availability) ON (user.id = availability.driverID)
            LEFT JOIN (availabilityexclusion) ON (user.id = availabilityexclusion.driverID)
            WHERE user.role = 'driver'
              AND FIND_IN_SET(:dayOfTheWeek, availability.days)>0
-             AND availability.start <= :timeOfDayStart AND availability.end >= :timeOfDayEnd
-             AND (availabilityexclusion.id IS NULL OR availabilityexclusion.end < :datetimeStart OR availabilityexclusion.start > :datetimeEnd)";
+             AND availability.start >= :timeOfDayStart AND availability.end <= :timeOfDayEnd
+             AND (availabilityexclusion.id IS NULL OR availabilityexclusion.end < :datetimeStart OR availabilityexclusion.start > :datetimeEnd)
+             GROUP BY id
+             ";
 
             $stmt = $this->dbh->prepare($query);
             $stmt->bindParam(':dayOfTheWeek', $dayOfTheWeek);
@@ -150,6 +157,7 @@ class AvailabilityDAO
             $stmt->bindParam(':datetimeEnd', $datetimeEnd);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
+            $data = [];
             while ($user = $stmt->fetch()) {
                 $data[] = $user->getDriverContactInfo();
             }

@@ -11,11 +11,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
    {
       if ($_GET['info'] == 'ride')
       {
-         exportRideToCSV();
+         if (isset($_GET['export'])) {
+             exportRideToCSV(); 
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode($db->ride->getRides());
+        }
       }
       else if ($_GET['info'] == 'driver')
       {
-         exportDriverToCSV();
+        if (isset($_GET['export'])) {
+         exportDriverToCSV(); 
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode($db->user->getDriverExportInfo());
+        }
       }
    }
 }
