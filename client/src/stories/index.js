@@ -26,6 +26,7 @@ import AvailableDrivers from '../view/AvailableDrivers';
 import AssignedDriver from '../view/AssignedDriver';
 import AcceptRide from '../view/AcceptRide';
 import DriverProfile from '../view/DriverProfile';
+import EditProfile from '../view/EditProfile';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'material-expansion-panel/dist/material-expansion-panel.min.css';
@@ -44,6 +45,17 @@ injectGlobal`
     position: absolute;
   }
 `;
+
+storiesOf('EditProfile', module)
+	.addDecorator((story, context) =>
+		withInfo(`
+			Find a User View
+		`)(story)(context)
+	)
+	.add('Basic', () => (
+		<EditProfile onSave={action('saved changes')} onCancel={action('change cancelled')}/>
+	));
+		
 storiesOf('AvailableDrivers', module)
 	.addDecorator((story, context) =>
 		withInfo(`
