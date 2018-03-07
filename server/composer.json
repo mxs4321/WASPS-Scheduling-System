@@ -1,8 +1,16 @@
 {
   "require": {
-    "twilio/sdk": "^5.16"
+    "twilio/sdk": "^5.16",
+    "guzzlehttp/guzzle": "^6.3"
   },
   "require-dev": {
     "phpunit/phpunit": "6"
+  },
+  "scripts": {
+    "test": [
+      "@composer setupDB",
+      "phpunit"
+    ],
+    "setupDB" : "@php dbSetup.php"
   }
 }
