@@ -7,7 +7,7 @@ class UsersTest extends TestCase
 
    public function setUp()
    {
-      $this->http = new GuzzleHttp\Client(['base_uri' => 'localhost:8000/api/users.php']);
+      $this->http = new GuzzleHttp\Client(['base_uri' => 'localhost:8000/api/']);
    }
 
    public function tearDown()
@@ -17,7 +17,7 @@ class UsersTest extends TestCase
 
    public function testGet()
    {
-      $response = $this->http->request('GET', 'users.php');
+      $response = $this->http->request('GET', '/api/users.php');
 
       $this->assertEquals(200, $response->getStatusCode());
 
