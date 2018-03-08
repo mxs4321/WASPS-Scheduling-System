@@ -6,6 +6,7 @@
 **Server**
 ```bash
 cd server
+composer install
 sh ./start.sh
 ```
 
@@ -18,7 +19,7 @@ npm start
 
 **Test**
 ```bash
-cd client
-npm install
-npm test
+cd server
+composer install
+composer test
 ```
