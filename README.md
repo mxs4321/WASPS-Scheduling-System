@@ -1,24 +1,33 @@
-
-
-
 # Setup Instructions
 
-**Server**
+## Server
+
 ```bash
 cd server
-sh ./start.sh
+composer install
+php -S 0.0.0.0:8000
 ```
 
-**Client**
+### Test
+
+```bash
+cd server
+composer install
+composer test
+```
+
+## Client
+
 ```bash
 cd client
 npm install
 npm start
 ```
 
-**Test**
+### Storybooks
+
 ```bash
 cd client
 npm install
-npm test
+npm run storybook
 ```
