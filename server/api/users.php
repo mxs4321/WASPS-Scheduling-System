@@ -51,7 +51,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         }
         else
         {
-           http_response_code(404);
+           http_response_code(500);
            echo json_encode(["err" => "Could not create user"]);
            die();
         }
@@ -83,8 +83,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
              http_response_code(403);
              echo json_encode(["err" => "Only registered users can access this resource."]);
        }
-
-
 
         break;
 
