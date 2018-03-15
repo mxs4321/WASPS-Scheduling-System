@@ -39,7 +39,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         }
         else
         {
-           http_response_code(404);
+           http_response_code(500);
            echo json_encode(["err" => "Could not create user"]);
            die();
         }
@@ -54,7 +54,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
        if (isset($bodyData['id']))
        {
-          $id = $bodyData['id'];
+          $id = $_GET['id'];
           $password = $bodyData['password'] ?? "";
           $role = $bodyData['role'] ?? "";
           $firstName = $bodyData['firstName'] ?? "";
@@ -74,7 +74,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
           if ($wantsSMS != true) $wantsSMS = sanitizeAndValidate($wantsSMS, -1, FILTER_VALIDATE_BOOLEAN);
           if ($wantsEmail != "") $wantsEmail = sanitizeAndValidate($wantsEmail, -1, FILTER_VALIDATE_BOOLEAN);
 
-          http_response_code(201);
+          http_response_code(200);
           echo json_encode($db->user->updateUser($password, $role, $firstName, $lastName, $phone, $email, "",
              $lastLogin, $wantsSMS, $wantsEmail));
        }
@@ -88,16 +88,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 
     case "DELETE":
-       $requestBody = file_get_contents('php://input');
-       $bodyData = json_decode($requestBody, true);
 
-       if (isset($bodyData['id']))
+       if (isset($_GET['id']))
        {
-          $id = $bodyData['id'];
+          $id = sanitizeAndValidate($_GET['id'], FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
-          $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
-
-          http_response_code(201);
+          http_response_code(200);
           echo json_encode($db->user->deleteUser($id));
        }
        else
