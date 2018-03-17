@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import User from "./icons/User";
+import {User} from './icons';
 
 const Wrapper = styled.div`
 	font-weight: bold;
@@ -45,7 +45,7 @@ const Field = styled.div`
 
 `
 
-const Checkbox = styled.input`
+const Checkbox = styled(props => <input type="checkbox" {...props} />)`
 	cursor: pointer;
 	margin-top:10px;
 	-webkit-appearance: none;
@@ -121,26 +121,26 @@ return (
 	
 	<EditDiv>
 		<Label>First Name</Label>
-			<Field><Input /></Field><br/>
+			<Field><Input onChange={e => this.setState ({ firstName: e.target.value })} /></Field><br/>
 		<Label>Last Name</Label>
-			<Field><Input /></Field><br/>
+			<Field><Input onChange={e => this.setState ({ lastName: e.target.value })}/></Field><br/>
 		<Label>Phone</Label>
-			<Field><Input /></Field><br/>
+			<Field><Input onChange={e => this.setState ({ phone: e.target.value })}/></Field><br/>
 		<Label>Email Address</Label>
-			<Field><Input /></Field><br/>
+			<Field><Input onChange={e => this.setState ({ emailAddress: e.target.value })}/></Field><br/>
 		<Label>Current Password</Label>
-			<Field><Input /></Field><br/>
+			<Field><Input onChange={e => this.setState ({ currentPassword: e.target.value })}/></Field><br/>
 		<Label>New Password</Label>	
-			<Field><Input /></Field><br/>
+			<Field><Input onChange={e => this.setState ({ newPassword: e.target.value })}/></Field><br/>
 		<Label>Wants SMS</Label>
-			<Field><Checkbox type="checkbox" name="sms"/></Field><br/>
+			<Field><Checkbox name="sms"/></Field><br/>
 		<Label>Wants Email</Label>
-			<Field><Checkbox type="checkbox" name="email"/></Field><br/>
+			<Field><Checkbox name="email"/></Field><br/>
 	</EditDiv>
 
 	<Buttons>
 			<Cancel onClick={onCancel}>CANCEL</Cancel>
-			<Save onClick={onSave}>SAVE</Save>
+			<Save onClick={() => onSave(this.state)}>SAVE</Save>
 	</Buttons>
 
 </Wrapper>
