@@ -15,6 +15,7 @@ import Schedule from './Schedule';
 import Rides from './Rides';
 import PrivateRoute from './PrivateRoute';
 import Reports from './Reports';
+import EditProfileForm from './forms/EditProfileForm';
 
 const Fullbleed = styled.div`
   postion: absolute:
@@ -43,6 +44,15 @@ const FAB = styled(Link)`
 const Sidebar = styled.div`
   width: 180px;
 `;
+const Card = styled.div`
+  position: relative;
+  top: 5%;
+  left: 5%;
+  width: 80%;
+  height: 80%;
+  background: white;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+`;
 
 export const App = ({
   user,
@@ -70,7 +80,8 @@ export const App = ({
         userName={`${user.firstName} ${user.lastName}`}
         userRole={user.role}
         onMenuToggle={toggleSidebar}
-        onAvatarClick={logout}
+        goToEditProfile={() => history.push('/profile')}
+        logout={logout}
       />
       <Body>
         {isSidebarOpen && (
@@ -108,7 +119,22 @@ export const App = ({
           path="/reports"
           component={Reports}
         />
-        <Route path="/schedule" component={Schedule} />
+        <Route
+          path="/profile"
+          component={(...args) => (
+            <Card>
+              <EditProfileForm {...args} />
+            </Card>
+          )}
+        />
+        <Route
+          path="/schedule"
+          component={(...args) => (
+            <Card>
+              <Schedule {...args} />
+            </Card>
+          )}
+        />
       </Body>
       {user.role !== 'driver' && [
         <FAB to="/create/1">

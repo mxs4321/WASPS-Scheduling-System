@@ -1,6 +1,6 @@
 // @flow
 import { push } from 'react-router-redux';
-import { postJSON, deleteJSON } from '../util/fetch';
+import { postJSON, deleteJSON, putJSON } from '../util/fetch';
 import { updateRequest } from './ajax';
 import type { User } from './types/user';
 
@@ -31,6 +31,14 @@ export const logout = () => dispatch => {
   return deleteJSON('/logout.php')
     .then(() => dispatch(updateRequest('DELETE /logout.php', 'Success')))
     .catch(err => dispatch(updateRequest('DELETE /logout.php', 'Error', err)));
+};
+
+export const updateProfile = (id, user) => dispatch => {
+  const url = `/api/users.php?id=${id}`;
+  dispatch(updateRequest(`PUT ${url}`, 'Pending'));
+  return putJSON(url, user)
+    .then(() => dispatch(updateRequest(`PUT ${url}`, 'Success')))
+    .catch(err => dispatch(updateRequest(`PUT ${url}`, 'Error', err)));
 };
 
 export default function authentication(state: State = { user: null }, action) {
