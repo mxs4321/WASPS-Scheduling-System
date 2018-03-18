@@ -3,6 +3,7 @@ session_start(); // Starting Session
 header('Content-Type: application/json');
 
 include '../env.php';
+include '../sanitizationValidation.php';
 require_once "../db.class.php";
 $db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
 
@@ -10,7 +11,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
        switch ($_SESSION['user']['role'])
        {
-          case "user":
+          case "passenger":
           case "driver":
             echo json_encode($db->user->findById($_SESSION['user']['id']));
              break;
@@ -32,29 +33,22 @@ switch ($_SERVER['REQUEST_METHOD']) {
        break;
 
     case "POST":
-        $requestBody = file_get_contents('php://input');
-        $bodyData = json_decode($requestBody, true);
-
-        if (isset($bodyData['password'])  && isset($bodyData['firstName'])
-           && isset($bodyData['lastName']) && isset($bodyData['phone']) && isset($bodyData['email']))
+        switch($_SESSION['user']['role'])
         {
-           $password = $bodyData['password'];
-           $role = "passenger";
-           $firstName = $bodyData['firstName'];
-           $lastName = $bodyData['lastName'];
-           $phone = $bodyData['phone'];
-           $email = $bodyData['email'];
-           $wantsSMS = $bodyData['wantsSMS'] ?? true;
-           $wantsEmail = $bodyData['wantsEmail'] ?? true;
-
-           echo json_encode($db->user->insertUser($password, $role, $firstName, $lastName, $phone, $email, $wantsSMS, $wantsEmail));
-           http_response_code(201);
-        }
-        else
-        {
-           http_response_code(500);
-           echo json_encode(["err" => "Could not create user"]);
-           die();
+           case "admin":
+              $bodyData = json_decode(file_get_contents('php://input'), true);
+              if (isset($bodyData['role']))
+              {
+                 postUser($bodyData, $bodyData['role']);
+              }
+              else
+              {
+                 postUser($bodyData);
+              }
+              break;
+           default:
+              $bodyData = json_decode(file_get_contents('php://input'), true);
+              postUser($bodyData);
         }
 
         break;
@@ -62,20 +56,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case "PUT":
        switch ($_SESSION['user']['role'])
        {
-          case "user":
+          case "passenger":
           case "driver":
              $bodyData = json_decode(file_get_contents('php://input'), true);
              putUser($_SESSION['user']['id'], $bodyData);
              break;
           case "admin":
              $bodyData = json_decode(file_get_contents('php://input'), true);
-             if (isset($bodyData['id']))
+             if (isset($_GET['id']))
              {
-                putUser($bodyData['id'], $bodyData, $bodyData['role'] ?? "");
+                putUser($_GET['id'], $bodyData, $bodyData['role'] ?? "");
              }
              else
              {
-                http_response_code(404);
+                http_response_code(400);
                 echo json_encode(["err" => "Invalid arguments"]);
                 die();
              }
@@ -90,26 +84,24 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case "DELETE":
        switch ($_SESSION['user']['role'])
        {
-          case "user":
+          case "passenger":
           case "driver":
-             http_response_code(201);
+             http_response_code(200);
              echo json_encode($db->user->deleteUser($_SESSION['user']['id']));
              break;
           case "admin":
-             $bodyData = json_decode(file_get_contents('php://input'), true);
-
              if (isset($_GET['id']))
              {
                 $id = $_GET['id'];
 
                 $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
-                http_response_code(201);
+                http_response_code(200);
                 echo json_encode($db->user->deleteUser($id));
              }
              else
              {
-                http_response_code(404);
+                http_response_code(400);
                 echo json_encode(["err" => "Invalid arguments"]);
                 die();
              }
@@ -122,6 +114,32 @@ switch ($_SERVER['REQUEST_METHOD']) {
        break;
 }
 
+function postUser($bodyData, $role = "passenger")
+{
+   global $db;
+
+   if (isset($bodyData['password'])  && isset($bodyData['firstName'])
+      && isset($bodyData['lastName']) && isset($bodyData['phone']) && isset($bodyData['email']))
+   {
+      $password = $bodyData['password'];
+      $firstName = $bodyData['firstName'];
+      $lastName = $bodyData['lastName'];
+      $phone = $bodyData['phone'];
+      $email = $bodyData['email'];
+      $wantsSMS = $bodyData['wantsSMS'] ?? true;
+      $wantsEmail = $bodyData['wantsEmail'] ?? true;
+
+      echo json_encode($db->user->insertUser($password, $role, $firstName, $lastName, $phone, $email, $wantsSMS, $wantsEmail));
+      http_response_code(201);
+   }
+   else
+   {
+      http_response_code(400);
+      echo json_encode(["err" => "Invalid arguments"]);
+      die();
+   }
+}
+
 function putUser($userID, $bodyData, $role = "")
 {
    global $db;
@@ -132,8 +150,8 @@ function putUser($userID, $bodyData, $role = "")
    $phone = $bodyData['phone'] ?? "";
    $email = $bodyData['email'] ?? "";
    $lastLogin = $bodyData['lastLogin'] ?? "";
-   $wantsSMS = $bodyData['wantsSMS'] ?? true;
-   $wantsEmail = $bodyData['wantsEmail'] ?? true;
+   $wantsSMS = $bodyData['wantsSMS'] ?? "";
+   $wantsEmail = $bodyData['wantsEmail'] ?? "";
 
    $password = sanitizeAndValidate($password, FILTER_SANITIZE_STRING);
    if ($role != "")       $role = sanitizeAndValidate($role, FILTER_SANITIZE_STRING);
@@ -141,10 +159,10 @@ function putUser($userID, $bodyData, $role = "")
    if ($lastLogin != "")  $lastLogin = sanitizeAndValidate($lastLogin, FILTER_SANITIZE_STRING);
    if ($phone != "")      $phone = sanitizeAndValidate($phone, FILTER_SANITIZE_STRING);
    if ($email!= "")       $email = sanitizeAndValidate($email, FILTER_SANITIZE_EMAIL, FILTER_VALIDATE_EMAIL);
-   if ($wantsSMS != true) $wantsSMS = sanitizeAndValidate($wantsSMS, -1, FILTER_VALIDATE_BOOLEAN);
-   if ($wantsEmail != "") $wantsEmail = sanitizeAndValidate($wantsEmail, -1, FILTER_VALIDATE_BOOLEAN);
+   if ($wantsSMS !== "")   $wantsSMS = sanitizeAndValidate($wantsSMS, -1, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+   if ($wantsEmail !== "") $wantsEmail = sanitizeAndValidate($wantsEmail, -1, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
-   http_response_code(201);
+   http_response_code(200);
    echo json_encode($db->user->updateUser($userID, $password, $role, $firstName, $lastName, $phone, $email, "",
       $lastLogin, $wantsSMS, $wantsEmail));
 }

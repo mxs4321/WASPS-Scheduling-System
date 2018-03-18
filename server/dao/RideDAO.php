@@ -226,7 +226,7 @@ class RideDAO
           if ($numMiles != "")            $stmt->bindParam(':numMiles', $numMiles);
           if ($totalMinutes != "")        $stmt->bindParam(':totalMinutes', $totalMinutes, PDO::PARAM_INT);
           if ($pickupTime != "")          $stmt->bindParam(':pickupTime', $pickupTime, PDO::PARAM_STR);
-          if ($wheelchairVan != "")       $stmt->bindParam(':wheelchairVan', $wheelchairVan, PDO::PARAM_BOOL);
+          if ($wheelchairVan != "")       $stmt->bindParam(':wheelchairVan', $wheelchairVan, PDO::PARAM_INT);
           if ($status != "")              $stmt->bindParam(':status', $status, PDO::PARAM_STR);
           if ($pickupStreetAddress != "") $stmt->bindParam(':pickupStreetAddress', $pickupStreetAddress, PDO::PARAM_STR);
           if ($pickupCity != "")          $stmt->bindParam(':pickupCity', $pickupCity, PDO::PARAM_STR);
