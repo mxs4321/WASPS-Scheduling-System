@@ -7,16 +7,6 @@ import { fetchRidesWithUsers } from '../model/rides';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-const Card = styled.div`
-  position: relative;
-  top: 5%;
-  left: 5%;
-  width: 80%;
-  height: 80%;
-  background: white;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-`;
-
 BigCalendar.momentLocalizer(moment);
 
 export class Schedule extends Component {
@@ -25,11 +15,7 @@ export class Schedule extends Component {
   }
 
   render() {
-    return (
-      <Card>
-        <BigCalendar events={this.props.rides} />
-      </Card>
-    );
+    return <BigCalendar events={this.props.rides} />;
   }
 }
 

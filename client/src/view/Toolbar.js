@@ -2,21 +2,24 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Menu } from './icons';
-import Avatar from './Avatar';
+import UserMenu from './UserMenu';
 import SearchBar from './SearchBar';
-import type { UserRole } from '../model/types/user';
 
 type Props = {
   /** Helps determine the color of the bar */
-  userRole: UserRole,
+  isDispatcher: Boolean,
+  /** Helps determine the color of the bar */
+  isDriver: Boolean,
   /** Call back for when the Hamburger menu button is clicked */
   onMenuToggle: Function,
   /** Call back for when the search bar is Focused */
   onSearchFocus: Function,
   /** Call back for when the search bar is Blured */
   onSearchBlur: Function,
-  /** Call back for when someone click the Avatar */
-  onAvatarClick: Function
+  /** Call back for when someone clicks Edit Profile */
+  goToEditProfile: Function,
+  /** Call back for when someone clicks Logout */
+  logout: Function
 };
 
 const NoOp = () => {};
@@ -49,17 +52,19 @@ const Background = styled.div`
 const Unselectable = styled.span`
   user-select: none;
 `;
-
 class Toolbar extends Component {
   props: Props;
-  state = { isSearching: false };
+  state = {
+    isSearching: false
+  };
 
   render() {
     const {
       userRole = 'passenger',
       userName,
       onMenuToggle = NoOp,
-      onAvatarClick = NoOp
+      goToEditProfile = NoOp,
+      logout = NoOp
     } = this.props;
     const { isSearching } = this.state;
     return (
@@ -70,7 +75,12 @@ class Toolbar extends Component {
           onFocus={() => this.setState({ isSearching: true })}
           onBlur={() => this.setState({ isSearching: false })}
         />
-        <Avatar size={36} name={userName} onClick={onAvatarClick} />
+        <UserMenu
+          backgroundColor={getToolbarBackgroundColor({ userRole })}
+          size={36}
+          logout={logout}
+          goToEditProfile={goToEditProfile}
+        />
       </Background>
     );
   }
