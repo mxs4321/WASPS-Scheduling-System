@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Menu } from './icons';
-import Avatar from './Avatar';
+import UserMenu from './UserMenu';
 import SearchBar from './SearchBar';
 
 type Props = {
@@ -18,26 +18,23 @@ type Props = {
   onSearchBlur: Function,
   /** Call back for when someone clicks Edit Profile */
   goToEditProfile: Function,
-   /** Call back for when someone clicks Logout */
+  /** Call back for when someone clicks Logout */
   logout: Function
 };
 
 const NoOp = () => {};
 
-const getToolbarBackgroundColor = ({
-  isDispatcher = false,
-  isDriver = false,
-  isSearching = false
-}) => {
-  // if (isSearching) return "#f6f6f6";
-  if (isDispatcher) return '#EB5757';
-  if (isDriver) return '#27AE60';
+const getToolbarBackgroundColor = ({ userRole }) => {
+  if (userRole === 'admin') return '#24292e';
+  if (userRole === 'dispatcher') return '#EB5757';
+  if (userRole === 'driver') return '#27AE60';
   return '#4396E3';
 };
 
-const getToolbarTitle = ({ isDispatcher = false, isDriver = false }) => {
-  if (isDispatcher) return 'Dispatcher';
-  if (isDriver) return 'Driver';
+const getToolbarTitle = userRole => {
+  if (userRole === 'admin') return 'Administrator';
+  if (userRole === 'dispatcher') return 'Dispatcher';
+  if (userRole === 'driver') return 'Driver';
   return 'Passanger';
 };
 
@@ -52,7 +49,9 @@ const Background = styled.div`
   line-height: 46px;
   color: white;
 `;
-
+const Unselectable = styled.span`
+  user-select: none;
+`;
 class Toolbar extends Component {
   props: Props;
   state = {
@@ -61,26 +60,27 @@ class Toolbar extends Component {
 
   render() {
     const {
-      isDispatcher = false,
-      isDriver = false,
+      userRole = 'passenger',
+      userName,
       onMenuToggle = NoOp,
       goToEditProfile = NoOp,
       logout = NoOp
     } = this.props;
     const { isSearching } = this.state;
     return (
-      <Background
-        isDispatcher={isDispatcher}
-        isDriver={isDriver}
-        isSearching={isSearching}
-      >
+      <Background userRole={userRole} isSearching={isSearching}>
         <HamburgerMenu onClick={onMenuToggle} />
-        {getToolbarTitle({ isDispatcher, isDriver })}
+        <Unselectable>{getToolbarTitle(userRole)}</Unselectable>
         <SearchBar
           onFocus={() => this.setState({ isSearching: true })}
           onBlur={() => this.setState({ isSearching: false })}
         />
-        <Avatar size={36}/>
+        <UserMenu
+          backgroundColor={getToolbarBackgroundColor({ userRole })}
+          size={36}
+          logout={logout}
+          goToEditProfile={goToEditProfile}
+        />
       </Background>
     );
   }

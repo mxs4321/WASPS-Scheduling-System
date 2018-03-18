@@ -16,18 +16,18 @@ import TimePicker from '../view/TimePicker';
 import InputBox from '../view/InputBox';
 import BreadCrumb, { Crumb } from '../view/Breadcrumb';
 import AvailabilityInput from '../view/AvailabilityInput';
-import AvaliabilityForm from '../view/forms/AvailabilityForm';
-import CreateUserForm from '../view/forms/CreateUserForm';
-import PlacesSearchBox from '../view/PlacesSearchbox';
-import GoogleRoutesForm from '../view/forms/GoogleRoutesForm';
-import FindUsers from '../view/FindUsers';
+// import AvaliabilityForm from '../view/forms/AvailabilityForm';
+// import CreateUserForm from '../view/forms/CreateUserForm';
+// import PlacesSearchBox from '../view/PlacesSearchbox';
+// import GoogleRoutesForm from '../view/forms/GoogleRoutesForm';
+// import FindUsers from '../view/FindUsers';
 import TimeSelectorDropdown from '../view/TimeSelectorDropdown';
 import AvailableDrivers from '../view/AvailableDrivers';
 import AssignedDriver from '../view/AssignedDriver';
 import AcceptRide from '../view/AcceptRide';
 import DriverProfile from '../view/DriverProfile';
 import EditProfile from '../view/EditProfile';
-import Edit from '../view/Edit';
+import UserMenu from '../view/UserMenu';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'material-expansion-panel/dist/material-expansion-panel.min.css';
@@ -48,88 +48,110 @@ injectGlobal`
 `;
 
 storiesOf('EditProfile', module)
-	.addDecorator((story, context) =>
-		withInfo(`
-			Find a User View
-		`)(story)(context)
-	)
-	.add('Basic', () => (
-		<EditProfile onSave={action(this.state)} onCancel={action('change cancelled')}/>
-	));
-	
-storiesOf('Edit', module)
-	.addDecorator((story, context) =>
-		withInfo(`
-			Find a User View
-		`)(story)(context)
-	)
-	.add('Basic', () => (
-		<Edit users={['Niharika Nakka']} goToEditProfile={action('edit profile')} logout={action('logging out')}/>
-	));
-		
-storiesOf('AvailableDrivers', module)
-	.addDecorator((story, context) =>
-		withInfo(`
-			Find a User View
-		`)(story)(context)
-	)
-	.add('Basic', () => (
-		<AvailableDrivers onReply={action('replied')} phone="585-111-1234" origin="1900 empire blvd, Webster, NY" destination="55 North Ave, Webster, NY" drivers={["Niharika Nakka", "Brett Lamy", "Mohammad Suhail"]}/>
-	));
-	
-storiesOf('AssignedDriver', module)
-	.addDecorator((story, context) =>
-		withInfo(`
-			Find a User View
-		`)(story)(context)
-	)
-	.add('Basic', () => (
-		<AssignedDriver onReply={action('replied')} phone="585-789-9812" origin="1900 empire blvd, Webster, NY" destination="55 North Ave, Webster, NY" users={['Niharika Nakka']} />
-	));
-	
-storiesOf('AcceptRide', module)
-	.addDecorator((story, context) =>
-		withInfo(`
-			Find a User View
-		`)(story)(context)
-	)
-	.add('Basic', () => (
-		<AcceptRide users={['Niharika Nakka']} onReply={action('replied')} onAccept={action('Ride Accepted')} onDecline={action('Ride Declined')} phone="585-583-5839" origin="1900 empire blvd, Webster, NY" destination="55 North Ave, Webster, NY" />
-	));	
-
-storiesOf('DriverProfile', module)
-	.addDecorator((story, context) =>
-		withInfo(`
-			Find a User View
-		`)(story)(context)
-	)
-	.add('Basic', () => (
-		<DriverProfile />
-	));	
-	
-storiesOf('TimeSelectorDropdown', module)
-	.addDecorator((story, context) =>
-		withInfo(`
-			Find a User View
-		`)(story)(context)
-	)
-	.add('Basic', () => (
-		<TimeSelectorDropdown/>
-	));
-	
-
-storiesOf('FindUsers', module)
   .addDecorator((story, context) =>
     withInfo(`
-      Find a User View
-    `)(story)(context)
+			Find a User View
+		`)(story)(context)
   )
   .add('Basic', () => (
-    <FindUsers
-      users={['Brett Lamy', 'Foo Bar']}
-      onSearchChanged={action('searchChanged')}
+    <EditProfile
+      onSave={action('On Save')}
+      onCancel={action('change cancelled')}
     />
   ));
+
+storiesOf('Edit', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+			Find a User View
+		`)(story)(context)
+  )
+  .add('Basic', () => (
+    <UserMenu
+      users={['Niharika Nakka']}
+      goToEditProfile={action('edit profile')}
+      logout={action('logging out')}
+    />
+  ));
+
+storiesOf('AvailableDrivers', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+			Find a User View
+		`)(story)(context)
+  )
+  .add('Basic', () => (
+    <AvailableDrivers
+      onReply={action('replied')}
+      phone="585-111-1234"
+      origin="1900 empire blvd, Webster, NY"
+      destination="55 North Ave, Webster, NY"
+      drivers={['Niharika Nakka', 'Brett Lamy', 'Mohammad Suhail']}
+    />
+  ));
+
+storiesOf('AssignedDriver', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+			Find a User View
+		`)(story)(context)
+  )
+  .add('Basic', () => (
+    <AssignedDriver
+      onReply={action('replied')}
+      phone="585-789-9812"
+      origin="1900 empire blvd, Webster, NY"
+      destination="55 North Ave, Webster, NY"
+      users={['Niharika Nakka']}
+    />
+  ));
+
+storiesOf('AcceptRide', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+			Find a User View
+		`)(story)(context)
+  )
+  .add('Basic', () => (
+    <AcceptRide
+      users={['Niharika Nakka']}
+      onReply={action('replied')}
+      onAccept={action('Ride Accepted')}
+      onDecline={action('Ride Declined')}
+      phone="585-583-5839"
+      origin="1900 empire blvd, Webster, NY"
+      destination="55 North Ave, Webster, NY"
+    />
+  ));
+
+storiesOf('DriverProfile', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+			Find a User View
+		`)(story)(context)
+  )
+  .add('Basic', () => <DriverProfile />);
+
+storiesOf('TimeSelectorDropdown', module)
+  .addDecorator((story, context) =>
+    withInfo(`
+			Find a User View
+		`)(story)(context)
+  )
+  .add('Basic', () => <TimeSelectorDropdown />);
+
+// storiesOf('FindUsers', module)
+//   .addDecorator((story, context) =>
+//     withInfo(`
+//       Find a User View
+//     `)(story)(context)
+//   )
+//   .add('Basic', () => (
+//     <FindUsers
+//       users={['Brett Lamy', 'Foo Bar']}
+//       onSearchChanged={action('searchChanged')}
+//     />
+//   ));
 
 storiesOf('PlacesSearchBox', module)
   .addDecorator((story, context) =>
@@ -141,22 +163,22 @@ storiesOf('PlacesSearchBox', module)
     <PlacesSearchBox title="title" onAddressPicked={action('address Picked')} />
   ));
 
-storiesOf('GoogleRoutesForm', module)
-  .addDecorator((story, context) =>
-    withInfo(`
-        Google places autocomplete
-      `)(story)(context)
-  )
-  .add('Basic', () => (
-    <FullBleed>
-      <GoogleRoutesForm
-        apiKey="AIzaSyBvobiFxMVC72Zbd2YmfcxawWMpwG_QLKs"
-        onOriginChanged={action('onOriginChanged')}
-        onDestinationChanged={action('onDestinationChanged')}
-        onRouteChanged={action('onRouteChanged')}
-      />
-    </FullBleed>
-  ));
+// storiesOf('GoogleRoutesForm', module)
+//   .addDecorator((story, context) =>
+//     withInfo(`
+//         Google places autocomplete
+//       `)(story)(context)
+//   )
+//   .add('Basic', () => (
+//     <FullBleed>
+//       <GoogleRoutesForm
+//         apiKey="AIzaSyBvobiFxMVC72Zbd2YmfcxawWMpwG_QLKs"
+//         onOriginChanged={action('onOriginChanged')}
+//         onDestinationChanged={action('onDestinationChanged')}
+//         onRouteChanged={action('onRouteChanged')}
+//       />
+//     </FullBleed>
+//   ));
 
 storiesOf('InputBox', module)
   .addDecorator((story, context) =>
@@ -168,23 +190,23 @@ storiesOf('InputBox', module)
     <InputBox name="title" onChange={action('form submitted')} />
   ));
 
-storiesOf('CreateUserForm', module)
-  .addDecorator((story, context) =>
-    withInfo(`
-  CreateUserForm
-  `)(story)(context)
-  )
-  .add('Basic', () => <CreateUserForm onSubmit={action('form submitted')} />);
+// storiesOf('CreateUserForm', module)
+//   .addDecorator((story, context) =>
+//     withInfo(`
+//   CreateUserForm
+//   `)(story)(context)
+//   )
+//   .add('Basic', () => <CreateUserForm onSubmit={action('form submitted')} />);
 
-storiesOf('AvaliabilityForm', module)
-  .addDecorator((story, context) =>
-    withInfo(`
-  An form for entering Availability
-  `)(story)(context)
-  )
-  .add('Basic', () => (
-    <AvaliabilityForm onChange={action('availability changed')} />
-  ));
+// storiesOf('AvaliabilityForm', module)
+//   .addDecorator((story, context) =>
+//     withInfo(`
+//   An form for entering Availability
+//   `)(story)(context)
+//   )
+//   .add('Basic', () => (
+//     <AvaliabilityForm onChange={action('availability changed')} />
+//   ));
 
 storiesOf('AvailabilityInput', module)
   .addDecorator((story, context) =>
