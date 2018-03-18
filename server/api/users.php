@@ -1,4 +1,5 @@
 <?php
+session_start(); // Starting Session
 header('Content-Type: application/json');
 
 include '../env.php';
@@ -97,9 +98,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
           case "admin":
              $bodyData = json_decode(file_get_contents('php://input'), true);
 
-             if (isset($bodyData['id']))
+             if (isset($_GET['id']))
              {
-                $id = $bodyData['id'];
+                $id = $_GET['id'];
 
                 $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 

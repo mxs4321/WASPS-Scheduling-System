@@ -1,4 +1,5 @@
 <?php
+session_start(); // Starting Session
 header('Content-Type: application/json');
 
 include '../env.php';
@@ -10,7 +11,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
    case "GET":
       switch ($_SESSION['user']['role'])
       {
-         case "user":
+         case "passenger":
             echo json_encode($db->volunteerRequest->getVolunteerRequestForUser($_SESSION['user']['id']));
             break;
          case "admin":
@@ -33,7 +34,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
    case "POST":
       switch ($_SESSION['user']['role'])
       {
-         case "user":
+         case "passenger":
             postVolunteerRequest($_SESSION['user']['id']);
             break;
          case "admin":
@@ -59,7 +60,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
    case "PUT":
       switch ($_SESSION['user']['role'])
       {
-         case "user":
+         case "passenger":
             $bodyData = json_decode(file_get_contents('php://input'), true);
             putVolunteerRequest($_SESSION['user']['id'], $bodyData);
             break;
@@ -77,11 +78,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
    case "DELETE":
       switch ($_SESSION['user']['role'])
       {
-         case "user":
+         case "passenger":
             deleteVolunteerRequest($_SESSION['user']['id']);
             break;
          case "admin":
-            deleteVolunteerRequest();
+            deleteVolunteerRequest($_GET['id']);
             break;
          default:
             http_response_code(403);
@@ -106,9 +107,9 @@ function putVolunteerRequest($userID, $bodyData)
 {
    global $db;
 
-   if (isset($bodyData['id']))
+   if (isset($_GET['id']))
    {
-      $id = $bodyData['id'];
+      $id = $_GET['id'];
 
       $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
       $userID = sanitizeAndValidate($userID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
@@ -130,9 +131,9 @@ function deleteVolunteerRequest($userID = "")
 
    $bodyData = json_decode(file_get_contents('php://input'), true);
 
-   if (isset($bodyData['id']))
+   if (isset($_GET['id']))
    {
-      $id = $bodyData['id'];
+      $id = $_GET['id'];
 
       $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 

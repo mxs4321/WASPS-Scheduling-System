@@ -1,4 +1,5 @@
 <?php
+session_start(); // Starting Session
 
 include '../env.php';
 require_once "../db.class.php";
