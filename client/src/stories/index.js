@@ -27,6 +27,7 @@ import AssignedDriver from '../view/AssignedDriver';
 import AcceptRide from '../view/AcceptRide';
 import DriverProfile from '../view/DriverProfile';
 import EditProfile from '../view/EditProfile';
+import Edit from '../view/Edit';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'material-expansion-panel/dist/material-expansion-panel.min.css';
@@ -53,7 +54,17 @@ storiesOf('EditProfile', module)
 		`)(story)(context)
 	)
 	.add('Basic', () => (
-		<EditProfile onSave={action('saved changes')} onCancel={action('change cancelled')}/>
+		<EditProfile onSave={action(this.state)} onCancel={action('change cancelled')}/>
+	));
+	
+storiesOf('Edit', module)
+	.addDecorator((story, context) =>
+		withInfo(`
+			Find a User View
+		`)(story)(context)
+	)
+	.add('Basic', () => (
+		<Edit users={['Niharika Nakka']} goToEditProfile={action('edit profile')} logout={action('logging out')}/>
 	));
 		
 storiesOf('AvailableDrivers', module)
@@ -250,6 +261,8 @@ storiesOf('Toolbar', module)
       onMenuToggle={action('menu clicked')}
       onAvatarClick={action('avatar click')}
       userRole={'dispatcher'}
+      goToEditProfile={action('edit profile clicked')}
+      logout={action('logout clicked')}
     />
   ))
   .add('Driver', () => (
@@ -257,12 +270,16 @@ storiesOf('Toolbar', module)
       onMenuToggle={action('menu clicked')}
       onAvatarClick={action('avatar click')}
       userRole={'driver'}
+      goToEditProfile={action('edit profile clicked')}
+      logout={action('logout clicked')}
     />
   ))
   .add('Passanger', () => (
     <Toolbar
       onAvatarClick={action('avatar click')}
       onMenuToggle={action('menu clicked')}
+      goToEditProfile={action('edit profile clicked')}
+      logout={action('logout clicked')}
     />
   ));
 
