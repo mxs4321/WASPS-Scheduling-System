@@ -1,4 +1,5 @@
 <?php
+session_start(); // Starting Session
 header('Content-Type: application/json');
 
 include '../env.php';

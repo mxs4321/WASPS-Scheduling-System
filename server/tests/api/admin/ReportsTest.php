@@ -5,9 +5,11 @@ use PHPUnit\Framework\TestCase;
 class ReportsTest extends TestCase
 {
     private $http;
+    private $cookieJar;
 
     public function setUp()
     {
+        $this->cookieJar = new \GuzzleHttp\Cookie\CookieJar();
         $this->http = new GuzzleHttp\Client(['base_uri' => 'localhost:8000/api/', 'http_errors' => false]);
         $this->http->request('POST', '/dbSetup.php');
         $this->http->request('POST', '/login.php', [
@@ -15,20 +17,23 @@ class ReportsTest extends TestCase
                 'email' => 'admin@websterwasps.com',
                 'password' => 'admin',
             ],
+            'cookies' => $this->cookieJar
         ]);
     }
 
     public function tearDown()
     {
-        $this->http->request('DELETE', 'logout.php');
+        $this->http->request('DELETE', '/logout.php', ['cookies' => $this->cookieJar]);
         $this->http = null;
     }
 
     public function testGetRidesReport()
     {
-        $response = $this->http->request('GET', '/api/reports.php?info=rides');
+        $response = $this->http->request('GET', '/api/reports.php?info=ride', ['cookies' => $this->cookieJar]);
         $this->assertEquals(200, $response->getStatusCode());
         $data = json_decode($response->getBody(true), true);
+        $ride = $data[0];
+        unset($ride["modified"]);
         $this->assertEquals([
             'id' => 1,
             'passengerID' => 4,
@@ -45,13 +50,12 @@ class ReportsTest extends TestCase
             "apptStreetAddress" => "45 Webster Commons Blvd #201",
             "apptCity" => "Webster",
             "created" => "2018-02-01 08:00:00",
-            "modified" => "2018-03-17 13:57:36",
-        ], $data[0]);
+        ], $ride);
     }
 
     public function testGetDriverReport()
     {
-        $response = $this->http->request('GET', '/api/reports.php?info=driver');
+        $response = $this->http->request('GET', '/api/reports.php?info=driver', ['cookies' => $this->cookieJar]);
         $this->assertEquals(200, $response->getStatusCode());
         $data = json_decode($response->getBody(true), true);
         $this->assertEquals([
@@ -64,19 +68,21 @@ class ReportsTest extends TestCase
             "wantsEmail" => 1,
             "start" => "07:00:00",
             "end" => "04:00:00",
-            "days" => "Mon,Tue,Wed,Thu,Fri"
+            "days" => "Mon,Tue,Wed,Thu,Fri",
         ], $data[0]);
     }
 
-    public function testDownloadRidesReport() {
-        $response = $this->http->request('GET', '/api/reports.php?info=ride&export=true');
+    public function testDownloadRidesReport()
+    {
+        $response = $this->http->request('GET', '/api/reports.php?info=ride&export=true', ['cookies' => $this->cookieJar]);
         $this->assertEquals(200, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/csv; charset=UTF-8", $contentType);
     }
 
-    public function testDownloadInfoReport() {
-        $response = $this->http->request('GET', '/api/reports.php?info=driver&export=true');
+    public function testDownloadInfoReport()
+    {
+        $response = $this->http->request('GET', '/api/reports.php?info=driver&export=true', ['cookies' => $this->cookieJar]);
         $this->assertEquals(200, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/csv; charset=UTF-8", $contentType);
