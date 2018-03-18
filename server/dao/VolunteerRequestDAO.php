@@ -48,6 +48,26 @@ class VolunteerRequestDAO
       }
    }
 
+   function getVolunteerRequestForUser($id)
+   {
+      try
+      {
+         $id = intval($id);
+
+         $stmt = $this->dbh->prepare("SELECT `id`, `timestamp`, `userID` FROM volunteerrequest WHERE userID = :id;");
+         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+         $stmt->execute();
+         $stmt->setFetchMode(PDO::FETCH_CLASS, "VolunteerRequest");
+
+         return $stmt->fetch()->getVolunteerRequestInfo();
+      }
+      catch (PDOException $e)
+      {
+         echo $e->getMessage();
+         die();
+      }
+   }
+
    function getVolunteerRequests($page = 0, $numberPerPage = 10)
    {
       try
@@ -101,14 +121,25 @@ class VolunteerRequestDAO
       }
    }
 
-   function deleteVolunteerRequest($id)
+   function deleteVolunteerRequest($id, $userID = "")
    {
       try
       {
          $id = intval($id);
+         $query = "DELETE FROM volunteerrequest WHERE id = :id";
 
-         $stmt = $this->dbh->prepare("DELETE FROM volunteerrequest WHERE id = :id");
+         if ($userID != "")
+         {
+            $userID = intval($userID);
+            $query .= " AND userID = :userID";
+         }
+
+         $stmt = $this->dbh->prepare($query);
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+         if ($userID != "")
+         {
+            $stmt->bindParam(":userID", $userID, PDO::PARAM_INT);
+         }
          $stmt->execute();
 
          return $stmt->rowCount() . " row(s) deleted";

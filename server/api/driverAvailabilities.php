@@ -29,70 +29,131 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 
     case "POST":
-        $requestBody = file_get_contents('php://input');
-        $bodyData = json_decode($requestBody, true);
-
-        if (isset($bodyData['start']) && isset($bodyData['end']) && (isset($bodyData['days'])) && isset($bodyData['driverID'])) {
-            $startTime = $bodyData['start'];
-            $endTime = $bodyData['end'];
-            $days = $bodyData['days'];
-            $driverID = $bodyData['driverID'];
-
-            $startTime = sanitizeAndValidate($startTime, FILTER_SANITIZE_STRING);
-            $endTime = sanitizeAndValidate($endTime, FILTER_SANITIZE_STRING);
-            $days = sanitizeAndValidate($days, FILTER_SANITIZE_STRING);
-            $driverID = sanitizeAndValidate($driverID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
-
-            http_response_code(201);
-            echo json_encode($db->availability->insertAvailability($startTime, $endTime, $days, $driverID));
-        } else {
-            http_response_code(400);
-            echo json_encode(["err" => "Could not create driver schedule"]);
-            die();
+        switch ($_SESSION['user']['role'])
+        {
+           case "driver":
+              $bodyData = json_decode(file_get_contents('php://input'), true);
+              postDriverAvailability($_SESSION['user']['id'], $bodyData);
+              break;
+           case "admin":
+              $bodyData = json_decode(file_get_contents('php://input'), true);
+              if (isset($bodyData['driverID'])){
+                  postDriverAvailability($bodyData['driverID'], $bodyData);
+              }
+              else
+              {
+                 http_response_code(400);
+                 echo json_encode(["err" => "Invalid arguments"]);
+                 die();
+              }
+              break;
+           default:
+              http_response_code(403);
+              echo json_encode(["err" => "Only drivers and admins can access this resource."]);
         }
 
         break;
 
     case "PUT":
-        $requestBody = file_get_contents('php://input');
-        $bodyData = json_decode($requestBody, true);
-
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
-            $startTime = $bodyData['start'] ?? "";
-            $endTime = $bodyData['end'] ?? "";
-            $days = $bodyData['days'] ?? "";
-            $driverID = $bodyData['driverID'] ?? "";
-
-            $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
-            $startTime = sanitizeAndValidate($startTime, FILTER_SANITIZE_STRING);
-            $endTime = sanitizeAndValidate($endTime, FILTER_SANITIZE_STRING);
-            $days = sanitizeAndValidate($days, FILTER_SANITIZE_STRING);
-            $driverID = sanitizeAndValidate($driverID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
-
-            http_response_code(200);
-            echo json_encode($db->availability->updateAvailability($id, $startTime, $endTime, $days, $driverID));
-        } else {
-            http_response_code(400);
-            echo json_encode(["err" => "Could not update driver schedule"]);
-            die();
-        }
-
-        break;
+       switch ($_SESSION['user']['role'])
+       {
+          case "driver":
+             $bodyData = json_decode(file_get_contents('php://input'), true);
+             putDriverAvailability($_SESSION['user']['id'], $bodyData);
+             break;
+          case "admin":
+             $bodyData = json_decode(file_get_contents('php://input'), true);
+             putDriverAvailability($bodyData['driverID'] ?? "", $bodyData);
+             break;
+          default:
+             http_response_code(403);
+             echo json_encode(["err" => "Only drivers and admins can access this resource."]);
+       }
+       break;
 
     case "DELETE":
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
+       switch ($_SESSION['user']['role'])
+       {
+          case "driver":
+             deleteDriverAvailability($_SESSION['user']['id']);
+             break;
+          case "admin":
+             deleteDriverAvailability();
+             break;
+          default:
+             http_response_code(403);
+             echo json_encode(["err" => "Only drivers and admins can access this resource."]);
+       }
+       break;
+}
 
-            $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
+function postDriverAvailability($driverID, $bodyData)
+{
+   global $db;
 
-            http_response_code(200);
-            echo json_encode($db->availability->deleteAvailability($id));
-        } else {
-            http_response_code(400);
-            echo json_encode(["err" => "Could not delete driver schedule"]);
-            die();
-        }
+   if (isset($bodyData['start']) && isset($bodyData['end']) && (isset($bodyData['days']))) {
+      $startTime = $bodyData['start'];
+      $endTime = $bodyData['end'];
+      $days = $bodyData['days'];
 
-        break;
+      $startTime = sanitizeAndValidate($startTime, FILTER_SANITIZE_STRING);
+      $endTime = sanitizeAndValidate($endTime, FILTER_SANITIZE_STRING);
+      $days = sanitizeAndValidate($days, FILTER_SANITIZE_STRING);
+      $driverID = sanitizeAndValidate($driverID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
+
+      http_response_code(201);
+      echo json_encode($db->availability->insertAvailability($startTime, $endTime, $days, $driverID));
+   } else {
+      http_response_code(400);
+      echo json_encode(["err" => "Invalid arguments"]);
+      die();
+   }
+}
+
+function putDriverAvailability($driverID, $bodyData)
+{
+   global $db;
+
+   if (isset($bodyData['id'])) {
+      $id = $bodyData['id'];
+      $startTime = $bodyData['start'] ?? "";
+      $endTime = $bodyData['end'] ?? "";
+      $days = $bodyData['days'] ?? "";
+
+      $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
+      $startTime = sanitizeAndValidate($startTime, FILTER_SANITIZE_STRING);
+      $endTime = sanitizeAndValidate($endTime, FILTER_SANITIZE_STRING);
+      $days = sanitizeAndValidate($days, FILTER_SANITIZE_STRING);
+      $driverID = sanitizeAndValidate($driverID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
+
+      http_response_code(200);
+      echo json_encode($db->availability->updateAvailability($id, $startTime, $endTime, $days, $driverID));
+   } else {
+      http_response_code(400);
+      echo json_encode(["err" => "Invalid arguments"]);
+      die();
+   }
+}
+
+function deleteDriverAvailability($driverID = "")
+{
+   global $db;
+
+   $bodyData = json_decode(file_get_contents('php://input'), true);
+
+   if (isset($bodyData['id']))
+   {
+      $id = $bodyData['id'];
+
+      $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
+
+      http_response_code(200);
+      echo json_encode($db->availability->deleteAvailability($id, $driverID));
+   }
+   else
+   {
+      http_response_code(400);
+      echo json_encode(["err" => "Invalid arguments"]);
+      die();
+   }
 }

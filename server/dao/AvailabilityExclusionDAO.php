@@ -51,6 +51,26 @@ class AvailabilityExclusionDAO
       }
    }
 
+   function getAvailabilityExclusionForDriver($id)
+   {
+      try
+      {
+         $id = intval($id);
+
+         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `driverID` FROM availabilityexclusion WHERE driverID = :id;");
+         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+         $stmt->execute();
+         $stmt->setFetchMode(PDO::FETCH_CLASS, "AvailabilityExclusion");
+
+         return $stmt->fetch()->getAvailabilityExclusionInfo();
+      }
+      catch (PDOException $e)
+      {
+         echo $e->getMessage();
+         die();
+      }
+   }
+
    function getAvailabilityExclusions($page = 0, $numberPerPage = 10)
    {
       try
@@ -106,14 +126,25 @@ class AvailabilityExclusionDAO
       }
    }
 
-   function deleteAvailabilityExclusion($id)
+   function deleteAvailabilityExclusion($id, $driverID = "")
    {
       try
       {
          $id = intval($id);
+         $query = "DELETE FROM availabilityexclusion WHERE id = :id";
 
-         $stmt = $this->dbh->prepare("DELETE FROM availabilityexclusion WHERE id = :id");
+         if($driverID != "")
+         {
+            $driverID = intval($driverID);
+            $query .= " AND driverID = :driverID";
+         }
+
+         $stmt = $this->dbh->prepare($query);
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+         if ($driverID != "")
+         {
+            $stmt->bindParam(":driverID", $driverID, PDO::PARAM_INT);
+         }
          $stmt->execute();
 
          return $stmt->rowCount() . " row(s) deleted";

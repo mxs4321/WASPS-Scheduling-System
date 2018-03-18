@@ -113,14 +113,25 @@ class AvailabilityDAO
         }
     }
 
-    public function deleteAvailability($id)
+    public function deleteAvailability($id, $driverID = "")
     {
         try
         {
             $id = intval($id);
+            $query = "DELETE FROM availability WHERE id = :id";
 
-            $stmt = $this->dbh->prepare("DELETE FROM availability WHERE id = :id");
+            if($driverID != "")
+            {
+               $driverID = intval($driverID);
+               $query .= " AND driverID = :driverID";
+            }
+
+            $stmt = $this->dbh->prepare($query);
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+            if ($driverID != "")
+            {
+               $stmt->bindParam(":driverID", $driverID, PDO::PARAM_INT);
+            }
             $stmt->execute();
 
             return $stmt->rowCount() . " row(s) deleted";
