@@ -108,7 +108,7 @@ function postDriverAvailabilityExclusion($driverID, $bodyData)
    }
    else
    {
-      http_response_code(404);
+      http_response_code(400);
       echo json_encode(["err" => "Invalid arguments"]);
       die();
    }
@@ -118,9 +118,9 @@ function putDriverAvailabilityExclusion($driverID, $bodyData)
 {
    global $db;
 
-   if (isset($bodyData['id']))
+   if (isset($_GET['id']))
    {
-      $id = $bodyData['id'];
+      $id = $_GET['id'];
       $startTime = $bodyData['start'] ?? "";
       $endTime = $bodyData['end'] ?? "";
 
@@ -134,7 +134,7 @@ function putDriverAvailabilityExclusion($driverID, $bodyData)
    }
    else
    {
-      http_response_code(404);
+      http_response_code(400);
       echo json_encode(["err" => "Invalid arguments"]);
       die();
    }
@@ -144,11 +144,9 @@ function deleteDriverAvailabilityExclusion($driverID = "")
 {
    global $db;
 
-   $bodyData = json_decode(file_get_contents('php://input'), true);
-
-   if (isset($bodyData['id']))
+   if (isset($_GET['id']))
    {
-      $id = $bodyData['id'];
+      $id = $_GET['id'];
 
       $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 
@@ -157,7 +155,7 @@ function deleteDriverAvailabilityExclusion($driverID = "")
    }
    else
    {
-      http_response_code(404);
+      http_response_code(400);
       echo json_encode(["err" => "Invalid arguments"]);
       die();
    }

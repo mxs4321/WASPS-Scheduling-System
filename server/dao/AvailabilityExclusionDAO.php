@@ -22,7 +22,7 @@ class AvailabilityExclusionDAO
          $stmt->bindParam(":driverID", $driverID, PDO::PARAM_INT);
          $stmt->execute();
 
-         return $stmt->rowCount() . " row(s) inserted";
+         return $this->getAvailabilityExclusion($this->dbh->lastInsertId());
       }
       catch (PDOException $e)
       {
@@ -117,7 +117,7 @@ class AvailabilityExclusionDAO
          if ($driverID != "")      $stmt->bindParam(":driverID", $driverID, PDO::PARAM_INT);
          $stmt->execute();
 
-         return $stmt->rowCount() . " row(s) updated";
+         return $this->getAvailabilityExclusion($id);
       }
       catch (PDOException $e)
       {

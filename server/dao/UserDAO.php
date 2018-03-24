@@ -10,10 +10,11 @@ class UserDAO {
 
     function findById($id) {
         try {
-            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `lastLogin`, `wantsSMS`, `wantsEmail`, `email`, `registered` FROM user WHERE id = :id");
+            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `lastLogin`, 
+              `wantsSMS`, `wantsEmail`, `email`, `registered` FROM user WHERE id = :id");
             $stmt->execute([':id' => intval($id)]);
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
-            return $stmt->fetch();
+            return $stmt->fetch()->getUserInfo();
         } catch (PDOException $e) {
             echo $e->getMessage();
             die();
@@ -33,7 +34,7 @@ class UserDAO {
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             while ($user = $stmt->fetch()) {
                 unset($user->password);
-                $data[] = $user;
+                $data[] = $user->getUserInfo();
             }
             return $data;
         } catch (PDOException $e) {
@@ -86,12 +87,12 @@ class UserDAO {
       }
     }
 
-    function insertUser($password, $role="passenger", $firstName, $lastName, $phone, $email, $wantsSMS = true, $wantsEmail = true)
+    function insertUser($password, $role, $firstName, $lastName, $phone, $email, $wantsSMS = true, $wantsEmail = true)
     {
         try
         {
            $password = password_hash($password, PASSWORD_BCRYPT);
-           $role = "passenger";//strval($role);
+           $role = strval($role);
            $firstName = strval($firstName);
            $phone = strval($phone);
            $email = strval($email);
@@ -107,12 +108,11 @@ class UserDAO {
            $stmt->bindParam(':lastName', $lastName, PDO::PARAM_STR);
            $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-           $stmt->bindParam(':wantsSMS', $wantsSMS, PDO::PARAM_BOOL);
-           $stmt->bindParam(':wantsEmail', $wantsEmail, PDO::PARAM_BOOL);
-           $err = $stmt->execute();
-        //    error_log('query failed: ERROR['.$pdo->errorCode().':'.print_r($pdo->errorInfo(), true).'] QUERY['.$sql.']');
-           $id = $this->dbh->lastInsertId();
-           return $this->dbh->errorInfo();
+           $stmt->bindParam(':wantsSMS', $wantsSMS, PDO::PARAM_INT);
+           $stmt->bindParam(':wantsEmail', $wantsEmail, PDO::PARAM_INT);
+           $stmt->execute();
+
+           return $this->findById($this->dbh->lastInsertId());
         }
         catch (PDOException $e)
         {
@@ -133,8 +133,8 @@ class UserDAO {
             $lastName = strval($lastName);
             $phone = strval($phone);
             $email = strval($email);
-            $wantsSMS = boolval($wantsSMS);
-            $wantsEmail = boolval($wantsEmail);
+            if ($wantsSMS !== "")   $wantsSMS = boolval($wantsSMS);
+            if ($wantsEmail !== "") $wantsEmail = boolval($wantsEmail);
             $setStr = "";
 
             if ($password != "")    $setStr .= "`password` = :password";
@@ -145,8 +145,8 @@ class UserDAO {
             if ($email != "")       $setStr .= ($setStr == "") ? "`email` = :email" : ", `email` = :email";
             if ($registered != "")  $setStr .= ($setStr == "") ? "`registered` = :registered" : ", `registered` = :registered";
             if ($lastLogin != "")   $setStr .= ($setStr == "") ? "`lastLogin` = :lastLogin" : ", `lastLogin` = :lastLogin";
-            if ($wantsSMS != "")    $setStr .= ($setStr == "") ? "`wantsSMS` = :wantsSMS" : ", `wantsSMS` = :wantsSMS";
-            if ($wantsEmail != "")  $setStr .= ($setStr == "") ? "`wantsEmail` = :wantsEmail" : ", `wantsEmail` = :wantsEmail";
+            if ($wantsSMS !== "")   $setStr .= ($setStr == "") ? "`wantsSMS` = :wantsSMS" : ", `wantsSMS` = :wantsSMS";
+            if ($wantsEmail !== "") $setStr .= ($setStr == "") ? "`wantsEmail` = :wantsEmail" : ", `wantsEmail` = :wantsEmail";
 
             $stmt = $this->dbh->prepare("UPDATE user SET {$setStr} WHERE id = :id;");
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
@@ -158,11 +158,11 @@ class UserDAO {
             if ($email != "")      $stmt->bindParam(":email", $email, PDO::PARAM_STR);
             if ($registered != "") $stmt->bindParam(":registered", $registered, PDO::PARAM_STR);
             if ($lastLogin != "")  $stmt->bindParam(":lastLogin", $lastLogin, PDO::PARAM_STR);
-            if ($wantsSMS != "")   $stmt->bindParam(":wantsSMS", $wantsSMS, PDO::PARAM_BOOL);
-            if ($wantsEmail != "") $stmt->bindParam(":wantsEmail", $wantsEmail, PDO::PARAM_BOOL);
+            if ($wantsSMS !== "")   $stmt->bindParam(":wantsSMS", $wantsSMS, PDO::PARAM_INT);
+            if ($wantsEmail !== "") $stmt->bindParam(":wantsEmail", $wantsEmail, PDO::PARAM_INT);
             $stmt->execute();
 
-            return $stmt->rowCount() . " row(s) updated";
+            return $this->findById($id);
          }
          catch (PDOException $e)
          {

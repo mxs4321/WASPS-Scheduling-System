@@ -114,8 +114,9 @@ function putDriverAvailability($driverID, $bodyData)
 {
    global $db;
 
-   if (isset($bodyData['id'])) {
-      $id = $bodyData['id'];
+   if (isset($_GET['id']))
+   {
+      $id = $_GET['id'];
       $startTime = $bodyData['start'] ?? "";
       $endTime = $bodyData['end'] ?? "";
       $days = $bodyData['days'] ?? "";
@@ -139,11 +140,9 @@ function deleteDriverAvailability($driverID = "")
 {
    global $db;
 
-   $bodyData = json_decode(file_get_contents('php://input'), true);
-
-   if (isset($bodyData['id']))
+   if (isset($_GET['id']))
    {
-      $id = $bodyData['id'];
+      $id = $_GET['id'];
 
       $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
 

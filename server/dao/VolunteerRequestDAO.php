@@ -19,7 +19,7 @@ class VolunteerRequestDAO
          $stmt->bindParam(":userID", $userID, PDO::PARAM_INT);
          $stmt->execute();
 
-         return $stmt->rowCount() . " row(s) inserted";
+         return $this->getVolunteerRequest($this->dbh->lastInsertId());
       }
       catch (PDOException $e)
       {
@@ -112,7 +112,7 @@ class VolunteerRequestDAO
          if ($userID != "")      $stmt->bindParam(":userID", $userID, PDO::PARAM_INT);
          $stmt->execute();
 
-         return $stmt->rowCount() . " row(s) updated";
+         return $this->getVolunteerRequest($id);
       }
       catch (PDOException $e)
       {

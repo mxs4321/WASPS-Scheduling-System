@@ -45,7 +45,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             }
             else
             {
-               http_response_code(404);
+               http_response_code(400);
                echo json_encode(["err" => "Invalid arguments"]);
                die();
             }
@@ -61,12 +61,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
       switch ($_SESSION['user']['role'])
       {
          case "passenger":
-            $bodyData = json_decode(file_get_contents('php://input'), true);
-            putVolunteerRequest($_SESSION['user']['id'], $bodyData);
+            putVolunteerRequest($_SESSION['user']['id']);
             break;
          case "admin":
-            $bodyData = json_decode(file_get_contents('php://input'), true);
-            putVolunteerRequest($bodyData['userID'], $bodyData);
+            putVolunteerRequest();
             break;
          default:
             http_response_code(403);
@@ -103,9 +101,12 @@ function postVolunteerRequest($userID)
    echo json_encode($db->volunteerRequest->insertVolunteerRequest($timestamp, $userID));
 }
 
-function putVolunteerRequest($userID, $bodyData)
+// No real use for now, just here in case volunteerReq. will ever have data that needs updated
+function putVolunteerRequest($userID = "")
 {
    global $db;
+
+   //$bodyData = json_decode(file_get_contents('php://input'), true);
 
    if (isset($_GET['id']))
    {
@@ -119,7 +120,7 @@ function putVolunteerRequest($userID, $bodyData)
    }
    else
    {
-      http_response_code(404);
+      http_response_code(400);
       echo json_encode(["err" => "Invalid arguments"]);
       die();
    }
@@ -128,8 +129,6 @@ function putVolunteerRequest($userID, $bodyData)
 function deleteVolunteerRequest($userID = "")
 {
    global $db;
-
-   $bodyData = json_decode(file_get_contents('php://input'), true);
 
    if (isset($_GET['id']))
    {
@@ -142,7 +141,7 @@ function deleteVolunteerRequest($userID = "")
    }
    else
    {
-      http_response_code(404);
+      http_response_code(400);
       echo json_encode(["err" => "Invalid arguments"]);
       die();
    }
