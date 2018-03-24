@@ -169,6 +169,20 @@ function putRide($passengerID = "")
       if ($apptCity != "") $apptCity = sanitizeAndValidate($apptCity, FILTER_SANITIZE_STRING);
       if ($created != "") $created = sanitizeAndValidate($created, FILTER_SANITIZE_STRING);
 
+      if ($apptStart != "")
+      {
+         $appointmentDatetime = date_create_from_format('Y-m-d H:i:s', $apptStart);
+         //TODO validate time
+
+         if ($appointmentDatetime->getTimestamp() - time() < 259200)
+         {
+            //TODO check if timezones are messing it up or not with time() function
+            http_response_code(400);
+            echo json_encode(["err" => "Cannot schedule rides within 72h of the appointment"]);
+            die();
+         }
+      }
+
       http_response_code(201);
       echo json_encode($db->ride->updateRide($id, $passengerID, $driverID, $apptStart, $apptEnd, $numMiles, $totalMinutes,
          $pickupTime, $wheelchairVan, $status, $pickupStreetAddress, $pickupCity, $apptStreetAddress, $apptCity, $created, $modified));
