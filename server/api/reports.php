@@ -8,26 +8,35 @@ $delimiter = ",";
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET')
 {
-   if (isset($_GET['info']))
+   switch ($_SESSION['user']['role'])
    {
-      if ($_GET['info'] == 'ride')
-      {
-         if (isset($_GET['export'])) {
-             exportRideToCSV(); 
-        } else {
-            header('Content-Type: application/json');
-            echo json_encode($db->ride->getRides());
-        }
-      }
-      else if ($_GET['info'] == 'driver')
-      {
-        if (isset($_GET['export'])) {
-         exportDriverToCSV(); 
-        } else {
-            header('Content-Type: application/json');
-            echo json_encode($db->user->getDriverExportInfo());
-        }
-      }
+      case "admin":
+         if (isset($_GET['info']))
+         {
+            if ($_GET['info'] == 'ride')
+            {
+               if (isset($_GET['export'])) {
+                  exportRideToCSV();
+               } else {
+                  header('Content-Type: application/json');
+                  echo json_encode($db->ride->getRides());
+               }
+            }
+            else if ($_GET['info'] == 'driver')
+            {
+               if (isset($_GET['export'])) {
+                  exportDriverToCSV();
+               } else {
+                  header('Content-Type: application/json');
+                  echo json_encode($db->user->getDriverExportInfo());
+               }
+            }
+         }
+         break;
+      default:
+         http_response_code(403);
+         echo json_encode(["err" => "Could get requested resource"]);
+         break;
    }
 }
 
