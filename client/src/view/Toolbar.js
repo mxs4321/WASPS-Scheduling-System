@@ -72,6 +72,7 @@ class Toolbar extends Component {
         <HamburgerMenu onClick={onMenuToggle} />
         <Unselectable>{getToolbarTitle(userRole)}</Unselectable>
         <SearchBar
+          style={{ opacity: 0 }}
           onFocus={() => this.setState({ isSearching: true })}
           onBlur={() => this.setState({ isSearching: false })}
         />
