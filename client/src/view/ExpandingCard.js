@@ -21,7 +21,7 @@ const Wrapper = styled.div`
       ? `linear-gradient(${colorForStatus[props.status]} 20%, #DDDDDD 30% )`
       : 'white'};
   transition: all 0.3s;
-  margin: ${props => (props.isOpen ? '24px' : '0')} 0;
+  margin: ${props => (props.isOpen ? '10px' : '0')} 0;
 `;
 const Row = styled.div`
   height: 46px;

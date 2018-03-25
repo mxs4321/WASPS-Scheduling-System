@@ -11,7 +11,7 @@ import ExpandingCard from '../view/ExpandingCard';
 
 const ExpansionList = styled.div`
   width: 100%;
-  margin: 20px 60px;
+  padding: 20px 60px;
   overflow: scroll;
   height: 100%;
 `;
@@ -26,6 +26,7 @@ export class Rides extends Component {
       <ExpansionList>
         {this.props.rides.map(
           ({
+            id,
             passenger: { firstName, lastName },
             pickupStreetAddress,
             apptStreetAddress,
@@ -33,6 +34,7 @@ export class Rides extends Component {
             pickupTime
           }) => (
             <ExpandingCard
+              key={id}
               status={status}
               firstName={firstName}
               lastName={lastName}

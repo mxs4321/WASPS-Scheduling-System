@@ -4,13 +4,16 @@ import { Destination, Phone, Calendar, Vertical } from './icons';
 import Avatar from './Avatar';
 
 const Wrapper = styled.div`
+  opacity: ${props => (props.isOpen ? '100%' : '0')};
   border-bottom: ${props => (props.isOpen ? 'none' : '1px solid #e0e0e0')};
-  position: ${props => (props.isOpen ? 'relative' : 'static')};
-  top: ${props => (props.isOpen ? '-10px' : '0')};
+  transform: ${props =>
+    props.isOpen
+      ? 'translateY(-10px) scale(1, 1)'
+      : 'translateY(0) scale(.97, .97)'};
   width: ${props => (props.isOpen ? 'calc(100% - 20px)' : '100%')};
   margin: ${props => (props.isOpen ? '10px' : '0')};
   height: ${props => (props.isOpen ? 'auto' : '0px')};
-  transition: all 0.3s;
+  transition: all 0s, transform 0.3s, margin 0.3s, height 0.3s;
   background-color: white;
   transform-origin: top;
   overflow: hidden;
