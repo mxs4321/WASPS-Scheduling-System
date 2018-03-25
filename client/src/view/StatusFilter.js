@@ -16,7 +16,7 @@ type Props = {
 
 const StatusFilter = ({ userRole, status, onFilterChange }: Props) => (
   <List>
-    {userRole === 'dispatcher' && (
+    {(userRole === 'dispatcher' || userRole === 'admin') && (
       <List.Item
         active={status === 'Unverified'}
         onClick={() =>

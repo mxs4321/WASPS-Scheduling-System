@@ -3,52 +3,14 @@ import styled from 'styled-components';
 import { Destination, Phone, Calendar, Vertical } from './icons';
 import Avatar from './Avatar';
 
-const WrapperTop = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  color: gray;
-  padding-top: 20px;
-  width: 70%;
-  position: absolute;
-`;
-const DivLeft = styled.div`
-  float: left;
-`;
+const WrapperTop = styled.div``;
+const DivLeft = styled.div``;
 
-const Map = styled.div`
-  float: right;
-`;
+const Map = styled.div``;
 
-const AvailableDiv = styled.div`
-  width: 70%;
-  height: 17%;
-  position: absolute;
-  top: 217px;
-  font-weight: bold;
-  background-color: #f2f2f2;
-`;
+const AvailableDiv = styled.div``;
 
-const ReplyDiv = styled.div`
-  width: 70%;
-  height: 65px;
-  position: absolute;
-  top: 307px;
-  padding-top: 10px;
-  background-color: #e6e6e6;
-`;
-
-const Reply = styled.p`
-  font-size: 12px;
-`;
-
-const Iframe = styled.iframe`
-  position: absolute;
-  left: 449px;
-  bottom: 3px;
-  width: 370px;
-  height: 210px;
-  z-index: 1;
-`;
+const Iframe = styled.iframe``;
 
 const Text = styled.a``;
 
@@ -100,11 +62,6 @@ export default ({
         Available Drivers<br />
         {drivers.map(name => <Avatar size={45} name={name} />)}
       </AvailableDiv>
-
-      <ReplyDiv>
-        <Avatar size={45} name="Niharika Nakka" />
-        <Text onClick={onReply}>Reply</Text>
-      </ReplyDiv>
     </div>
   );
 };

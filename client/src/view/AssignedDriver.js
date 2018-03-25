@@ -3,62 +3,54 @@ import styled from 'styled-components';
 import { Destination, Phone, Calendar, Vertical } from './icons';
 import Avatar from './Avatar';
 
+const Wrapper = styled.div`
+  border-bottom: ${props => (props.isOpen ? 'none' : '1px solid #e0e0e0')};
+  position: ${props => (props.isOpen ? 'relative' : 'static')};
+  top: ${props => (props.isOpen ? '-10px' : '0')};
+  width: ${props => (props.isOpen ? 'calc(100% - 20px)' : '100%')};
+  margin: ${props => (props.isOpen ? '10px' : '0')};
+  height: ${props => (props.isOpen ? 'auto' : '0px')};
+  transition: all 0.3s;
+  background-color: white;
+  transform-origin: top;
+  overflow: hidden;
+  box-shadow: ${props =>
+    props.isOpen
+      ? '0 -1px 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24)'
+      : 'none'};
+`;
+
 const WrapperTop = styled.div`
   font-size: 20px;
   font-weight: bold;
   color: gray;
-  padding-top: 20px;
-  width: 70%;
-  position: absolute;
+  width: 100%;
+  display: flex;
 `;
 const DivLeft = styled.div`
-  float: left;
+  flex: 3;
 `;
-
-const Map = styled.div`
-  float: right;
-`;
-
 const AvailableDiv = styled.div`
   width: 70%;
   height: 17%;
-  position: absolute;
   top: 217px;
   font-weight: bold;
   background-color: #f2f2f2;
-`;
-
-const ReplyDiv = styled.div`
-  width: 70%;
-  height: 65px;
-  position: absolute;
-  top: 307px;
-  padding-top: 10px;
-  background-color: #e6e6e6;
-`;
-
-const Reply = styled.p`
-  font-size: 12px;
 `;
 const Status = styled.p`
   font-size: 12px;
   display: block;
   padding-left: 60px;
-  position: absolute;
   top: 30px;
 `;
 const Iframe = styled.iframe`
-  position: absolute;
-  left: 449px;
-  bottom: 3px;
-  width: 370px;
+  flex: 2;
   height: 210px;
   z-index: 1;
 `;
 
-const Text = styled.a``;
-
 export default ({
+  isOpen,
   users,
   onReply,
   origin,
@@ -71,7 +63,7 @@ export default ({
   const directionIframe = `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${origin}&destination=${destination}`;
 
   return (
-    <div>
+    <Wrapper isOpen={isOpen}>
       <WrapperTop>
         <DivLeft>
           <Vertical />
@@ -90,16 +82,13 @@ export default ({
           <br />
         </DivLeft>
 
-        <Map>
-          Map
-          <Iframe
-            key={apiKey}
-            title="directions"
-            frameborder="0"
-            src={destination === '' ? placeIframe : directionIframe}
-            allowfullscreen
-          />
-        </Map>
+        <Iframe
+          key={apiKey}
+          title="directions"
+          frameborder="0"
+          src={destination === '' ? placeIframe : directionIframe}
+          allowfullscreen
+        />
       </WrapperTop>
 
       <AvailableDiv>
@@ -112,11 +101,6 @@ export default ({
           </Status>
         ))}
       </AvailableDiv>
-
-      <ReplyDiv>
-        {users.map(username => <Avatar size={45} name={username} />)}
-        <Text onClick={onReply}>Reply</Text>
-      </ReplyDiv>
-    </div>
+    </Wrapper>
   );
 };

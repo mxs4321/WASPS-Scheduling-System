@@ -38,10 +38,6 @@ const ReplyDiv = styled.div`
   background-color: #e6e6e6;
 `;
 
-const Reply = styled.p`
-  font-size: 12px;
-`;
-
 const Accept = styled.button`
   height: 50px;
   width: 300px;

@@ -28,6 +28,7 @@ const Body = styled.div`
   width: 100%;
 `;
 const FAB = styled(Link)`
+  z-index: 9001;
   padding: 20px;
   background-color: #f2c94c;
   border-radius: 100%;
@@ -42,6 +43,7 @@ const FAB = styled(Link)`
   }
 `;
 const Sidebar = styled.div`
+  margin-top: 10px;
   width: 180px;
 `;
 const Card = styled.div`
