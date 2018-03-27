@@ -405,6 +405,7 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
 
     .container {
         padding: 16px;
+        margin-right: 40px;
     }
 
     span.psw {
@@ -489,7 +490,6 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
         left: 9px;
         top: -2px;
     }
-
 
 
 
@@ -637,6 +637,7 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
 
     #joinusImage {
         padding-top: 45px;
+
     }
 
 
@@ -651,24 +652,28 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
 
     #servicesButtonId {
      	position: relative;
-		left: 300px;
+		left: 160px;
 		height: auto;
-		display: inline;
+		display: inline-block;
 		top: -80px;
 		
     }
     
    #services #servicesText{
-        font-weight: bold;
-        font-size: 13px;
-        width: 320px;
-        height: 300px;
+        width: 240px;
+        height: 200px;
+        padding-left: 0px;
+        position: relative;
+        top: -280px;
+        left: 210px;
         color: #413F3F;
         font-family: Arial, sans-serif;
-        padding-left: 90px;
-        position: relative;
-        top: -40px;
+         font-weight: bold;
+        font-size: 13px;
     }
+    
+     
+     
 
 
     #services #servicesHeading {
@@ -684,7 +689,7 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
     
 
     .servicesButton {
-        background-color: white;
+    background-color: white;
 	font-family: Arial, sans-serif; 
 	font-weight: bold;
 	height: 40px;
@@ -699,6 +704,11 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
 	font-size:12px;
     }
     
+    .down {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+	}
+	
      
 
 
@@ -836,5 +846,79 @@ i {
         display: block;
         text-align: left;
     }
+ 
 }
+
+@media screen and (max-width: 500px) {
+	#joinusImage {
+        padding-top: 137px;
+    }
+    
+     #servicesButtonId {
+     	position: relative;
+		left: 150px;
+		height: auto;
+		display: inline-block;
+		top: -80px;
+		
+    }
+     #services #servicesText{
+        font-weight: bold;
+        font-size: 12px;
+        width: 180px;
+        height: 220px;
+        color: #413F3F;
+        font-family: Arial, sans-serif;
+        left: 150px;
+        position: relative;
+        top: -260px;
+        
+    }
+
+    
+    .servicesButton {
+    background-color: white;
+	font-family: Arial, sans-serif; 
+	font-weight: bold;
+	height: 30px;
+	width: 115px;
+	border-radius:5px;
+	margin: 10px;
+	position: relative;
+	top: 10px;
+	left: -340px;
+	text-decoration: none;
+	 color: #5E5E5E;
+	font-size:10px;
+	
+    }
+    
+    #services {
+    background-color: #F4F2F2; 
+	height: 350px; 
+	margin: 0;
+	left: 0; 
+	right: 0; 
+	border-top: 7px solid rgba(29, 111, 187, 0.63);
+    }
+    
+    .down {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+	}
+	
+	i {
+ 		 border: solid black;
+  		border-width: 0 2px 2px 0;
+  		display: inline-block;
+  		padding: 3px;
+  		position: relative;
+  		left: 5px;
+  		top: -1px;
+	}
+	
+   
+}
+
+
 
