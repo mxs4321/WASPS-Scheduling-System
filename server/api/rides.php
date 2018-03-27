@@ -4,7 +4,9 @@ header('Content-Type: application/json');
 
 include '../env.php';
 require_once "../db.class.php";
+require_once "../twilio.php";
 $db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
+$twilio = new TextDriver;
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
@@ -48,6 +50,19 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $status, $_POST['pickupStreetAddress'], $_POST['pickupCity'], $_POST['apptStreetAddress'], $_POST['apptCity'],
             $created, $modified
         ));
+        
+        if isset($_POST['driverID'])
+        {
+            $pickupData = explode(" ", $_POST['pickupTime']);
+            $pickupDate = explode("-", $pickupData[0]);
+            $driverContactInfo = $db->user->findById($_POST['driverID'])->getDriverContactInfo();
+            $driverPhone = $driverContactInfo['phone'];    
+            $driverFirstName = $driverContactInfo['firstName'];
+            $driverLastName = $driverContactInfo['lastName'];
+            $message = $driverFirstName . ' ' . $driverLastName . ', you are assigned to drive on ' . $pickupDate[1] . '-' . $pickupDate[2] . '-' . $pickupDate[0] . '. To accept this ride, reply with ACCEPT. If you do not accept this ride, reply with DECLINE.';
+
+            $twilio->sendMessage($message,$driverPhone);
+        }
         break;
 
     case "PUT":
@@ -91,6 +106,18 @@ switch ($_SERVER['REQUEST_METHOD']) {
            http_response_code(201);
            echo json_encode($db->ride->updateRide($id, $passengerID, $driverID, $apptStart, $apptEnd, $numMiles, $totalMinutes,
               $pickupTime, $wheelchairVan, $status, $pickupStreetAddress, $pickupCity, $apptStreetAddress, $apptCity, $created, $modified));
+           if ($status == "Scheduled")
+           {
+              $pickupData = explode(" ", $pickupTime);
+              $pickupDate = explode("-", $pickupData[0]);
+              $driverContactInfo = $db->user->findById($driverID)->getDriverContactInfo();
+              $driverPhone = $driverContactInfo['phone'];    
+              $driverFirstName = $driverContactInfo['firstName'];
+              $driverLastName = $driverContactInfo['lastName'];
+              $message = $driverFirstName . ' ' . $driverLastName . ', you are assigned to drive on ' . $pickupDate[1] . '-' . $pickupDate[2] . '-' . $pickupDate[0] . '. To accept this ride, reply with ACCEPT. If you do not accept this ride, reply with DECLINE.';
+
+              $twilio->sendMessage($message,$driverPhone);
+           }
         }
         else
         {

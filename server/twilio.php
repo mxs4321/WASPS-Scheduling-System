@@ -10,7 +10,7 @@
         $client = new Client($sid, $token);
 
         $waspsPhoneNumber = '+16316511911';
-        function sendMessage($name, $message, $phone)
+        function sendMessage($message, $phone)
         {
              //send a message
             $client ->messages->create(
@@ -24,5 +24,4 @@
                     )
             );
         }
-    print "Message Sent";
 ?>
