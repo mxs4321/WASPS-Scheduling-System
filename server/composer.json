@@ -1,4 +1,6 @@
 {
+  "name": "wasp-scheduling-system-server",
+  "description": "Web API's for the wasps scheduling system",
   "require": {
     "twilio/sdk": "^5.16",
     "guzzlehttp/guzzle": "^6.3"
@@ -7,11 +9,10 @@
     "phpunit/phpunit": "6"
   },
   "scripts": {
+    "setupTestDB": "@php setupTestDB.php",
+    "setupProductionDB": "@php setupProductionDB.php",
     "start": "@php -S 0.0.0.0:8000",
-    "test": [
-      "@composer setupDB",
-      "phpunit"
-    ],
-    "setupDB" : "@php dbSetup.php"
+    "startDev": ["@composer setupTestDB", "@composer start"],
+    "test": ["@composer setupTestDB", "phpunit"]
   }
 }
