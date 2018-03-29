@@ -786,8 +786,6 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
         position: static;
     }
     
-    
-
 
     /* Modal Content/Box */
     .modal-content {
@@ -851,7 +849,7 @@ i {
 
 @media screen and (max-width: 500px) {
 	#joinusImage {
-        padding-top: 137px;
+        padding-top: 101px;
     }
     
      #servicesButtonId {
@@ -917,7 +915,48 @@ i {
   		top: -1px;
 	}
 	
-   
+	 .headerDiv {
+        width: 100px;
+        height: 200px;
+        position: relative;
+        left: 30%;
+        font-family: Arial, sans-serif;
+        float: none;
+        top: -270px;
+    }
+    #phone {color: white;}
+    
+     .headerImage {
+        width: 150%;
+        height: 330px;
+        clear: left;
+        margin-top: -7%;
+        top: 8px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+	#joinusImage {
+        padding-top:137px;
+    }
+    .headerDiv {
+        width: 100px;
+        height: 200px;
+        position: relative;
+        left: 30%;
+        font-family: Arial, sans-serif;
+        float: none;
+        top: -270px;
+    }
+    #phone {color: white;}
+   .headerImage {
+        width: 150%;
+        height: 330px;
+        clear: left;
+        margin-top: -7%;
+        top: 4px;
+    }
+    
 }
 
 
