@@ -245,14 +245,25 @@ class RideDAO
        }
     }
 
-   function deleteRide($id)
+   function deleteRide($id, $userID = "")
    {
       try
       {
          $id = intval($id);
+         $query = "DELETE FROM ride WHERE id = :id";
 
-         $stmt = $this->dbh->prepare("DELETE FROM ride WHERE id = :id");
+         if ($userID != "")
+         {
+            $userID = intval($userID);
+            $query .= " AND userID = :userID";
+         }
+
+         $stmt = $this->dbh->prepare($query);
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+         if ($userID != "")
+         {
+            $stmt->bindParma(":userID", $userID, PDO::PARAM_INT);
+         }
          $stmt->execute();
 
          return $stmt->rowCount() . " row(s) deleted";

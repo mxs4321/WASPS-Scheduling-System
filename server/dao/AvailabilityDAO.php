@@ -51,9 +51,10 @@ class AvailabilityDAO
             $stmt->bindParam(":id", $driverID, PDO::PARAM_INT);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_CLASS, "Availability");
-            while ($user = $stmt->fetch()) {
-                unset($user->password);
-                $data[] = $user->getAvailabilityInfo();
+            $data = [];
+
+            while ($availability = $stmt->fetch()) {
+                $data[] = $availability->getAvailabilityInfo();
             }
             return $data;
         } catch (PDOException $e) {

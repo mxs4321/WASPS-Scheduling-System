@@ -61,8 +61,14 @@ class AvailabilityExclusionDAO
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          $stmt->execute();
          $stmt->setFetchMode(PDO::FETCH_CLASS, "AvailabilityExclusion");
+         $data = [];
 
-         return $stmt->fetch()->getAvailabilityExclusionInfo();
+         while ($availabilityExclusion = $stmt->fetch())
+         {
+            $data[] = $availabilityExclusion->getAvailabilityExclusionInfo();
+         }
+
+         return $data;
       }
       catch (PDOException $e)
       {
@@ -83,6 +89,7 @@ class AvailabilityExclusionDAO
          $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
          $stmt->execute();
          $stmt->setFetchMode(PDO::FETCH_CLASS, "AvailabilityExclusion");
+         $data = [];
 
          while ($driverAvailabilityException = $stmt->fetch())
          {

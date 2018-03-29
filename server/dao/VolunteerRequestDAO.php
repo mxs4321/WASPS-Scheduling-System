@@ -12,19 +12,26 @@ class VolunteerRequestDAO
 
    function insertVolunteerRequest($timestamp, $userID)
    {
-      try
+      if (!empty($this->getVolunteerRequestForUser($userID)))
       {
-         $stmt = $this->dbh->prepare("INSERT INTO volunteerrequest (`timestamp`, `userID`) VALUES (:timestamp, :userID);");
-         $stmt->bindParam(":timestamp", $timestamp);
-         $stmt->bindParam(":userID", $userID, PDO::PARAM_INT);
-         $stmt->execute();
+         try
+         {
+            $stmt = $this->dbh->prepare("INSERT INTO volunteerrequest (`timestamp`, `userID`) VALUES (:timestamp, :userID);");
+            $stmt->bindParam(":timestamp", $timestamp);
+            $stmt->bindParam(":userID", $userID, PDO::PARAM_INT);
+            $stmt->execute();
 
-         return $this->getVolunteerRequest($this->dbh->lastInsertId());
+            return $this->getVolunteerRequest($this->dbh->lastInsertId());
+         }
+         catch (PDOException $e)
+         {
+            echo $e->getMessage();
+            die();
+         }
       }
-      catch (PDOException $e)
+      else
       {
-         echo $e->getMessage();
-         die();
+         echo json_encode(["err" => "Volunteer request already exists for this user"]);
       }
    }
 

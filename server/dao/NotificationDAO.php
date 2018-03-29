@@ -54,6 +54,32 @@ class NotificationDAO
       }
    }
 
+   function getNotificationForUser($id)
+   {
+      try
+      {
+         $id = intval($id);
+
+         $stmt = $this->dbh->prepare("SELECT `id`, `type`, `message`, `userID`, `timestamp` FROM notification WHERE userID = :id;");
+         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+         $stmt->execute();
+         $stmt->setFetchMode(PDO::FETCH_CLASS, "Notification");
+         $data = [];
+
+         while ($notification = $stmt->fetch())
+         {
+            $data[] = $notification->getNotificationInfo();
+         }
+
+         return $data;
+      }
+      catch (PDOException $e)
+      {
+         echo $e->getMessage();
+         die();
+      }
+   }
+
    function getNotifications($page = 0, $numberPerPage = 10)
    {
       try
