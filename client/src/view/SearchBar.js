@@ -46,7 +46,7 @@ class SearchBar extends Component {
   render() {
     const { onFocus, onBlur } = this.props;
     return (
-      <SearchBarBackground>
+      <SearchBarBackground {...this.props}>
         <SearchIcon />
         <SearchBarInput
           onFocus={() => {

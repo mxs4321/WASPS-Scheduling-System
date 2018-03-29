@@ -16,9 +16,7 @@ const DEFAULT_STATE: State = {
   rideFilter: ''
 };
 
-export const toggleSidebar = () => ({
-  type: TOGGLE_SIDEBAR
-});
+export const toggleSidebar = () => ({ type: TOGGLE_SIDEBAR });
 
 export const changeRideFilter = (filter: RideStatus) => ({
   type: CHANGE_RIDE_FILTER,
