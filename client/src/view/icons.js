@@ -120,7 +120,7 @@ export const Destination = ({ size = '30', color = '#808080', ...args }) => (
   </svg>
 );
 
-export const Calendar = ({ size = '30', color = '#808080', ...args }) => (
+export const Calendar = ({ size = '24', color = '#808080', ...args }) => (
   <svg fill={color} height={size} viewBox="0 0 24 24" width={size} {...args}>
     <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z" />
     <path d="M0 0h24v24H0z" fill="none" />
@@ -152,5 +152,12 @@ export const Download = ({ size = '24', color = '#808080', ...args }) => (
   <svg fill={color} height={size} viewBox="0 0 24 24" width={size}>
     <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
     <path d="M0 0h24v24H0z" fill="none" />
+  </svg>
+);
+
+export const AccessAlarm = ({ size = '24', color = '#808080', ...args }) => (
+  <svg fill={color} height={size} viewBox="0 0 24 24" width={size}>
+    <path d="M-618-568H782v3600H-618zM0 0h24v24H0z" fill="none" />
+    <path d="M22 5.7l-4.6-3.9-1.3 1.5 4.6 3.9L22 5.7zM7.9 3.4L6.6 1.9 2 5.7l1.3 1.5 4.6-3.8zM12.5 8H11v6l4.7 2.9.8-1.2-4-2.4V8zM12 4c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm0 16c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7z" />
   </svg>
 );

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import AvailabilityInput from './AvailabilityInput';
-import TimeSelectorDropdown from './TimeSelectorDropdown';
+import AvailabilityInput from '../AvailabilityInput';
+import TimeSelectorDropdown from '../TimeSelectorDropdown';
 
 const Wrapper = styled.div``;
 

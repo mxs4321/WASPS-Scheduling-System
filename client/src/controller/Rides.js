@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import * as moment from 'moment';
-import ExpansionPanel from 'material-expansion-panel';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { fetchRidesWithUsers } from '../model/rides';
-import AvailableDrivers from '../view/AvailableDrivers';
-import AssignedDriver from '../view/AssignedDriver';
-import AcceptRide from '../view/AcceptRide';
-import ExpandingCard from '../view/ExpandingCard';
+import Card from '../view/Card';
 
 const ExpansionList = styled.div`
   width: 100%;
   padding: 20px 60px;
   overflow: scroll;
-  height: 100%;
+  height: calc(100% - 40px);
 `;
 
 export class Rides extends Component {
@@ -22,9 +18,10 @@ export class Rides extends Component {
   }
 
   render() {
+    const { rides, user } = this.props;
     return (
       <ExpansionList>
-        {this.props.rides.map(
+        {rides.map(
           ({
             id,
             passenger: { firstName, lastName },
@@ -33,7 +30,8 @@ export class Rides extends Component {
             status,
             pickupTime
           }) => (
-            <ExpandingCard
+            <Card
+              user={user}
               key={id}
               status={status}
               firstName={firstName}

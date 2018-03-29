@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Destination, Phone, Calendar, Vertical } from './icons';
-import Avatar from './Avatar';
+import { Phone, Calendar, AccessAlarm } from '../icons';
+import Avatar from '../Avatar';
+import GoogleMap from '../GoogleMap';
 
+const Flex = styled.div`
+  display: flex;
+`;
 const Wrapper = styled.div`
   opacity: ${props => (props.isOpen ? '100%' : '0')};
   border-bottom: ${props => (props.isOpen ? 'none' : '1px solid #e0e0e0')};
@@ -46,64 +50,52 @@ const Status = styled.p`
   padding-left: 60px;
   top: 30px;
 `;
-const Iframe = styled.iframe`
-  flex: 2;
-  height: 210px;
+const Map = styled.iframe`
+  flex: 5;
   z-index: 1;
 `;
 
 export default ({
   isOpen,
-  users,
+  driver,
   onReply,
-  origin,
   phone,
-  destination,
+  pickupStreetAddress,
+  apptStreetAddress,
   apiKey = 'AIzaSyBvobiFxMVC72Zbd2YmfcxawWMpwG_QLKs',
   ...otherArgs
 }) => {
-  const placeIframe = `https://www.google.com/maps/embed/v1/search?key=${apiKey}&q=${origin}`;
-  const directionIframe = `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${origin}&destination=${destination}`;
-
   return (
     <Wrapper isOpen={isOpen}>
       <WrapperTop>
+        <GoogleMap
+          origin={pickupStreetAddress}
+          destination={apptStreetAddress}
+        />
         <DivLeft>
-          <Vertical />
-          {origin}
+          <Flex>
+            <Calendar />
+            <div>
+              Nov 15th<br />
+            </div>
+          </Flex>
           <br />
-          <br />
-          <Destination />
-          {destination}
-          <br />
-          <br />
-          <Calendar />Nov 15th 10am<br />
+          <AccessAlarm />10:00 am<br />
           <br />
           <Phone />
           {phone}
           <br />
           <br />
+          <AvailableDiv>
+            Assigned Driver<br />
+            <Avatar size={45} name={'Driver Name'} />
+            <Status>
+              {'Driver Name'}
+              <br />Pending Since Today, 10PM
+            </Status>
+          </AvailableDiv>
         </DivLeft>
-
-        <Iframe
-          key={apiKey}
-          title="directions"
-          frameborder="0"
-          src={destination === '' ? placeIframe : directionIframe}
-          allowfullscreen
-        />
       </WrapperTop>
-
-      <AvailableDiv>
-        Available Drivers<br />
-        {users.map(username => <Avatar size={45} name={username} />)}
-        {users.map(username => (
-          <Status>
-            {username}
-            <br />Pending Since Today, 10PM
-          </Status>
-        ))}
-      </AvailableDiv>
     </Wrapper>
   );
 };

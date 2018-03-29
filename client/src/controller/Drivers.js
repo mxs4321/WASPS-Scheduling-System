@@ -3,11 +3,11 @@ import ExpansionPanel from 'material-expansion-panel';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { fetchUsers } from '../model/users';
-import DriverProfile from '../view/DriverProfile';
+import DriverProfile from '../view/Card/DriverProfile';
 
 const ExpansionList = styled.div`
   width: 100%;
-  margin: 20px 60px;
+  padding: 20px 60px;
 `;
 
 class Drivers extends Component {

@@ -4,9 +4,7 @@ header('Content-Type: application/json');
 
 include '../env.php';
 require_once "../db.class.php";
-require_once "../twilio.php";
 $db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
-$twilio = new TextDriver;
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
@@ -85,7 +83,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
        break;
 }
 
-function postRide($passengerID, $_POST)
+function postRide($passengerID)
 {
    global $db;
 

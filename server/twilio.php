@@ -5,11 +5,11 @@
     use Twilio\Rest\Client;
     class TextDriver {
         //twilio information
-        $sid = 'ACea262116e95f713800419bb929fb7cb1';
-        $token = '9ce3a6c589d77a6ca15ca7a244f3f0c6';
-        $client = new Client($sid, $token);
+        private $sid = 'ACea262116e95f713800419bb929fb7cb1';
+        private $token = '9ce3a6c589d77a6ca15ca7a244f3f0c6';
+        private $client = new Client($sid, $token);
 
-        $waspsPhoneNumber = '+16316511911';
+        private $waspsPhoneNumber = '+16316511911';
         function sendMessage($message, $phone)
         {
              //send a message
@@ -24,4 +24,5 @@
                     )
             );
         }
+    }
 ?>
