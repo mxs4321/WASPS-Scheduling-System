@@ -138,7 +138,7 @@
 </div>
 
 <div id="loginModal" class="modal">
-    <form onsubmit="return validateLoginForm()" name="loginForm" class="modal-content" method="post">
+    <form action="../server/login.php" onsubmit="return validateLoginForm()" name="loginForm" class="modal-content" method="post">
         <span onclick="closeLoginModal()" class="close" title="Close Modal">&times;</span>
         <div class="container">
             <label><b>Username</b></label>
@@ -242,7 +242,7 @@
 </div><!--closing div id for "body"-->
 
 <div id="schedule">
-    <p id="scheduleHeading">Schedule</p>
+    <p id="scheduleHeading">Reserve a Ride</p>
     <img src="images/sche.png"/>
     <p id="scheduleText"> Call the W.A.S.P.S transportation line 585-216-7829.
         The following information will be needed: name, address, phone #, along with the
@@ -350,9 +350,9 @@
     <p id="contactHeading">Contact</p>
     <p class="contactDiv"> Call Us!</br>585-215-7829</p>
     <form id="contactForm">
-        <input class="textInput" type="text" name="name" value="Name"><br>
-        <input class="textInput" type="text" name="email" value="Email"><br>
-        <textarea rows="24" cols="510">Message</textarea>
+        <input class="textInput" type="text" name="name" placeholder="Name"><br>
+        <input class="textInput" type="text" name="email" placeholder="Email"><br>
+        <textarea rows="24" cols="510" placeholder="Message"></textarea>
         <button class="contactSubmitButton"><a href="#contactSubmit">Submit</a></button>
     </form>
 </div><!--closing div id for "contact"-->

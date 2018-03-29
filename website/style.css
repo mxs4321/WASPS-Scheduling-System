@@ -129,7 +129,7 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
         font-size: 50px;
         font-family: Arial, sans-serif;
         padding-left: 170px;
-        padding-top: 50px;
+        padding-top: 115px;
     }
 
     #body .text{
@@ -236,7 +236,7 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
 
     #joinusImage {
         position: absolute;
-        padding-top: 110px;
+        padding-top: 22px;
         width: 100%;
     }
 
@@ -247,11 +247,12 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
         text-transform: uppercase;
         font-family: Arial, sans-serif;
         padding-left: 170px;
+        padding-top: 50px;
     }
 
     #services {
         background-color: #F4F2F2;
-        height: 600px;
+        height: 650px;
         margin: 0;
         left: 0;
         right: 0;
@@ -262,13 +263,13 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
     #services #servicesText{
         font-weight: bold;
         font-size: 20px;
-        width: 800px;
+        width: 750px;
         height: 300px;
         color: #413F3F;
         font-family: Arial, sans-serif;
-        padding-left: 240px;
+        padding-left: 350px;
         position: absolute;
-        padding-top: 10px;
+        padding-top: -10px;
     }
 
     #events {
@@ -296,9 +297,7 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
         width: 250px;
     }
 
-    div.gallery:hover {
-        border: 1px solid #777;
-    }
+ 
 
     div.gallery img {
         width: 100%;
@@ -327,6 +326,7 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
     }
 
     #contactForm{position: relative; left: 150px; top: -150px;}
+    
 
     textarea {
         width: 1070px;
@@ -405,6 +405,7 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
 
     .container {
         padding: 16px;
+        margin-right: 40px;
     }
 
     span.psw {
@@ -469,8 +470,11 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
     }
 
     #servicesButtonId {
-        padding-left: 100px;
-        height: auto;}
+        padding-left: 200px;
+        height: auto;
+        position: relative;
+        top: -35px;
+        }
 
     .down {
         transform: rotate(45deg);
@@ -489,7 +493,6 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
 
 
 
-
 @media screen and (max-width: 700px) {
     .nav a:not(:first-child) {display: none;}
     .nav a.icon {
@@ -501,7 +504,7 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
         height: auto;
         width: auto;
     }
-
+	h2{ color: white; }
     .headerDiv {
         width: 200px;
         height: 200px;
@@ -509,13 +512,16 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
         left: 30%;
         font-family: Arial, sans-serif;
         float: none;
+        top: -220px;
         padding-bottom: 30px;
     }
 
     .headerImage {
         width: 150%;
+        height: 330px;
         clear: left;
         margin-top: -7%;
+        top: 15px;
     }
 
     .headerButtons{
@@ -604,9 +610,11 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
     }
 
     #joinus {
-        height: 275px;
+        height: 300px;
         padding-bottom: 20px;
     }
+    
+    
 
     #joinus #joinusHeading {
         font-size: 30px;
@@ -628,13 +636,14 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
     }
 
     #joinusImage {
-        padding-top: 120px;
+        padding-top: 45px;
+
     }
 
 
     #services {
-        background-color: #F4F2F2; 
-	height: 600px; 
+    background-color: #F4F2F2; 
+	height: 400px; 
 	margin: 0;
 	left: 0; 
 	right: 0; 
@@ -643,44 +652,64 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
 
     #servicesButtonId {
      	position: relative;
-		left: 300px;
+		left: 160px;
 		height: auto;
+		display: inline-block;
+		top: -80px;
+		
     }
+    
+   #services #servicesText{
+        width: 240px;
+        height: 200px;
+        padding-left: 0px;
+        position: relative;
+        top: -280px;
+        left: 210px;
+        color: #413F3F;
+        font-family: Arial, sans-serif;
+         font-weight: bold;
+        font-size: 13px;
+    }
+    
+     
+     
+
 
     #services #servicesHeading {
-        color: #4486C3; 
-	font-size: 55px;
-	position: relative; 
-	text-transform: uppercase; 
-	font-family: Arial, sans-serif; 
-	padding-left: 170px;
+    font-size: 30px;
+        position: relative;
+        text-transform: uppercase;
+        font-family: Arial, sans-serif;
+        padding-left: 20px;
+        top: -50px;
+     
     }
 
-    #services #servicesText {
-    font-weight: bold; 
-	font-size: 20px;
-	width: 800px;
-	height: 300px;
-	color: #413F3F;
-	font-family: Arial, sans-serif;
-	padding-left: 500px;
-	position: absolute;
-	padding-top: 10px;
-    }
+    
 
     .servicesButton {
-        background-color: white;
+    background-color: white;
 	font-family: Arial, sans-serif; 
 	font-weight: bold;
 	height: 40px;
-	width: 200px;
+	width: 150px;
 	border-radius:5px;
-	margin: 50px;
-	position: relative;left: -200px;
+	margin: 10px;
+	position: relative;
+	top: 10px;
+	left: -350px;
 	text-decoration: none;
 	 color: #5E5E5E;
-	font-size:17px;
+	font-size:12px;
     }
+    
+    .down {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+	}
+	
+     
 
 
     #events {
@@ -735,7 +764,14 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
         position: static;
         padding-left: 10px;
     }
-
+    
+     .contactSubmitButton{width: 100px; height: 30px; background-color:#4396E3; border: none;
+        border-radius: 4px;
+        position: relative;
+        top: 40px;
+        left: -165px;}
+        
+	.contactSubmitButton a {font-size: 15px;}
     .textInput {
         width: 150px;
 
@@ -749,7 +785,7 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
     .contactSubmitButton {
         position: static;
     }
-
+    
 
     /* Modal Content/Box */
     .modal-content {
@@ -808,5 +844,120 @@ i {
         display: block;
         text-align: left;
     }
+ 
 }
+
+@media screen and (max-width: 500px) {
+	#joinusImage {
+        padding-top: 101px;
+    }
+    
+     #servicesButtonId {
+     	position: relative;
+		left: 150px;
+		height: auto;
+		display: inline-block;
+		top: -80px;
+		
+    }
+     #services #servicesText{
+        font-weight: bold;
+        font-size: 12px;
+        width: 180px;
+        height: 220px;
+        color: #413F3F;
+        font-family: Arial, sans-serif;
+        left: 150px;
+        position: relative;
+        top: -260px;
+        
+    }
+
+    
+    .servicesButton {
+    background-color: white;
+	font-family: Arial, sans-serif; 
+	font-weight: bold;
+	height: 30px;
+	width: 115px;
+	border-radius:5px;
+	margin: 10px;
+	position: relative;
+	top: 10px;
+	left: -340px;
+	text-decoration: none;
+	 color: #5E5E5E;
+	font-size:10px;
+	
+    }
+    
+    #services {
+    background-color: #F4F2F2; 
+	height: 350px; 
+	margin: 0;
+	left: 0; 
+	right: 0; 
+	border-top: 7px solid rgba(29, 111, 187, 0.63);
+    }
+    
+    .down {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+	}
+	
+	i {
+ 		 border: solid black;
+  		border-width: 0 2px 2px 0;
+  		display: inline-block;
+  		padding: 3px;
+  		position: relative;
+  		left: 5px;
+  		top: -1px;
+	}
+	
+	 .headerDiv {
+        width: 100px;
+        height: 200px;
+        position: relative;
+        left: 30%;
+        font-family: Arial, sans-serif;
+        float: none;
+        top: -270px;
+    }
+    #phone {color: white;}
+    
+     .headerImage {
+        width: 150%;
+        height: 330px;
+        clear: left;
+        margin-top: -7%;
+        top: 8px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+	#joinusImage {
+        padding-top:137px;
+    }
+    .headerDiv {
+        width: 100px;
+        height: 200px;
+        position: relative;
+        left: 30%;
+        font-family: Arial, sans-serif;
+        float: none;
+        top: -270px;
+    }
+    #phone {color: white;}
+   .headerImage {
+        width: 150%;
+        height: 330px;
+        clear: left;
+        margin-top: -7%;
+        top: 4px;
+    }
+    
+}
+
+
 
