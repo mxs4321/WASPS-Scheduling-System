@@ -156,7 +156,7 @@ class AvailabilityDAO
            LEFT JOIN (availabilityexclusion) ON (user.id = availabilityexclusion.driverID)
            WHERE user.role = 'driver'
              AND FIND_IN_SET(:dayOfTheWeek, availability.days)>0
-             AND availability.start >= :timeOfDayStart AND availability.end <= :timeOfDayEnd
+             AND availability.start <= :timeOfDayStart AND availability.end >= :timeOfDayEnd
              AND (availabilityexclusion.id IS NULL OR availabilityexclusion.end < :datetimeStart OR availabilityexclusion.start > :datetimeEnd)
              GROUP BY id
              ";
