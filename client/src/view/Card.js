@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import GoogleMap from './GoogleMap';
+import Avatar from './Avatar';
 import {
   Warning,
   Scheduled,
   Complete,
   Canceled,
   Help,
-  Calendar
-} from '../icons';
-import AvailableDrivers from './AvailableDrivers';
-import AssignedDriver from './AssignedDriver';
-import AcceptRide from './AcceptRide';
-import GoogleMap from '../GoogleMap';
+  Calendar,
+  AccessAlarm,
+  AlarmOn
+} from './icons';
 
 const colorForStatus = {
   Unverified: '#EB5757',
@@ -50,17 +50,10 @@ const Address = styled.span`
 const Flex = styled.div`
   display: flex;
   width: 100%;
+  position: relative;
 `;
 const Name = styled.b`
   flex: 2;
-`;
-
-const InnerCard = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  color: gray;
-  width: 100%;
-  display: flex;
 `;
 const CardWrapper = styled.div`
   opacity: ${props => (props.isOpen ? '100%' : '0')};
@@ -72,10 +65,12 @@ const CardWrapper = styled.div`
   width: ${props => (props.isOpen ? 'calc(100% - 20px)' : '100%')};
   margin: ${props => (props.isOpen ? '10px' : '0')};
   height: ${props => (props.isOpen ? 'auto' : '0px')};
+  max-height: 500px;
   transition: all 0s, transform 0.3s, margin 0.3s, height 0.3s;
   background-color: white;
-  transform-origin: top;
+  transform-origin: right;
   overflow: hidden;
+  display: flex;
   box-shadow: ${props =>
     props.isOpen
       ? '0 -1px 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24)'
@@ -84,6 +79,31 @@ const CardWrapper = styled.div`
 const Flex3 = styled.div`
   flex: 3;
 `;
+
+const DriverInfo = styled.div`
+  flex: 1;
+  padding: 10px;
+  background-color: #fafafa;
+`;
+const RideInfo = styled.div`
+  padding: 10px;
+`;
+const Pad8 = styled.div`
+  padding: 8px;
+`;
+const DateAndTimeRow = styled.div`
+  display: flex;
+  padding: 20px 10px;
+`;
+const PhoneNumber = styled.a`
+  display: block;
+  color: #4fc3f7;
+  text-decoration: none;
+`;
+const PadLeft8 = styled.div`
+  padding-left: 8px;
+`;
+
 const iconsForStatus = {
   Unverified: <Help color={colorForStatus['Unverified']} />,
   Pending: <Warning color={colorForStatus['Pending']} />,
@@ -92,53 +112,14 @@ const iconsForStatus = {
   Canceled: <Canceled color={colorForStatus['Canceled']} />
 };
 
-const Panel = ({
-  user,
-  status,
-  isOpen,
-  pickupStreetAddress,
-  apptStreetAddress
-}) => {
-  if (status === 'Unverified') {
-    return (
-      <AvailableDrivers
-        isOpen={isOpen}
-        pickupStreetAddress={pickupStreetAddress}
-        apptStreetAddress={apptStreetAddress}
-        drivers={['Niharika Nakka', 'Brett Lamy', 'Mohammad Suhail']}
-      />
-    );
-  }
-  if (status === 'Pending' && user.role === 'driver') {
-    return (
-      <AcceptRide
-        isOpen={isOpen}
-        onAccept={() => console.log('accept')}
-        onDecline={() => console.log('decline')}
-        pickupStreetAddress={pickupStreetAddress}
-        apptStreetAddress={apptStreetAddress}
-      />
-    );
-  }
-  return (
-    <AssignedDriver
-      isOpen={isOpen}
-      pickupStreetAddress={pickupStreetAddress}
-      apptStreetAddress={apptStreetAddress}
-      users={['Niharika Nakka']}
-    />
-  );
-};
-
 export default class ExpandingCard extends Component {
   state = { isOpen: false };
 
   render() {
     const {
-      user,
+      passenger,
+      driver,
       status,
-      firstName,
-      lastName,
       pickupStreetAddress,
       apptStreetAddress,
       pickupTime
@@ -150,7 +131,7 @@ export default class ExpandingCard extends Component {
           <Flex>
             <Icon>{iconsForStatus[status]}</Icon>
             <Name>
-              {firstName}&nbsp;{lastName}
+              {passenger.firstName}&nbsp;{passenger.lastName}
             </Name>
             <Address>
               {pickupStreetAddress} {'\u2192'} {apptStreetAddress}
@@ -160,46 +141,64 @@ export default class ExpandingCard extends Component {
         </Row>
 
         <CardWrapper isOpen={isOpen}>
-          <InnerCard>
-            <GoogleMap
-              origin={pickupStreetAddress}
-              destination={apptStreetAddress}
-            />
-            <Flex3>
+          <GoogleMap
+            origin={pickupStreetAddress}
+            destination={apptStreetAddress}
+          />
+          <Flex3>
+            <RideInfo>
               <Flex>
-                <Calendar />
-                <div>
-                  Nov 15th<br />
-                </div>
+                <Avatar name={`${passenger.firstName} ${passenger.lastName}`} />
+                <Pad8>
+                  <b>
+                    {passenger.firstName} {passenger.lastName}
+                  </b>
+                  <PhoneNumber href={`tel:${passenger.phone}`}>
+                    {passenger.phone}
+                  </PhoneNumber>
+                </Pad8>
               </Flex>
-              <br />
-              <Calendar />10:00 am<br />
-              <br />
-              {/* <Phone />
-              {phone}
-              <br />
-              <br /> */}
-              {/* <AvailableDiv>
-                Available Drivers<br />
-                {drivers.map(username => <Avatar size={45} name={username} />)}
-                {drivers.map(username => (
-                  <Status>
-                    {username}
-                    <br />Pending Since Today, 10PM
-                  </Status>
-                ))}
-              </AvailableDiv> */}
-            </Flex3>
-          </InnerCard>
+              <DateAndTimeRow>
+                <Flex>
+                  <Calendar size={42} />
+                  <PadLeft8>
+                    <div>Date:</div>
+                    <b>May 10th</b>
+                  </PadLeft8>
+                </Flex>
+                <Flex>
+                  <AccessAlarm size={42} />
+                  <PadLeft8>
+                    <div>Time:</div>
+                    <b>9:30 am</b>
+                  </PadLeft8>
+                </Flex>
+                <Flex>
+                  <AlarmOn size={42} />
+                  <PadLeft8>
+                    <div>Pickup:</div>
+                    <b>11:00 am</b>
+                  </PadLeft8>
+                </Flex>
+              </DateAndTimeRow>
+            </RideInfo>
+            {driver && (
+              <DriverInfo>
+                <Flex>
+                  <Avatar name={`${driver.firstName} ${driver.lastName}`} />
+                  <Pad8>
+                    <b>
+                      {driver.firstName} {driver.lastName}
+                    </b>
+                    <PhoneNumber href={`tel:${driver.phone}`}>
+                      {driver.phone}
+                    </PhoneNumber>
+                  </Pad8>
+                </Flex>
+              </DriverInfo>
+            )}
+          </Flex3>
         </CardWrapper>
-
-        <Panel
-          pickupStreetAddress={pickupStreetAddress}
-          apptStreetAddress={apptStreetAddress}
-          user={user}
-          status={status}
-          isOpen={isOpen}
-        />
       </Wrapper>
     );
   }

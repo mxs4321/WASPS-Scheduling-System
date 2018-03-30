@@ -24,18 +24,19 @@ export class Rides extends Component {
         {rides.map(
           ({
             id,
-            passenger: { firstName, lastName },
+            passenger,
             pickupStreetAddress,
             apptStreetAddress,
             status,
-            pickupTime
+            pickupTime,
+            driver
           }) => (
             <Card
               user={user}
               key={id}
               status={status}
-              firstName={firstName}
-              lastName={lastName}
+              passenger={passenger}
+              driver={driver}
               pickupStreetAddress={pickupStreetAddress}
               apptStreetAddress={apptStreetAddress}
               pickupTime={moment(pickupTime).fromNow()}
@@ -51,12 +52,7 @@ export default connect(
   ({ auth, rides, app, users }) => ({
     user: auth.user,
     rides: Object.values(rides.byId)
-      .filter(({ status }) => {
-        if (app.rideFilter === '') {
-          return true;
-        }
-        return status === app.rideFilter;
-      })
+      .filter(ride => app.rideFilter === '' || ride.status === app.rideFilter)
       .map(ride => ({
         ...ride,
         passenger: users.byId[ride.passengerID],

@@ -3,7 +3,7 @@ import ExpansionPanel from 'material-expansion-panel';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { fetchUsers } from '../model/users';
-import DriverProfile from '../view/Card/DriverProfile';
+// import DriverProfile from '../view/Card/DriverProfile';
 
 const ExpansionList = styled.div`
   width: 100%;
@@ -23,7 +23,7 @@ class Drivers extends Component {
             title={`${firstName} ${lastName}`}
             expandedTitle={`${firstName} ${lastName}`}
           >
-            <DriverProfile />
+            <div />
           </ExpansionPanel>
         ))}
       </ExpansionList>
