@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as moment from 'moment';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { fetchRidesWithUsers } from '../model/rides';
+import { fetchRidesWithUsers, updateRide } from '../model/rides';
 import ExpandingCard from '../view/ExpandingCard';
 import { Warning, Scheduled, Complete, Canceled, Help } from '../view/icons';
 import RideCard from '../view/RideCard';
@@ -36,17 +36,18 @@ export class Rides extends Component {
   }
 
   render() {
+    const { rides, updateRide, user } = this.props;
     return (
       <ExpansionList>
-        {this.props.rides.map(
+        {rides.map(
           ({
             id,
             passenger,
+            driver,
             pickupStreetAddress,
             apptStreetAddress,
             status,
-            pickupTime,
-            driver
+            pickupTime
           }) => (
             <ExpandingCard
               key={id}
@@ -57,10 +58,14 @@ export class Rides extends Component {
               accentColor={colorForStatus[status]}
             >
               <RideCard
+                id={id}
                 passenger={passenger}
                 driver={driver}
+                user={user}
                 pickupStreetAddress={pickupStreetAddress}
                 apptStreetAddress={apptStreetAddress}
+                status={status}
+                updateRide={updateRide}
               />
             </ExpandingCard>
           )
@@ -72,6 +77,7 @@ export class Rides extends Component {
 
 export default connect(
   ({ auth, rides, app, users }) => ({
+    user: auth.user,
     rides: Object.values(rides.byId)
       .filter(ride => app.rideFilter === '' || ride.status === app.rideFilter)
       .map(ride => ({
@@ -81,6 +87,7 @@ export default connect(
       }))
   }),
   dispatch => ({
-    fetchRidesWithUsers: () => dispatch(fetchRidesWithUsers())
+    fetchRidesWithUsers: () => dispatch(fetchRidesWithUsers()),
+    updateRide: (id, changedValues) => dispatch(updateRide(id, changedValues))
   })
 )(Rides);

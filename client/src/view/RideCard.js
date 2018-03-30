@@ -36,11 +36,54 @@ const PhoneNumber = styled.a`
   text-decoration: none;
 `;
 
+const AcceptRide = ({ id, updateRide }) => (
+  <Flex>
+    <button onClick={() => updateRide(id, { status: 'Scheduled' })}>
+      Accept
+    </button>
+    <button onClick={() => updateRide(id, { status: 'Unverified' })}>
+      Decline
+    </button>
+  </Flex>
+);
+
+const DriverPanel = ({ firstName, lastName, phone }) => (
+  <Flex>
+    <Avatar name={`${firstName} ${lastName}`} />
+    <Pad8>
+      <b>
+        {firstName} {lastName}
+      </b>
+      <PhoneNumber href={`tel:${phone}`}>{phone}</PhoneNumber>
+    </Pad8>
+  </Flex>
+);
+
+const DetailPanel = ({ updateRide, id, status, user, driver }) => {
+  if (user && user.role === 'driver' && status === 'Pending') {
+    return <AcceptRide id={id} updateRide={updateRide} />;
+  }
+
+  if (driver) {
+    return (
+      <DriverPanel
+        firstName={driver.firstName}
+        lastName={driver.lastName}
+        phone={driver.phone}
+      />
+    );
+  }
+};
+
 export default ({
+  id,
+  user,
   driver,
   passenger,
+  status,
   pickupStreetAddress,
-  apptStreetAddress
+  apptStreetAddress,
+  updateRide
 }) => (
   <Fragment>
     <GoogleMap origin={pickupStreetAddress} destination={apptStreetAddress} />
@@ -81,21 +124,15 @@ export default ({
           </Flex>
         </DateAndTimeRow>
       </Pad10>
-      {driver && (
-        <DriverInfo>
-          <Flex>
-            <Avatar name={`${driver.firstName} ${driver.lastName}`} />
-            <Pad8>
-              <b>
-                {driver.firstName} {driver.lastName}
-              </b>
-              <PhoneNumber href={`tel:${driver.phone}`}>
-                {driver.phone}
-              </PhoneNumber>
-            </Pad8>
-          </Flex>
-        </DriverInfo>
-      )}
+      <DriverInfo>
+        <DetailPanel
+          id={id}
+          updateRide={updateRide}
+          driver={driver}
+          user={user}
+          status={status}
+        />
+      </DriverInfo>
     </Flex3>
   </Fragment>
 );

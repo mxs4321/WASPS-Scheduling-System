@@ -11,7 +11,7 @@ class RideDAO
         $this->dbh = $dbh;
     }
 
-    public function findById($id, $populate)
+    public function findById($id, $populate = false)
     {
         try {
             $stmt = $this->dbh->prepare("SELECT * FROM ride WHERE id = :id");
