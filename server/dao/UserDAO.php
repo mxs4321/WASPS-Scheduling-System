@@ -62,16 +62,19 @@ class UserDAO {
         }
     }
 
-   public function getDriverExportInfo()
+   public function getDriverExportInfo($fetchSince = "")
    {
       try
       {
          $query = "SELECT user.id, firstName, lastName, phone, email, wantsSMS, wantsEmail, start, end, days FROM user
                       LEFT JOIN availability ON (user.id = availability.driverID)
                       WHERE role = 'driver'";
+         if ($fetchSince != "") $query .= " AND user.CreatedTime > :fetchSince";
          $stmt = $this->dbh->prepare($query);
+         if ($fetchSince != "") $stmt->bindParam('fetchSince', $fetchSince);
          $stmt->execute();
          $stmt->setFetchMode(PDO::FETCH_ASSOC);
+         $data = [];
 
          while ($row = $stmt->fetch())
          {
@@ -85,6 +88,33 @@ class UserDAO {
          echo $e->getMessage();
          die();
       }
+    }
+
+    public function getClientExportInfo($fetchSince = "")
+    {
+       try
+       {
+          $query = "SELECT firstName, lastName, phone, email, wantsEmail, wantsSMS
+                      FROM user WHERE role = 'passenger'";
+          if ($fetchSince != "") $query .= " AND user.CreatedTime > :fetchSince";
+          $stmt = $this->dbh->prepare($query);
+          if ($fetchSince != "") $stmt->bindParam('fetchSince', $fetchSince);
+          $stmt->execute();
+          $stmt->setFetchMode(PDO::FETCH_ASSOC);
+          $data = [];
+
+          while ($row = $stmt->fetch())
+          {
+             $data[] = $row;
+          }
+
+          return $data;
+       }
+       catch (PDOException $e)
+       {
+          echo $e->getMessage();
+          die();
+       }
     }
 
     function insertUser($password, $role, $firstName, $lastName, $phone, $email, $wantsSMS = true, $wantsEmail = true)

@@ -32,12 +32,18 @@ class RideDAO
         }
     }
 
-    public function getRides($page = 0, $numberPerPage = 10, $populate = false)
+    public function getRides($page = 0, $numberPerPage = 10, $populate = false, $fetchSince = "")
     {
-        try {
-            $stmt = $this->dbh->prepare("SELECT * FROM ride LIMIT :lim OFFSET :offset");
+        try
+        {
+            $whereClause = "";
+            if ($fetchSince != "") $whereClause .= " WHERE CreatedTime > :fetchSince ";
+            $query = "SELECT * FROM ride " .$whereClause ." LIMIT :lim OFFSET :offset";
+
+            $stmt = $this->dbh->prepare($query);
             $lim = intval($numberPerPage);
             $offset = intval($page * $numberPerPage);
+            if ($fetchSince != "") $stmt->bindParam(':fetchSince', $fetchSince);
             $stmt->bindParam(':lim', $lim, PDO::PARAM_INT);
             $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
             $stmt->execute();
@@ -115,7 +121,37 @@ class RideDAO
 
           while ($row = $stmt->fetch())
           {
-             $data[] = $row['Field'];
+             if (strpos(strtolower($row['Field']), 'id') === false && strpos($row['Field'], 'CreatedTime') === false)
+             {
+                $data[] = $row['Field'];
+             }
+          }
+
+          return $data;
+       }
+       catch (PDOException $e)
+       {
+          echo $e->getMessage();
+          die();
+       }
+    }
+
+    public function getDestinationExportInfo($fetchSince = "")
+    {
+       try
+       {
+          $query = "SELECT apptStreetAddress, apptCity, user.firstName, user.lastName, apptEnd FROM ride
+                      LEFT JOIN user ON (user.id = ride.passengerID)";
+          if ($fetchSince != "") $query .= " WHERE ride.CreatedTime > :fetchSince";
+          $stmt = $this->dbh->prepare($query);
+          if ($fetchSince != "") $stmt->bindParam(':fetchSince', $fetchSince);
+          $stmt->execute();
+          $stmt->setFetchMode(PDO::FETCH_ASSOC);
+          $data = [];
+
+          while ($row = $stmt->fetch())
+          {
+             $data[] = $row;
           }
 
           return $data;
