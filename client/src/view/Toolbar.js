@@ -61,7 +61,7 @@ class Toolbar extends Component {
   render() {
     const {
       userRole = 'passenger',
-      userName,
+      username,
       onMenuToggle = NoOp,
       goToEditProfile = NoOp,
       logout = NoOp
@@ -77,6 +77,7 @@ class Toolbar extends Component {
           onBlur={() => this.setState({ isSearching: false })}
         />
         <UserMenu
+          username={username}
           backgroundColor={getToolbarBackgroundColor({ userRole })}
           size={36}
           logout={logout}

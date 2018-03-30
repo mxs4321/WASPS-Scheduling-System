@@ -10,7 +10,7 @@ import { Add } from '../view/icons';
 import Navigation from './Navigation';
 import CreateRide from './CreateRide';
 import Availability from './Availability';
-import Drivers from './Drivers';
+import Users from './Users';
 import Schedule from './Schedule';
 import Rides from './Rides';
 import PrivateRoute from './PrivateRoute';
@@ -79,7 +79,7 @@ export const App = ({
   return (
     <Fullbleed>
       <Toolbar
-        userName={`${user.firstName} ${user.lastName}`}
+        username={`${user.firstName} ${user.lastName}`}
         userRole={user.role}
         onMenuToggle={toggleSidebar}
         goToEditProfile={() => history.push('/profile')}
@@ -113,8 +113,8 @@ export const App = ({
         />
         <PrivateRoute
           allowedRoles={['dispatcher', 'admin']}
-          path="/drivers"
-          component={Drivers}
+          path="/users"
+          component={Users}
         />
         <PrivateRoute
           allowedRoles={['admin']}

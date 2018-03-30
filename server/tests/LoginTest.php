@@ -9,7 +9,7 @@ class LoginTest extends TestCase
     public function setUp()
     {
         $this->http = new GuzzleHttp\Client(['base_uri' => 'localhost:8000/login.php', 'http_errors' => false]);
-        $this->http->request('GET', '/dbSetup.php');
+        $this->http->request('GET', '/setupTestDB.php');
     }
 
     public function tearDown()

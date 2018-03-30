@@ -151,12 +151,12 @@ class AvailabilityDAO
             $dayOfTheWeekIndex = date('w', strtotime($datetimeStart));
             $dayOfTheWeek = $daysOfTheWeek[$dayOfTheWeekIndex];
 
-            $query = "SELECT user.id, user.firstName, user.lastName, user.phone, user.email FROM user
+            $query = "SELECT user.id, user.firstName, user.lastName, user.role, user.phone, user.email, user.registered, user.lastLogin, user.wantsSMS, user.wantsEmail FROM user
            LEFT JOIN (availability) ON (user.id = availability.driverID)
            LEFT JOIN (availabilityexclusion) ON (user.id = availabilityexclusion.driverID)
            WHERE user.role = 'driver'
              AND FIND_IN_SET(:dayOfTheWeek, availability.days)>0
-             AND availability.start >= :timeOfDayStart AND availability.end <= :timeOfDayEnd
+             AND availability.start <= :timeOfDayStart AND availability.end >= :timeOfDayEnd
              AND (availabilityexclusion.id IS NULL OR availabilityexclusion.end < :datetimeStart OR availabilityexclusion.start > :datetimeEnd)
              GROUP BY id
              ";
@@ -171,7 +171,7 @@ class AvailabilityDAO
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             $data = [];
             while ($user = $stmt->fetch()) {
-                $data[] = $user->getDriverContactInfo();
+                $data[] = $user->getUserInfo();
             }
             return $data;
         } catch (PDOException $e) {

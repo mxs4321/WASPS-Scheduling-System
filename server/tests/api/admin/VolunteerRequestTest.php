@@ -11,7 +11,7 @@ class VolunteerRequestTest extends TestCase
     {
         $this->cookieJar = new \GuzzleHttp\Cookie\CookieJar();
         $this->http = new GuzzleHttp\Client(['base_uri' => 'localhost:8000/api/', 'http_errors' => false]);
-        $this->http->request('POST', '/dbSetup.php');
+        $this->http->request('POST', '/setupTestDB.php');
 
         $response = $this->http->request('POST', '/login.php', [
             'json' => [

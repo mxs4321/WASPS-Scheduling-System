@@ -1,5 +1,5 @@
 import { indexBy, prop, map, reduce } from 'ramda';
-import { getJSON, postJSON } from '../util/fetch';
+import { getJSON, postJSON, putJSON } from '../util/fetch';
 import { updateRequest } from './ajax';
 import { addUsers } from './users';
 import type { Ride } from './types/ride';
@@ -13,11 +13,24 @@ const DEFAULT_STATE = {
 };
 const NAMESPACE = 'RIDES';
 const ADD_RIDES = `${NAMESPACE}/ADD_RIDES`;
+const ACCEPT_RIDE = `${NAMESPACE}/ACCEPT_RIDE`;
 
 export const addRides = rides => ({
   type: ADD_RIDES,
   payload: rides
 });
+
+export const updateRide = (id, changedValues) => dispatch => {
+  const url = `/api/rides.php?id=${id}`;
+  dispatch(updateRequest(`PUT ${url}`, 'Pending'));
+  return putJSON(url, changedValues)
+    .then(ride => {
+      dispatch(updateRequest(`GET ${url}`, 'Success'));
+      debugger;
+      dispatch(addRides([ride]));
+    })
+    .catch(err => dispatch(updateRequest(`GET ${url}`, 'Error', err)));
+};
 
 export const createRide = ({
   passengerID,
@@ -44,7 +57,6 @@ export const createRide = ({
     driverID
   })
     .then(rides => {
-      const { users } = getState();
       dispatch(updateRequest(`GET ${url}`, 'Success'));
       dispatch(
         addRides([
