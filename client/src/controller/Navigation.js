@@ -32,9 +32,9 @@ const Navigation = withRouter(({ location, userRole = 'passenger' }: Props) => (
       </List.Item>
     )}
     {(userRole === 'dispatcher' || userRole === 'admin') && (
-      <List.Item active={location.pathname === '/drivers'}>
-        <UnstyledLink to="/drivers">
-          <Group />&nbsp;&nbsp;Drivers
+      <List.Item active={location.pathname === '/users'}>
+        <UnstyledLink to="/users">
+          <Group />&nbsp;&nbsp;Users
         </UnstyledLink>
       </List.Item>
     )}
