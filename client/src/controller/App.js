@@ -79,7 +79,7 @@ export const App = ({
   return (
     <Fullbleed>
       <Toolbar
-        userName={`${user.firstName} ${user.lastName}`}
+        username={`${user.firstName} ${user.lastName}`}
         userRole={user.role}
         onMenuToggle={toggleSidebar}
         goToEditProfile={() => history.push('/profile')}
