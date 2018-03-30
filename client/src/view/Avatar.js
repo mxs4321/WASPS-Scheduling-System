@@ -31,8 +31,11 @@ const DEFAULT_COLORS = [
   '#F88962'
 ];
 
-const computeColor = (name = 'NA', colors = DEFAULT_COLORS) => {
-  const colorIndex = (name.charCodeAt(0) - 65) % colors.length;
+export const computeColor = (name = 'NA', colors = DEFAULT_COLORS) => {
+  const nameHash = name
+    .split('')
+    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const colorIndex = nameHash % colors.length;
   return colors[colorIndex];
 };
 

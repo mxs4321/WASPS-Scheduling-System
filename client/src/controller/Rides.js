@@ -3,7 +3,25 @@ import * as moment from 'moment';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { fetchRidesWithUsers } from '../model/rides';
-import Card from '../view/Card';
+import ExpandingCard from '../view/ExpandingCard';
+import { Warning, Scheduled, Complete, Canceled, Help } from '../view/icons';
+import RideCard from '../view/RideCard';
+
+const colorForStatus = {
+  Unverified: '#EB5757',
+  Pending: '#F2994A',
+  Scheduled: '#6FCF97',
+  Complete: '#27AE60',
+  Canceled: '#828282'
+};
+
+const iconsForStatus = {
+  Unverified: <Help color={colorForStatus['Unverified']} />,
+  Pending: <Warning color={colorForStatus['Pending']} />,
+  Scheduled: <Scheduled color={colorForStatus['Scheduled']} />,
+  Complete: <Complete color={colorForStatus['Complete']} />,
+  Canceled: <Canceled color={colorForStatus['Canceled']} />
+};
 
 const ExpansionList = styled.div`
   width: 100%;
@@ -18,10 +36,9 @@ export class Rides extends Component {
   }
 
   render() {
-    const { rides, user } = this.props;
     return (
       <ExpansionList>
-        {rides.map(
+        {this.props.rides.map(
           ({
             id,
             passenger,
@@ -31,16 +48,21 @@ export class Rides extends Component {
             pickupTime,
             driver
           }) => (
-            <Card
-              user={user}
+            <ExpandingCard
               key={id}
-              status={status}
-              passenger={passenger}
-              driver={driver}
-              pickupStreetAddress={pickupStreetAddress}
-              apptStreetAddress={apptStreetAddress}
-              pickupTime={moment(pickupTime).fromNow()}
-            />
+              icon={iconsForStatus[status]}
+              title={`${passenger.firstName} ${passenger.lastName}`}
+              description={`${pickupStreetAddress} \u2192 ${apptStreetAddress}`}
+              detailText={moment(pickupTime).fromNow()}
+              accentColor={colorForStatus[status]}
+            >
+              <RideCard
+                passenger={passenger}
+                driver={driver}
+                pickupStreetAddress={pickupStreetAddress}
+                apptStreetAddress={apptStreetAddress}
+              />
+            </ExpandingCard>
           )
         )}
       </ExpansionList>
@@ -50,7 +72,6 @@ export class Rides extends Component {
 
 export default connect(
   ({ auth, rides, app, users }) => ({
-    user: auth.user,
     rides: Object.values(rides.byId)
       .filter(ride => app.rideFilter === '' || ride.status === app.rideFilter)
       .map(ride => ({
