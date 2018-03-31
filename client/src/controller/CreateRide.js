@@ -166,14 +166,10 @@ class CreateRide extends Component {
             <Button
               onClick={() => {
                 if (step === 4) {
-                  console.log(parse(location.search));
-                  debugger;
                   createRide(parse(location.search));
                   history.push('/');
                 } else {
-                  this.setState({}, () =>
-                    history.push(`/create/${step + 1}?${queryify(this.state)}`)
-                  );
+                  history.push(`/create/${step + 1}?${queryify(this.state)}`);
                 }
               }}
               active={step <= completedSteps || step === 4}

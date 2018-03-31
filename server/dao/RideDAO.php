@@ -237,7 +237,7 @@ class RideDAO
           $setStr = "";
 
           if ($passengerID != "")         $setStr .= "`passengerID` = :passengerID";
-          if ($driverID != "")            $setStr .= ($setStr == "") ? "`driverID` = :driverID" : ", `driverID` = :driverID";
+          if ($driverID != "" || $driverID == -1) $setStr .= ($setStr == "") ? "`driverID` = :driverID" : ", `driverID` = :driverID";
           if ($apptStart != "")           $setStr .= ($setStr == "") ? "`apptStart` = :apptStart" : ", `apptStart` = :apptStart";
           if ($apptEnd != "")             $setStr .= ($setStr == "") ? "`apptEnd` = :apptEnd" : ", `apptEnd` = :apptEnd";
           if ($numMiles != "")            $setStr .= ($setStr == "") ? "`numMiles` = :numMiles" : ", `numMiles` = :numMiles";
@@ -256,7 +256,8 @@ class RideDAO
           $stmt = $this->dbh->prepare("UPDATE ride SET {$setStr} WHERE id = :id;");
           $stmt->bindParam(":id", $id, PDO::PARAM_INT);
           if ($passengerID != "")         $stmt->bindParam(':passengerID', intval($passengerID), PDO::PARAM_INT);
-          if ($driverID != "")            $stmt->bindParam(':driverID', intval($driverID), PDO::PARAM_INT);
+          if ($driverID == -1)         $stmt->bindValue(':driverID', $d = null, PDO::PARAM_INT);
+          else if ($driverID != "")       $stmt->bindParam(':driverID', intval($driverID), PDO::PARAM_INT);
           if ($apptStart != "")           $stmt->bindParam(':apptStart', $apptStart, PDO::PARAM_STR);
           if ($apptEnd != "")             $stmt->bindParam(':apptEnd', $apptEnd, PDO::PARAM_STR);
           if ($numMiles != "")            $stmt->bindParam(':numMiles', $numMiles);
@@ -272,7 +273,7 @@ class RideDAO
           if ($modified != "")            $stmt->bindParam(':modified', $modified, PDO::PARAM_STR);
           $stmt->execute();
 
-          return $stmt->rowCount() . " row(s) updated";
+          return $this->findById($id, true);
        }
        catch (PDOException $e)
        {

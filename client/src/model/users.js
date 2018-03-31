@@ -34,7 +34,6 @@ export const createUser = user => dispatch => {
   dispatch(updateRequest(`POST ${url}`, 'Pending'));
   return postJSON(url, user)
     .then(user => {
-      debugger;
       dispatch(updateRequest(`POST ${url}`, 'Success'));
       dispatch(addUsers([user]));
     })

@@ -15,6 +15,20 @@ const NAMESPACE = 'RIDES';
 const ADD_RIDES = `${NAMESPACE}/ADD_RIDES`;
 const ACCEPT_RIDE = `${NAMESPACE}/ACCEPT_RIDE`;
 
+// Replace the references to users with just their id
+const replaceUsersWithRefs = map(ride => ({
+  passengerID: ride.passenger.id,
+  driverID: ride.driver ? ride.driver.id : undefined,
+  ...ride,
+  driver: null,
+  passenger: null
+}));
+// Get a list of all users
+const getAllUsers = reduce(
+  (users, ride) => [...users, ride.passenger, ride.driver],
+  []
+);
+
 export const addRides = rides => ({
   type: ADD_RIDES,
   payload: rides
@@ -26,8 +40,8 @@ export const updateRide = (id, changedValues) => dispatch => {
   return putJSON(url, changedValues)
     .then(ride => {
       dispatch(updateRequest(`GET ${url}`, 'Success'));
-      debugger;
-      dispatch(addRides([ride]));
+      dispatch(addUsers(getAllUsers([ride])));
+      dispatch(addRides(replaceUsersWithRefs([ride])));
     })
     .catch(err => dispatch(updateRequest(`GET ${url}`, 'Error', err)));
 };
@@ -41,10 +55,9 @@ export const createRide = ({
   destination
 }) => (dispatch, getState) => {
   const url = '/api/rides.php';
-  dispatch(updateRequest(`GET ${url}`, 'Pending'));
   const [pickupStreetAddress, pickupCity] = origin.split(', ');
   const [apptStreetAddress, apptCity] = destination.split(', ');
-  return postJSON(url, {
+  const newRide = {
     passengerID,
     apptStart,
     apptEnd,
@@ -55,27 +68,12 @@ export const createRide = ({
     apptCity,
     wheelchairVan: false,
     driverID
-  })
+  };
+  dispatch(updateRequest(`GET ${url}`, 'Pending'));
+  return postJSON(url, newRide)
     .then(rides => {
       dispatch(updateRequest(`GET ${url}`, 'Success'));
-      dispatch(
-        addRides([
-          {
-            id: 100,
-            passengerID,
-            apptStart,
-            apptEnd,
-            status: 'Pending',
-            pickupTime: apptStart,
-            pickupStreetAddress,
-            pickupCity,
-            apptStreetAddress,
-            apptCity,
-            wheelchairVan: false,
-            driverID
-          }
-        ])
-      );
+      dispatch(addRides(rides));
     })
     .catch(err => dispatch(updateRequest(`GET ${url}`, 'Error', err)));
 };
@@ -88,19 +86,6 @@ export const fetchRidesWithUsers = () => dispatch => {
   return getJSON('/api/rides.php?populate=true')
     .then(rides => {
       dispatch(updateRequest('GET /api/rides.php?populate=true', 'Success'));
-      // Replace the references to users with just their id
-      const replaceUsersWithRefs = map(ride => ({
-        passengerID: ride.passenger.id,
-        driverID: ride.driver ? ride.driver.id : undefined,
-        ...ride,
-        driver: null,
-        passenger: null
-      }));
-      // Get a list of all users
-      const getAllUsers = reduce(
-        (users, ride) => [...users, ride.passenger, ride.driver],
-        []
-      );
       dispatch(addUsers(getAllUsers(rides).filter(user => user)));
       dispatch(addRides(replaceUsersWithRefs(rides)));
     })
