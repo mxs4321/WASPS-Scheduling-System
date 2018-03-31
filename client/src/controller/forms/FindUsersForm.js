@@ -66,6 +66,7 @@ class FindUserForm extends Component {
           {searchText !== '' &&
             searchedUsers.map(({ id, firstName, lastName }) => (
               <ListItem
+                key={id}
                 active={this.state.selectedUserId === id}
                 onClick={() => {
                   didPickUser(id);

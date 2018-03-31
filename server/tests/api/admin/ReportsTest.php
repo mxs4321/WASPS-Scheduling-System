@@ -42,7 +42,7 @@ class ReportsTest extends TestCase
             'apptEnd' => "2018-04-23 10:00:00",
             "numMiles" => null,
             "totalMinutes" => null,
-            "pickupTime" => "2018-04-23 08:30:00",
+            "pickupTime" => "2018-04-23 10:00:00",
             "wheelchairVan" => 0,
             "status" => "Scheduled",
             "pickupStreetAddress" => "855 publishers parkway",

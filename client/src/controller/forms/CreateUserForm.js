@@ -33,7 +33,7 @@ class CreateUserForm extends Component {
     phone: ''
   };
   render() {
-    const { onSubmit } = this.props;
+    const { onSubmit = NoOp } = this.props;
     return (
       <Form>
         <InputBox

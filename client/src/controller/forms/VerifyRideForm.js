@@ -3,12 +3,8 @@ import { connect } from 'react-redux';
 import { createRide } from '../../model/rides';
 import styled from 'styled-components';
 import Avatar from '../../view/Avatar';
-import { Destination, Calendar, Vertical } from '../../view/icons';
+import { Calendar } from '../../view/icons';
 
-const Button = styled.button`
-  border-radius: 4px;
-  background-color: red;
-`;
 const Wrapper = styled.div`
   height: 100%;
   display: flex;

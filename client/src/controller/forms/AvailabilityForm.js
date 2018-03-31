@@ -9,8 +9,7 @@ import {
   createDriverAvailability,
   deleteDriverAvailability
 } from '../../model/availability';
-import { DatePicker, TimePicker } from 'antd';
-import { parse, stringify as queryify } from 'query-string';
+import { TimePicker } from 'antd';
 import moment from 'moment';
 
 const Flex = styled.div`
@@ -24,16 +23,6 @@ const Button = styled.button`
   :hover {
     background: #fafafa;
   }
-`;
-const Input = styled.input`
-  display: block;
-  width: 160px;
-  height: 30px;
-  font-size: 16px;
-  border: 2px solid rgba(0, 0, 0, 0.6);
-  border-radius: 4px;
-  margin-bottom: 5px;
-  margin: 4px;
 `;
 const Padding = styled.div`
   margin: 20px 0 20px 20px;
