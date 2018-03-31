@@ -11,26 +11,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
    switch ($_SESSION['user']['role'])
    {
       case "admin":
-         if (isset($_GET['info']))
+         $filename = "";
+         $fetchSince = "";
+
+         if (isset($_GET['filename'])) $filename = $_GET['filename'];
+         if (isset($_GET['fetchSince'])) $fetchSince = $_GET['fetchSince'];
+
+         switch ($_GET['info'])
          {
-            if ($_GET['info'] == 'ride')
-            {
-               if (isset($_GET['export'])) {
-                  exportRideToCSV();
-               } else {
+            case 'ride':
+               if (isset($_GET['export']))
+               {
+                  exportRideToCSV($filename, $fetchSince);
+               }
+               else
+               {
                   header('Content-Type: application/json');
                   echo json_encode($db->ride->getRides());
                }
-            }
-            else if ($_GET['info'] == 'driver')
-            {
-               if (isset($_GET['export'])) {
-                  exportDriverToCSV();
-               } else {
+               break;
+
+            case 'driver':
+               if (isset($_GET['export']))
+               {
+                  exportDriverToCSV($filename, $fetchSince);
+               }
+               else
+               {
                   header('Content-Type: application/json');
                   echo json_encode($db->user->getDriverExportInfo());
                }
-            }
+               break;
+
+            case 'destination':
+               if (isset($_GET['export']))
+               {
+                  exportDestinationToCSV($filename, $fetchSince);
+               }
+               else
+               {
+                  header('Content-Type: application/json');
+                  echo json_encode($db->ride->getDestinationExportInfo());
+               }
+               break;
+
+            case 'client':
+               if (isset($_GET['export']))
+               {
+                  exportClientToCSV($filename, $fetchSince);
+               }
+               else
+               {
+                  header('Content-Type: application/json');
+                  echo json_encode($db->user->getClientExportInfo());
+               }
+               break;
+
+            default:
+               http_response_code(400);
+               echo json_encode(["err" => "Invalid arguments"]);
          }
          break;
       default:
@@ -40,7 +79,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
    }
 }
 
-function exportDriverToCSV($filename = "drivers.csv")
+function exportClientToCSV($filename = "clients.csv", $fetchSince = "")
+{
+   header('Content-Type: application/csv; charset=UTF-8');
+   header('Content-Disposition: attachment; filename="' .$filename .'";');
+   global $db;
+   global $delimiter;
+
+   $columnNames = array("First Name", "Last Name", "Phone number", "Email Address", "Wants Email", "Wants SMS");
+   $data = $db->user->getClientExportInfo($fetchSince);
+
+   $f = fopen('php://output', 'w');
+
+   fputcsv($f, $columnNames, $delimiter);
+   foreach ($data as $line)
+   {
+      if ($line['wantsSMS'] == 1)
+      {
+         $line['wantsSMS'] = "yes";
+      }
+      else
+      {
+         $line['wantsSMS'] = "no";
+      }
+
+      if ($line['wantsEmail'] == 1)
+      {
+         $line['wantsEmail'] = "yes";
+      }
+      else
+      {
+         $line['wantsEmail'] = "no";
+      }
+
+      fputcsv($f, $line, $delimiter);
+   }
+
+   fpassthru($f);
+   fclose($f);
+}
+
+function exportDestinationToCSV($filename = "destinations.csv", $fetchSince = "")
+{
+   header('Content-Type: application/csv; charset=UTF-8');
+   header('Content-Disposition: attachment; filename="' .$filename .'";');
+   global $db;
+   global $delimiter;
+
+   $columnNames = array("Destination Street Address", "Destination City", "Customer First Name", "Customer Last Name", "Appointment Endtime");
+   $data = $db->ride->getDestinationExportInfo($fetchSince);
+
+   $f = fopen('php://output', 'w');
+
+   fputcsv($f, $columnNames, $delimiter);
+   foreach ($data as $line)
+   {
+      fputcsv($f, $line, $delimiter);
+   }
+
+   fpassthru($f);
+   fclose($f);
+}
+
+function exportDriverToCSV($filename = "drivers.csv", $fetchSince = "")
 {
    header('Content-Type: application/csv; charset=UTF-8');
    header('Content-Disposition: attachment; filename="' .$filename .'";');
@@ -50,7 +151,7 @@ function exportDriverToCSV($filename = "drivers.csv")
    $columnNames = array("First Name", "Last Name", "Phone", "Email Address", "Wants Email", "Wants SMS", "Driver Schedule Monday",
       "Driver Schedule Tuesday", "Driver Schedule Wednesday", "Driver Schedule Thursday", "Driver Schedule Friday",
       "Driver Schedule Saturday", "Driver Schedule Sunday");
-   $data = $db->user->getDriverExportInfo();
+   $data = $db->user->getDriverExportInfo($fetchSince);
 
    $f = fopen('php://output', 'w');
    fputcsv($f, $columnNames, $delimiter);
@@ -83,11 +184,23 @@ function exportDriverToCSV($filename = "drivers.csv")
       AddDriverSchedule($driver, $lastDriver);
    }
 
+   // Add last driver in the list if there ever was one
+   if (sizeof($data > 0))
+   {
+      unset($lastDriver['id']);
+      unset($lastDriver['start']);
+      unset($lastDriver['end']);
+      unset($lastDriver['days']);
+      $lastDriver['wantsSMS'] = $lastDriver['wantsSMS'] == 1 ? "Yes" : "No";
+      $lastDriver['wantsEmail'] = $lastDriver['wantsEmail'] == 1 ? "Yes" : "No";
+      fputcsv($f, $lastDriver, $delimiter);
+   }
+
    fpassthru($f);
    fclose($f);
 }
 
-function exportRideToCSV($filename = "event_appointments.csv")
+function exportRideToCSV($filename = "event_appointments.csv", $fetchSince = "")
 {
    header('Content-Type: application/csv; charset=UTF-8');
    header('Content-Disposition: attachment; filename="' .$filename .'";');
@@ -99,12 +212,16 @@ function exportRideToCSV($filename = "event_appointments.csv")
       "Phone with Area Code (xxx-xxx-xxxx", "Email Address", "Destination Street Address, Town, Zip Code", "Driver Name",
       "Medical Motors Wheelchair Van (yes or no)", "Driver - Notes", "Client - Notes", "Appointment Status",
       "Appointment - Total Miles", "Appointment - Total Hours");*/
-   $data = $db->ride->getRides();
+   $data = $db->ride->getRides(0, PHP_INT_MAX, false, $fetchSince);
    $f = fopen('php://output', 'w');
 
    fputcsv($f, $columnNames, $delimiter);
    foreach ($data as $line)
    {
+      unset($line['id']);
+      unset($line['passengerID']);
+      unset($line['driverID']);
+      unset($line['CreatedTime']);
       fputcsv($f, $line, $delimiter);
    }
 
