@@ -69,9 +69,9 @@ class UserDAO {
          $query = "SELECT user.id, firstName, lastName, phone, email, wantsSMS, wantsEmail, start, end, days FROM User
                       LEFT JOIN Availability ON (User.id = Availability.driverID)
                       WHERE role = 'driver'";
-        //  if ($fetchSince != "") $query .= " AND User.CreatedTime > :fetchSince";
+         if ($fetchSince != "") $query .= " AND User.CreatedTime > :fetchSince";
          $stmt = $this->dbh->prepare($query);
-        //  if ($fetchSince != "") $stmt->bindParam('fetchSince', $fetchSince);
+         if ($fetchSince != "") $stmt->bindParam('fetchSince', $fetchSince);
          $stmt->execute();
          $stmt->setFetchMode(PDO::FETCH_ASSOC);
          $data = [];
