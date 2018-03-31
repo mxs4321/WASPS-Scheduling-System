@@ -240,7 +240,7 @@ class UserDAO {
             }
         } catch (PDOException $e) {
             echo $e->getMessage();
-            die();
+            return null;
         }
     }
 }
