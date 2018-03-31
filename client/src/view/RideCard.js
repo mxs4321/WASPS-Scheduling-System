@@ -73,6 +73,7 @@ const DetailPanel = ({ updateRide, id, status, user, driver }) => {
       />
     );
   }
+  return null;
 };
 
 export default ({

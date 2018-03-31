@@ -1,9 +1,10 @@
 <?php
 session_start(); // Starting Session
 header('Content-Type: application/json');
-
+include '../sanitizationValidation.php';
 include '../env.php';
 require_once "../db.class.php";
+
 $db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
 
 switch ($_SERVER['REQUEST_METHOD']) {
@@ -29,21 +30,22 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case "POST":
         switch ($_SESSION['user']['role']) {
             case "passenger":
-                $_POST = json_decode(file_get_contents('php://input'), true);
-                postRide($_SESSION['user']['id'], $_POST);
+                postRide($_SESSION['user']['id']);
                 break;
             case "dispatcher":
             case "admin":
-                $_POST = json_decode(file_get_contents('php://input'), true);
-                if (isset($_POST['passengerID'])) {
-                    postRide($_POST['passengerID'], $_POST);
+                $bodyData = json_decode(file_get_contents('php://input'), true);
+                if (isset($bodyData['passengerID'])) {
+                    postRide($bodyData['passengerID']);
+                } else {
+                    http_response_code(403);
+                    echo json_encode(["err" => "Could get requested resource"]);
                 }
                 break;
             default:
                 http_response_code(403);
                 echo json_encode(["err" => "Could get requested resource"]);
         }
-
         break;
 
     case "PUT":
@@ -62,7 +64,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 http_response_code(403);
                 echo json_encode(["err" => "Could get requested resource"]);
         }
-
         break;
 
     case "DELETE":
@@ -78,7 +79,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 http_response_code(403);
                 echo json_encode(["err" => "Could get requested resource"]);
         }
-
         break;
 }
 
@@ -86,7 +86,6 @@ function acceptOrDeclineRide()
 {
     global $db;
 
-    $bodyData = json_decode(file_get_contents('php://input'), true);
     if (!isset($_GET['id'])) {
         http_response_code(400);
         echo json_encode(["err" => "Could not update ride"]);
@@ -100,8 +99,10 @@ function acceptOrDeclineRide()
         die();
     }
 
+    $bodyData = json_decode(file_get_contents('php://input'), true);
+
     if ($bodyData['status'] === "Unverified") {
-        echo json_encode($db->ride->updateRide($_GET['id'], "", null, "", "", "", "",
+        echo json_encode($db->ride->updateRide($_GET['id'], "", "-1", "", "", "", "",
             "", "", $bodyData['status'], "", "", "", "", "", ""));
     } else if ($bodyData['status'] === "Scheduled") {
         echo json_encode($db->ride->updateRide($_GET['id'], "", "", "", "", "", "",
@@ -113,9 +114,11 @@ function postRide($passengerID)
 {
     global $db;
 
-    if (empty($_POST['apptStart']) || empty($_POST['apptEnd'])
-        || empty($_POST['pickupTime']) || empty($_POST['pickupStreetAddress'])
-        || empty($_POST['pickupCity']) || empty($_POST['apptStreetAddress']) || empty($_POST['apptCity'])
+    $bodyData = json_decode(file_get_contents('php://input'), true);
+
+    if (empty($bodyData['apptStart']) || empty($bodyData['apptEnd'])
+        || empty($bodyData['pickupTime']) || empty($bodyData['pickupStreetAddress'])
+        || empty($bodyData['pickupCity']) || empty($bodyData['apptStreetAddress']) || empty($bodyData['apptCity'])
     ) {
         http_response_code(400);
         echo json_encode(["err" => "Could not create ride"]);
@@ -123,26 +126,26 @@ function postRide($passengerID)
     }
 
     $passengerID = sanitizeAndValidate($passengerID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
-    $apptStart = sanitizeAndValidate($_POST['apptStart'], FILTER_SANITIZE_STRING);
-    $apptEnd = sanitizeAndValidate($_POST['apptEnd'], FILTER_SANITIZE_STRING);
-    $pickupTime = sanitizeAndValidate($_POST['pickupTime'], FILTER_SANITIZE_STRING);
-    $wheelchairVan = sanitizeAndValidate($_POST['wheelchairVan'], -1, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-    $pickupStreetAddress = sanitizeAndValidate($_POST['pickupStreetAddress'], FILTER_SANITIZE_STRING);
-    $pickupCity = sanitizeAndValidate($_POST['pickupCity'], FILTER_SANITIZE_STRING);
-    $apptStreetAddress = sanitizeAndValidate($_POST['apptStreetAddress'], FILTER_SANITIZE_STRING);
-    $apptCity = sanitizeAndValidate($_POST['apptCity'], FILTER_SANITIZE_STRING);
+    $apptStart = sanitizeAndValidate($bodyData['apptStart'], FILTER_SANITIZE_STRING);
+    $apptEnd = sanitizeAndValidate($bodyData['apptEnd'], FILTER_SANITIZE_STRING);
+    $pickupTime = sanitizeAndValidate($bodyData['pickupTime'], FILTER_SANITIZE_STRING);
+    $wheelchairVan = sanitizeAndValidate($bodyData['wheelchairVan'], -1, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+    $pickupStreetAddress = sanitizeAndValidate($bodyData['pickupStreetAddress'], FILTER_SANITIZE_STRING);
+    $pickupCity = sanitizeAndValidate($bodyData['pickupCity'], FILTER_SANITIZE_STRING);
+    $apptStreetAddress = sanitizeAndValidate($bodyData['apptStreetAddress'], FILTER_SANITIZE_STRING);
+    $apptCity = sanitizeAndValidate($bodyData['apptCity'], FILTER_SANITIZE_STRING);
 
-    $appointmentDatetime = date_create_from_format('Y-m-d H:i:s', $apptStart);
-    //TODO validate time
+    // $appointmentDatetime = date_create_from_format('Y-m-d H:i:s', $apptStart);
+    // //TODO validate time
 
-    if ($appointmentDatetime->getTimestamp() - time() < 259200) {
-        //TODO check if timezones are messing it up or not with time() function
-        http_response_code(400);
-        echo json_encode(["err" => "Cannot schedule rides within 72h of the appointment"]);
-        die();
-    }
+    // if ($appointmentDatetime->getTimestamp() - time() < 259200) {
+    //     //TODO check if timezones are messing it up or not with time() function
+    //     http_response_code(400);
+    //     echo json_encode(["err" => "Cannot schedule rides within 72h of the appointment"]);
+    //     die();
+    // }
 
-    $status = isset($_POST['driverID']) ? "Pending" : "Unverified";
+    $status = isset($bodyData['driverID']) ? "Pending" : "Unverified";
     $created = date("Y-m-d H:i:s");
     $modified = date("Y-m-d H:i:s");
 
