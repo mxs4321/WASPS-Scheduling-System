@@ -47,6 +47,7 @@ export class Rides extends Component {
             pickupStreetAddress,
             apptStreetAddress,
             status,
+            apptStart,
             pickupTime
           }) => (
             <ExpandingCard
@@ -62,6 +63,8 @@ export class Rides extends Component {
                 passenger={passenger}
                 driver={driver}
                 user={user}
+                apptStart={apptStart}
+                pickupTime={pickupTime}
                 pickupStreetAddress={pickupStreetAddress}
                 apptStreetAddress={apptStreetAddress}
                 status={status}

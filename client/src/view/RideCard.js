@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Calendar, AccessAlarm, AlarmOn } from './icons';
 import GoogleMap from './GoogleMap';
 import Avatar from './Avatar';
+import AvailableDriversList from '../controller/AvailableDriversList';
+import * as moment from 'moment';
 
 const Flex = styled.div`
   display: flex;
@@ -59,7 +61,36 @@ const DriverPanel = ({ firstName, lastName, phone }) => (
   </Flex>
 );
 
-const DetailPanel = ({ updateRide, id, status, user, driver }) => {
+const DetailPanel = ({
+  apptStart,
+  pickupTime,
+  drivers,
+  selectedId,
+  updateRide,
+  id,
+  status,
+  user,
+  driver
+}) => {
+  if (
+    user &&
+    (user.role === 'admin' || user.role === 'dispatcher') &&
+    status === 'Unverified'
+  ) {
+    return (
+      <AvailableDriversList
+        drivers={drivers}
+        selectedID={selectedId}
+        date={moment(apptStart).format('MM-DD-YYYY')}
+        startTime={moment(apptStart).format('HH:mm')}
+        pickupTime={moment(pickupTime).format('HH:mm')}
+        endTime={moment(pickupTime).format('HH:mm')}
+        handleChange={driverID =>
+          updateRide(id, { driverID, status: 'Pending' })
+        }
+      />
+    );
+  }
   if (user && user.role === 'driver' && status === 'Pending') {
     return <AcceptRide id={id} updateRide={updateRide} />;
   }
@@ -84,6 +115,8 @@ export default ({
   status,
   pickupStreetAddress,
   apptStreetAddress,
+  apptStart,
+  pickupTime,
   updateRide
 }) => (
   <Fragment>
@@ -105,22 +138,22 @@ export default ({
           <Flex>
             <Calendar size={42} />
             <PadLeft8>
-              <div>Date:</div>
-              <b>May 10th</b>
+              <div>Date</div>
+              <b>{moment(apptStart).format('MM-DD')}</b>
             </PadLeft8>
           </Flex>
           <Flex>
             <AccessAlarm size={42} />
             <PadLeft8>
               <div>Time:</div>
-              <b>9:30 am</b>
+              <b>{moment(apptStart).format('HH:mm')}</b>
             </PadLeft8>
           </Flex>
           <Flex>
             <AlarmOn size={42} />
             <PadLeft8>
               <div>Pickup:</div>
-              <b>11:00 am</b>
+              <b>{moment(pickupTime).format('HH:mm')}</b>
             </PadLeft8>
           </Flex>
         </DateAndTimeRow>
@@ -132,6 +165,8 @@ export default ({
           driver={driver}
           user={user}
           status={status}
+          apptStart={apptStart}
+          pickupTime={pickupTime}
         />
       </DriverInfo>
     </Flex3>

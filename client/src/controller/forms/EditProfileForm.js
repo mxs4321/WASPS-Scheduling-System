@@ -15,12 +15,6 @@ const Heading = styled.div`
   border-bottom: 1px solid #004d99;
   margin: 15px;
 `;
-
-const Flex = styled.div`
-  display: flex;
-  border-bottom: 1px solid red;
-`;
-
 const Input = styled.input`
   display: block;
   background-color: #e8e8e8;
@@ -31,20 +25,17 @@ const Input = styled.input`
   color: #a9a9a9;
   border: none;
 `;
-
 const Label = styled.label`
   width: 200px;
   display: inline-block;
   text-align: left;
   font-family: Arial, Helvetica, sans-serif;
 `;
-
 const Field = styled.div`
   width: 200px;
   display: inline-block;
   text-align: left;
 `;
-
 const Checkbox = styled(props => <input type="checkbox" {...props} />)`
   cursor: pointer;
   margin-top: 10px;
@@ -63,16 +54,6 @@ const Checkbox = styled(props => <input type="checkbox" {...props} />)`
     transform: rotate(45deg);
   }
 `;
-
-const ButtonsDiv = styled.div`
-  width: 70%;
-  height: 17%;
-  position: absolute;
-  top: 217px;
-  font-weight: bold;
-  background-color: #f2f2f2;
-`;
-
 const Save = styled.button`
   height: 40px;
   width: 150px;
@@ -83,27 +64,6 @@ const Save = styled.button`
   border-radius: 8px;
   cursor: pointer;
 `;
-
-const Cancel = styled.button`
-  height: 40px;
-  width: 150px;
-  background-color: #cc0000;
-  color: white;
-  font-weight: bold;
-  font-size: 15px;
-  border-radius: 8px;
-  margin: 70px;
-  cursor: pointer;
-`;
-const Buttons = styled.div`
-  position: absolute;
-  top: 350px;
-  left: 80px;
-  padding: 10px;
-  padding-left: 80px;
-  display: inline;
-`;
-
 const EditDiv = styled.div`
   position: relative;
   left: 200px;
