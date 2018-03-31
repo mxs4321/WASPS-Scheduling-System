@@ -16,7 +16,7 @@ class AvailabilityExclusionDAO
       {
          $driverID = intval($driverID);
 
-         $stmt = $this->dbh->prepare("INSERT INTO availabilityexclusion (`start`, `end`, `driverID`) VALUES (:startTime, :endTime, :driverID);");
+         $stmt = $this->dbh->prepare("INSERT INTO AvailabilityExclusion (`start`, `end`, `driverID`) VALUES (:startTime, :endTime, :driverID);");
          $stmt->bindParam(":startTime", $startTime);
          $stmt->bindParam(":endTime", $endTime);
          $stmt->bindParam(":driverID", $driverID, PDO::PARAM_INT);
@@ -37,7 +37,7 @@ class AvailabilityExclusionDAO
       {
          $id = intval($id);
 
-         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `driverID` FROM availabilityexclusion WHERE id = :id;");
+         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `driverID` FROM AvailabilityExclusion WHERE id = :id;");
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          $stmt->execute();
          $stmt->setFetchMode(PDO::FETCH_CLASS, "AvailabilityExclusion");
@@ -57,7 +57,7 @@ class AvailabilityExclusionDAO
       {
          $id = intval($id);
 
-         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `driverID` FROM availabilityexclusion WHERE driverID = :id;");
+         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `driverID` FROM AvailabilityExclusion WHERE driverID = :id;");
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          $stmt->execute();
          $stmt->setFetchMode(PDO::FETCH_CLASS, "AvailabilityExclusion");
@@ -84,7 +84,7 @@ class AvailabilityExclusionDAO
          $numberPerPage = intval($numberPerPage);
          $offset = intval($page * $numberPerPage);
 
-         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `driverID` FROM availabilityexclusion LIMIT :lim OFFSET :offset;");
+         $stmt = $this->dbh->prepare("SELECT `id`, `start`, `end`, `driverID` FROM AvailabilityExclusion LIMIT :lim OFFSET :offset;");
          $stmt->bindParam(":lim", $numberPerPage, PDO::PARAM_INT);
          $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
          $stmt->execute();
@@ -117,7 +117,7 @@ class AvailabilityExclusionDAO
          if ($endTime != "")      $setStr .= ($setStr == "") ? "`end` = :endTime" : ", `end` = :endTime";
          if ($driverID != "")     $setStr .= ($setStr == "") ? "`driverID` = :driverID" : ", `driverID` = :driverID";
 
-         $stmt = $this->dbh->prepare("UPDATE availabilityexclusion SET {$setStr} WHERE id = :id;");
+         $stmt = $this->dbh->prepare("UPDATE AvailabilityExclusion SET {$setStr} WHERE id = :id;");
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          if ($startTime != "")     $stmt->bindParam(":startTime", $startTime);
          if ($endTime!= "")        $stmt->bindParam(":endTime", $endTime);
@@ -138,7 +138,7 @@ class AvailabilityExclusionDAO
       try
       {
          $id = intval($id);
-         $query = "DELETE FROM availabilityexclusion WHERE id = :id";
+         $query = "DELETE FROM AvailabilityExclusion WHERE id = :id";
 
          if($driverID != "")
          {

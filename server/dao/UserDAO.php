@@ -11,7 +11,7 @@ class UserDAO {
     function findById($id) {
         try {
             $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `lastLogin`, 
-              `wantsSMS`, `wantsEmail`, `email`, `registered` FROM user WHERE id = :id");
+              `wantsSMS`, `wantsEmail`, `email`, `registered` FROM User WHERE id = :id");
             $stmt->execute([':id' => intval($id)]);
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             return $stmt->fetch()->getUserInfo();
@@ -25,10 +25,10 @@ class UserDAO {
         try {
             $isFullName = count(explode(' ', $name)) > 1;
             if ($isFullName) {
-                $stmt = $this->dbh->prepare("SELECT * FROM user WHERE CONCAT(firstName, ' ', lastName) LIKE :fullname");
+                $stmt = $this->dbh->prepare("SELECT * FROM User WHERE CONCAT(firstName, ' ', lastName) LIKE :fullname");
                 $stmt->execute([':fullname' => "%$name%"]);
             } else {
-                $stmt = $this->dbh->prepare("SELECT * FROM user WHERE firstName LIKE :firstName  OR lastName LIKE :lastName");
+                $stmt = $this->dbh->prepare("SELECT * FROM User WHERE firstName LIKE :firstName  OR lastName LIKE :lastName");
                 $stmt->execute([':firstName' => "%$name%", ':lastName' => "%$name%"]);
             }
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
@@ -45,7 +45,7 @@ class UserDAO {
 
     function getUsers($page = 0, $numberPerPage = 10) {
         try {
-            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `lastLogin`, `wantsSMS`, `wantsEmail`, `email`, `registered` FROM user LIMIT :lim OFFSET :offset");
+            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `lastLogin`, `wantsSMS`, `wantsEmail`, `email`, `registered` FROM User LIMIT :lim OFFSET :offset");
             $lim = intval($numberPerPage);
             $offset = intval($page * $numberPerPage);
             $stmt->bindParam(':lim', $lim, PDO::PARAM_INT);
@@ -66,12 +66,12 @@ class UserDAO {
    {
       try
       {
-         $query = "SELECT user.id, firstName, lastName, phone, email, wantsSMS, wantsEmail, start, end, days FROM user
-                      LEFT JOIN availability ON (user.id = availability.driverID)
+         $query = "SELECT user.id, firstName, lastName, phone, email, wantsSMS, wantsEmail, start, end, days FROM User
+                      LEFT JOIN Availability ON (User.id = Availability.driverID)
                       WHERE role = 'driver'";
-         if ($fetchSince != "") $query .= " AND user.CreatedTime > :fetchSince";
+        //  if ($fetchSince != "") $query .= " AND User.CreatedTime > :fetchSince";
          $stmt = $this->dbh->prepare($query);
-         if ($fetchSince != "") $stmt->bindParam('fetchSince', $fetchSince);
+        //  if ($fetchSince != "") $stmt->bindParam('fetchSince', $fetchSince);
          $stmt->execute();
          $stmt->setFetchMode(PDO::FETCH_ASSOC);
          $data = [];
@@ -95,7 +95,7 @@ class UserDAO {
        try
        {
           $query = "SELECT firstName, lastName, phone, email, wantsEmail, wantsSMS
-                      FROM user WHERE role = 'passenger'";
+                      FROM User WHERE role = 'passenger'";
           if ($fetchSince != "") $query .= " AND user.CreatedTime > :fetchSince";
           $stmt = $this->dbh->prepare($query);
           if ($fetchSince != "") $stmt->bindParam('fetchSince', $fetchSince);
@@ -130,7 +130,7 @@ class UserDAO {
            $wantsEmail = boolval($wantsEmail);
            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-           $stmt = $this->dbh->prepare("INSERT INTO user (`password`, `role`, `firstName`, `lastName`, `phone`, `email`, `wantsSMS`, `wantsEmail`) 
+           $stmt = $this->dbh->prepare("INSERT INTO User (`password`, `role`, `firstName`, `lastName`, `phone`, `email`, `wantsSMS`, `wantsEmail`) 
             VALUES (:pass, :userRole, :firstName, :lastName, :phone, :email, :wantsSMS, :wantsEmail);");
            $stmt->bindParam(':pass', $password, PDO::PARAM_STR);
            $stmt->bindParam(':userRole', $role, PDO::PARAM_STR);
@@ -178,7 +178,7 @@ class UserDAO {
             if ($wantsSMS !== "")   $setStr .= ($setStr == "") ? "`wantsSMS` = :wantsSMS" : ", `wantsSMS` = :wantsSMS";
             if ($wantsEmail !== "") $setStr .= ($setStr == "") ? "`wantsEmail` = :wantsEmail" : ", `wantsEmail` = :wantsEmail";
 
-            $stmt = $this->dbh->prepare("UPDATE user SET {$setStr} WHERE id = :id;");
+            $stmt = $this->dbh->prepare("UPDATE User SET {$setStr} WHERE id = :id;");
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
             if ($password != "")   $stmt->bindParam(":password", $password, PDO::PARAM_STR);
             if ($role != "")       $stmt->bindParam(":role", $role, PDO::PARAM_STR);
@@ -207,7 +207,7 @@ class UserDAO {
        {
           $id = intval($id);
 
-          $stmt = $this->dbh->prepare("DELETE FROM user WHERE id = :id");
+          $stmt = $this->dbh->prepare("DELETE FROM User WHERE id = :id");
           $stmt->bindParam(":id", $id, PDO::PARAM_INT);
           $stmt->execute();
 
@@ -223,10 +223,10 @@ class UserDAO {
     function attemptLogin($method, $arg, $password) {
         try {
             if ($method === "email") {
-                $stmt = $this->dbh->prepare("SELECT * FROM user WHERE email = :email");
+                $stmt = $this->dbh->prepare("SELECT * FROM User WHERE email = :email");
                 $stmt->execute([':email' => $arg]);
             } else {
-                $stmt = $this->dbh->prepare("SELECT * FROM user WHERE phone = :phone");
+                $stmt = $this->dbh->prepare("SELECT * FROM User WHERE phone = :phone");
                 $stmt->execute([':phone' => $arg]);
             }
 

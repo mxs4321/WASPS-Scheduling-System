@@ -16,7 +16,7 @@ class VolunteerRequestDAO
       {
          try
          {
-            $stmt = $this->dbh->prepare("INSERT INTO volunteerrequest (`timestamp`, `userID`) VALUES (:timestamp, :userID);");
+            $stmt = $this->dbh->prepare("INSERT INTO VolunteerRequest (`timestamp`, `userID`) VALUES (:timestamp, :userID);");
             $stmt->bindParam(":timestamp", $timestamp);
             $stmt->bindParam(":userID", $userID, PDO::PARAM_INT);
             $stmt->execute();
@@ -41,7 +41,7 @@ class VolunteerRequestDAO
       {
          $id = intval($id);
 
-         $stmt = $this->dbh->prepare("SELECT `id`, `timestamp`, `userID` FROM volunteerrequest WHERE id = :id;");
+         $stmt = $this->dbh->prepare("SELECT `id`, `timestamp`, `userID` FROM VolunteerRequest WHERE id = :id;");
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          $stmt->execute();
          $stmt->setFetchMode(PDO::FETCH_CLASS, "VolunteerRequest");
@@ -61,7 +61,7 @@ class VolunteerRequestDAO
       {
          $id = intval($id);
 
-         $stmt = $this->dbh->prepare("SELECT `id`, `timestamp`, `userID` FROM volunteerrequest WHERE userID = :id;");
+         $stmt = $this->dbh->prepare("SELECT `id`, `timestamp`, `userID` FROM VolunteerRequest WHERE userID = :id;");
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          $stmt->execute();
          $stmt->setFetchMode(PDO::FETCH_CLASS, "VolunteerRequest");
@@ -82,7 +82,7 @@ class VolunteerRequestDAO
          $numberPerPage = intval($numberPerPage);
          $offset = intval($page * $numberPerPage);
 
-         $stmt = $this->dbh->prepare("SELECT `id`, `timestamp`, `userID` FROM volunteerrequest LIMIT :lim OFFSET :offset;");
+         $stmt = $this->dbh->prepare("SELECT `id`, `timestamp`, `userID` FROM VolunteerRequest LIMIT :lim OFFSET :offset;");
          $stmt->bindParam(":lim", $numberPerPage, PDO::PARAM_INT);
          $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
          $stmt->execute();
@@ -113,7 +113,7 @@ class VolunteerRequestDAO
          if ($timestamp != "")    $setStr .= "`timestamp` = :timestamp";
          if ($userID != "")      $setStr .= ($setStr == "") ? "`userID` = :userID" : ", `userID` = :userID";
 
-         $stmt = $this->dbh->prepare("UPDATE volunteerrequest SET {$setStr} WHERE id = :id;");
+         $stmt = $this->dbh->prepare("UPDATE VolunteerRequest SET {$setStr} WHERE id = :id;");
          $stmt->bindParam(":id", $id, PDO::PARAM_INT);
          if ($timestamp != "")     $stmt->bindParam(":timestamp", $timestamp);
          if ($userID != "")      $stmt->bindParam(":userID", $userID, PDO::PARAM_INT);
@@ -133,7 +133,7 @@ class VolunteerRequestDAO
       try
       {
          $id = intval($id);
-         $query = "DELETE FROM volunteerrequest WHERE id = :id";
+         $query = "DELETE FROM VolunteerRequest WHERE id = :id";
 
          if ($userID != "")
          {

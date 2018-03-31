@@ -14,7 +14,7 @@ class RideDAO
     public function findById($id, $populate = false)
     {
         try {
-            $stmt = $this->dbh->prepare("SELECT * FROM ride WHERE id = :id");
+            $stmt = $this->dbh->prepare("SELECT * FROM Ride WHERE id = :id");
             $stmt->execute([':id' => intval($id)]);
             $stmt->setFetchMode(PDO::FETCH_CLASS, "Ride");
             $ride = $stmt->fetch();
@@ -40,7 +40,7 @@ class RideDAO
                 $whereClause .= " WHERE CreatedTime > :fetchSince ";
             }
 
-            $query = "SELECT * FROM ride " . $whereClause . " LIMIT :lim OFFSET :offset";
+            $query = "SELECT * FROM Ride " . $whereClause . " LIMIT :lim OFFSET :offset";
 
             $stmt = $this->dbh->prepare($query);
             $lim = intval($numberPerPage);
@@ -70,7 +70,7 @@ class RideDAO
     public function getRidesByDriverID($driverID, $page = 0, $numberPerPage = 10, $populate)
     {
         try {
-            $stmt = $this->dbh->prepare("SELECT * FROM ride WHERE driverID = :driverID LIMIT :lim OFFSET :offset");
+            $stmt = $this->dbh->prepare("SELECT * FROM Ride WHERE driverID = :driverID LIMIT :lim OFFSET :offset");
             $lim = intval($numberPerPage);
             $offset = intval($page * $numberPerPage);
             $stmt->bindParam(':driverID', $driverID, PDO::PARAM_INT);
@@ -95,7 +95,7 @@ class RideDAO
     public function getRidesByPassengerID($passengerID, $page = 0, $numberPerPage = 10, $populate)
     {
         try {
-            $stmt = $this->dbh->prepare("SELECT * FROM ride WHERE passengerID = :passengerID LIMIT :lim OFFSET :offset");
+            $stmt = $this->dbh->prepare("SELECT * FROM Ride WHERE passengerID = :passengerID LIMIT :lim OFFSET :offset");
             $lim = intval($numberPerPage);
             $offset = intval($page * $numberPerPage);
             $stmt->bindParam(':passengerID', $passengerID, PDO::PARAM_INT);
@@ -121,7 +121,7 @@ class RideDAO
     {
         try
         {
-            $stmt = $this->dbh->prepare("SHOW columns FROM ride");
+            $stmt = $this->dbh->prepare("SHOW columns FROM Ride");
             $stmt->execute();
 
             while ($row = $stmt->fetch()) {
@@ -141,10 +141,10 @@ class RideDAO
     {
         try
         {
-            $query = "SELECT apptStreetAddress, apptCity, user.firstName, user.lastName, apptEnd FROM ride
-                      LEFT JOIN user ON (user.id = ride.passengerID)";
+            $query = "SELECT apptStreetAddress, apptCity, User.firstName, User.lastName, apptEnd FROM Ride
+                      LEFT JOIN User ON (User.id = Ride.passengerID)";
             if ($fetchSince != "") {
-                $query .= " WHERE ride.CreatedTime > :fetchSince";
+                $query .= " WHERE Ride.CreatedTime > :fetchSince";
             }
 
             $stmt = $this->dbh->prepare($query);
@@ -173,12 +173,12 @@ class RideDAO
         try
         {
             if (isset($driverID)) {
-                $stmt = $this->dbh->prepare("INSERT INTO ride 
+                $stmt = $this->dbh->prepare("INSERT INTO Ride 
                 (`passengerID`, `apptStart`, `apptEnd`, `pickupTime`, `wheelchairVan`, `status`, `pickupStreetAddress`, `pickupCity`, `apptStreetAddress`, `apptCity`, `driverID`) 
                 VALUES (:passengerID, :apptStart, :apptEnd, :pickupTime, :wheelchairVan, :status, :pickupStreetAddress, :pickupCity, :apptStreetAddress, :apptCity, :driverID)");
                 $stmt->bindParam(':driverID', $driverID, PDO::PARAM_INT);
             } else {
-                $stmt = $this->dbh->prepare("INSERT INTO ride 
+                $stmt = $this->dbh->prepare("INSERT INTO Ride 
                 (`passengerID`, `apptStart`, `apptEnd`, `pickupTime`, `wheelchairVan`, `status`, `pickupStreetAddress`, `pickupCity`, `apptStreetAddress`, `apptCity`) 
                 VALUES (:passengerID, :apptStart, :apptEnd, :pickupTime, :wheelchairVan, :status, :pickupStreetAddress, :pickupCity, :apptStreetAddress, :apptCity)");
             }
@@ -272,7 +272,7 @@ class RideDAO
                 $setStr .= ($setStr == "") ? "`apptCity` = :apptCity" : ", `apptCity` = :apptCity";
             }
 
-            $stmt = $this->dbh->prepare("UPDATE ride SET {$setStr} WHERE id = :id;");
+            $stmt = $this->dbh->prepare("UPDATE Ride SET {$setStr} WHERE id = :id;");
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
             if ($passengerID != "") {
                 $stmt->bindParam(':passengerID', $passengerID, PDO::PARAM_INT);
@@ -342,7 +342,7 @@ class RideDAO
         try
         {
             $id = intval($id);
-            $query = "DELETE FROM ride WHERE id = :id";
+            $query = "DELETE FROM Ride WHERE id = :id";
 
             if ($userID != "") {
                 $userID = intval($userID);
@@ -366,7 +366,7 @@ class RideDAO
     private function populateIDs(&$ride)
     {
         if ($ride['passengerID'] != null) {
-            $stmt = $this->dbh->prepare("SELECT * FROM user WHERE id = :id");
+            $stmt = $this->dbh->prepare("SELECT * FROM User WHERE id = :id");
             $stmt->execute([':id' => intval($ride['passengerID'])]);
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             $user = $stmt->fetch();
@@ -376,7 +376,7 @@ class RideDAO
         }
 
         if ($ride['driverID'] != null) {
-            $stmt = $this->dbh->prepare("SELECT * FROM user WHERE id = :id");
+            $stmt = $this->dbh->prepare("SELECT * FROM User WHERE id = :id");
             $stmt->execute([':id' => intval($ride['driverID'])]);
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             $user = $stmt->fetch();
