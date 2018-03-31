@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-class RidesTest extends TestCase
+class DispatcherRidesTest extends TestCase
 {
     private $http;
     private $cookieJar;
@@ -14,8 +14,8 @@ class RidesTest extends TestCase
         $this->http->request('POST', '/setupTestDB.php');
         $this->http->request('POST', '/login.php', [
             'json' => [
-                'email' => 'admin@websterwasps.com',
-                'password' => 'admin',
+                'email' => 'dispatcher@websterwasps.com',
+                'password' => 'dispatcher',
             ],
             'cookies' => $this->cookieJar,
         ]);
