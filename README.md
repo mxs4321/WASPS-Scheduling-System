@@ -1,8 +1,11 @@
-# Setup Instructions
+# WASPS-Scheduling-System
 
-[![Build Status](https://travis-ci.org/BLamy/WASPS-Scheduling-System.svg?branch=master)](https://travis-ci.org/BLamy/WASPS-Scheduling-System)
+[![Build Status](https://travis-ci.org/mxs4321/WASPS-Scheduling-System.svg?branch=master)](https://travis-ci.org/mxs4321/WASPS-Scheduling-System)
 
-## Server
+
+## Setup Instructions
+
+### Server
 
 ```bash
 cd server
@@ -10,7 +13,7 @@ composer install
 php -S 0.0.0.0:8000
 ```
 
-### Test
+#### Test
 
 ```bash
 cd server
@@ -18,7 +21,7 @@ composer install
 composer test
 ```
 
-## Client
+### Client
 
 ```bash
 cd client
@@ -26,7 +29,7 @@ npm install
 npm start
 ```
 
-### Storybooks
+#### Storybooks
 
 ```bash
 cd client
