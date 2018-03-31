@@ -6,107 +6,121 @@ include '../env.php';
 require_once "../db.class.php";
 
 $db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
+$user = $_SESSION['user'];
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case "GET":
-        switch ($_SESSION['user']['role']) {
+        $page = $_GET['page'] ?? 0;
+        $numberPerPage = $_GET['number_per_page'] ?? 10;
+        $populate = $_GET['populate'] ?? false;
+        switch ($user['role']) {
             case "admin":
             case "dispatcher":
-                echo json_encode($db->ride->getRides($_GET['page'] ?? 0, $_GET['number_per_page'] ?? 10, $_GET['populate'] ?? false));
+                echo json_encode($db->ride->getRides($page, $numberPerPage, $populate));
+                http_response_code(200);
                 break;
             case 'driver':
-                echo json_encode($db->ride->getRidesByDriverID($_SESSION['user']['id'], $_GET['page'] ?? 0, $_GET['number_per_page'] ?? 10, $_GET['populate'] ?? false));
+                echo json_encode($db->ride->getRidesByDriverID($user['id'], $page, $numberPerPage, $populate));
+                http_response_code(200);
                 break;
             case 'passenger':
-                echo json_encode($db->ride->getRidesByPassengerID($_SESSION['user']['id'], $_GET['page'] ?? 0, $_GET['number_per_page'] ?? 10, $_GET['populate'] ?? false));
+                echo json_encode($db->ride->getRidesByPassengerID($user['id'], $page, $numberPerPage, $populate));
+                http_response_code(200);
                 break;
             default:
-                http_response_code(403/*Forbidden*/);
                 echo json_encode(["err" => "Could get requested resource"]);
+                http_response_code(403/*Forbidden*/);
                 break;
         }
         break;
 
     case "POST":
-        switch ($_SESSION['user']['role']) {
+        switch ($user['role']) {
             case "passenger":
-                postRide($_SESSION['user']['id']);
+                $ride = postRide($user['id']);
+                echo json_encode($ride);
+                http_response_code(201);
                 break;
             case "dispatcher":
             case "admin":
                 $bodyData = json_decode(file_get_contents('php://input'), true);
                 if (isset($bodyData['passengerID'])) {
-                    postRide($bodyData['passengerID']);
+                    $ride = postRide($bodyData['passengerID']);
+                    echo json_encode($ride);
+                    http_response_code(201);
                 } else {
-                    http_response_code(403);
                     echo json_encode(["err" => "Could get requested resource"]);
+                    http_response_code(403);
                 }
                 break;
             default:
-                http_response_code(403);
                 echo json_encode(["err" => "Could get requested resource"]);
+                http_response_code(403);
         }
         break;
 
     case "PUT":
-        switch ($_SESSION['user']['role']) {
+        switch ($user['role']) {
             case "passenger":
-                putRide($_SESSION['user']['id']);
+                echo json_encode(putRide($user['id']));
+                http_response_code(201);
                 break;
-            case "driver": 
-                acceptOrDeclineRide();
+            case "driver":
+                echo json_encode(acceptOrDeclineRide());
+                http_response_code(201);
                 break;
             case "dispatcher":
             case "admin":
-                putRide();
+                echo json_encode(putRide());
+                http_response_code(201);
                 break;
             default:
-                http_response_code(403);
                 echo json_encode(["err" => "Could get requested resource"]);
+                http_response_code(403);
         }
         break;
 
     case "DELETE":
-        switch ($_SESSION['user']['role']) {
+        switch ($user['role']) {
             case "passenger":
-                deleteRide($_SESSION['user']['id']);
+                deleteRide($user['id']);
                 break;
             case "dispatcher":
             case "admin":
                 deleteRide();
                 break;
             default:
-                http_response_code(403);
                 echo json_encode(["err" => "Could get requested resource"]);
+                http_response_code(403);
         }
         break;
 }
 
 function acceptOrDeclineRide()
 {
-    global $db;
+    global $db, $user;
 
     if (!isset($_GET['id'])) {
-        http_response_code(400);
         echo json_encode(["err" => "Could not update ride"]);
+        http_response_code(400);
         die();
     }
 
     $ride = $db->ride->findById($_GET['id']);
-    if ($ride['driverID'] !== $_SESSION['user']['id']) {
-        http_response_code(403);
+    if ($ride['driverID'] !== $user['id']) {
         echo json_encode(["err" => "Could not update ride"]);
+        http_response_code(403);
         die();
     }
 
     $bodyData = json_decode(file_get_contents('php://input'), true);
 
     if ($bodyData['status'] === "Unverified") {
-        echo json_encode($db->ride->updateRide($_GET['id'], "", "-1", "", "", "", "",
-            "", "", $bodyData['status'], "", "", "", "", "", ""));
+        return $db->ride->updateRide($_GET['id'], "", "-1", "", "", "", "",
+            "", "", $bodyData['status'], "", "", "", "", "", "");
     } else if ($bodyData['status'] === "Scheduled") {
-        echo json_encode($db->ride->updateRide($_GET['id'], "", "", "", "", "", "",
-            "", "", $bodyData['status'], "", "", "", "", "", ""));
+        return $db->ride->updateRide($_GET['id'], "", "", "", "", "", "",
+            "", "", $bodyData['status'], "", "", "", "", "", "");
     }
 }
 
@@ -120,11 +134,15 @@ function postRide($passengerID)
         || empty($bodyData['pickupTime']) || empty($bodyData['pickupStreetAddress'])
         || empty($bodyData['pickupCity']) || empty($bodyData['apptStreetAddress']) || empty($bodyData['apptCity'])
     ) {
-        http_response_code(400);
         echo json_encode(["err" => "Could not create ride"]);
+        http_response_code(400);
         die();
     }
 
+    $driverID = null;
+    if (isset($bodyData['driverID'])) {
+        $driverID = sanitizeAndValidate($bodyData['driverID'], FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
+    }
     $passengerID = sanitizeAndValidate($passengerID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
     $apptStart = sanitizeAndValidate($bodyData['apptStart'], FILTER_SANITIZE_STRING);
     $apptEnd = sanitizeAndValidate($bodyData['apptEnd'], FILTER_SANITIZE_STRING);
@@ -134,6 +152,13 @@ function postRide($passengerID)
     $pickupCity = sanitizeAndValidate($bodyData['pickupCity'], FILTER_SANITIZE_STRING);
     $apptStreetAddress = sanitizeAndValidate($bodyData['apptStreetAddress'], FILTER_SANITIZE_STRING);
     $apptCity = sanitizeAndValidate($bodyData['apptCity'], FILTER_SANITIZE_STRING);
+    $status = isset($bodyData['driverID']) ? "Pending" : "Unverified";
+
+    // Maybe Useful
+    // http://php.net/manual/en/datetime.diff.php
+    // $date1 = new DateTime("now");
+    // $date2 = new DateTime("+3 days");
+    // $interval = $date1->diff($date2);
 
     // $appointmentDatetime = date_create_from_format('Y-m-d H:i:s', $apptStart);
     // //TODO validate time
@@ -145,16 +170,10 @@ function postRide($passengerID)
     //     die();
     // }
 
-    $status = isset($bodyData['driverID']) ? "Pending" : "Unverified";
-    $created = date("Y-m-d H:i:s");
-    $modified = date("Y-m-d H:i:s");
-
-    http_response_code(201);
-    echo json_encode($db->ride->insertRide(
-        $passengerID, $apptStart, $apptEnd, $pickupTime, $wheelchairVan,
-        $status, $pickupStreetAddress, $pickupCity, $apptStreetAddress, $apptCity,
-        $created, $modified
-    ));
+    return $db->ride->insertRide(
+        $passengerID, $apptStart, $apptEnd, $pickupTime, $wheelchairVan, $status,
+        $pickupStreetAddress, $pickupCity, $apptStreetAddress, $apptCity, $driverID
+    );
 }
 
 function putRide($passengerID = "")
@@ -182,7 +201,6 @@ function putRide($passengerID = "")
         $apptStreetAddress = $bodyData['apptStreetAddress'] ?? "";
         $apptCity = $bodyData['apptCity'] ?? "";
         $created = $bodyData['created'] ?? "";
-        $modified = date("Y-m-d H:i:s");
 
         if ($passengerID != "") {
             $passengerID = sanitizeAndValidate($passengerID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
@@ -236,10 +254,6 @@ function putRide($passengerID = "")
             $apptCity = sanitizeAndValidate($apptCity, FILTER_SANITIZE_STRING);
         }
 
-        if ($created != "") {
-            $created = sanitizeAndValidate($created, FILTER_SANITIZE_STRING);
-        }
-
         if ($apptStart != "") {
             $appointmentDatetime = date_create_from_format('Y-m-d H:i:s', $apptStart);
             //TODO validate time
@@ -252,9 +266,8 @@ function putRide($passengerID = "")
             }
         }
 
-        http_response_code(201);
-        echo json_encode($db->ride->updateRide($id, $passengerID, $driverID, $apptStart, $apptEnd, $numMiles, $totalMinutes,
-            $pickupTime, $wheelchairVan, $status, $pickupStreetAddress, $pickupCity, $apptStreetAddress, $apptCity, $created, $modified));
+        return $db->ride->updateRide($id, $passengerID, $driverID, $apptStart, $apptEnd, $numMiles, $totalMinutes,
+        $pickupTime, $wheelchairVan, $status, $pickupStreetAddress, $pickupCity, $apptStreetAddress, $apptCity);
     } else {
         http_response_code(404);
         echo json_encode(["err" => "Could not update ride"]);
@@ -266,13 +279,8 @@ function deleteRide($userID = "")
 {
     global $db;
 
-    //$bodyData = json_decode(file_get_contents('php://input'), true);
-
     if (isset($_GET['id'])) {
-        $id = $_GET['id'];
-
-        $id = sanitizeAndValidate($id, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
-
+        $id = sanitizeAndValidate($_GET['id'], FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
         http_response_code(201);
         echo json_encode($db->ride->deleteRide($id, $userID));
     } else {

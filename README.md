@@ -1,5 +1,7 @@
 # Setup Instructions
 
+[![Build Status](https://travis-ci.org/BLamy/WASPS-Scheduling-System.svg?branch=master)](https://travis-ci.org/BLamy/WASPS-Scheduling-System)
+
 ## Server
 
 ```bash

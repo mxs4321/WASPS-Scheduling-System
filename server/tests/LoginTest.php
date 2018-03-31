@@ -18,7 +18,8 @@ class LoginTest extends TestCase
         $this->http = null;
     }
 
-    public function testLoginToAdmin() {
+    public function testLoginToAdmin()
+    {
         $response = $this->http->request('POST', '/login.php', [
             'json' => [
                 'email' => 'admin@websterwasps.com',
@@ -43,7 +44,8 @@ class LoginTest extends TestCase
         ], $data);
     }
 
-    public function testLoginToDispatcher() {
+    public function testLoginToDispatcher()
+    {
         $response = $this->http->request('POST', '/login.php', [
             'json' => [
                 'email' => 'dispatcher@websterwasps.com',
@@ -68,7 +70,8 @@ class LoginTest extends TestCase
         ], $data);
     }
 
-    public function testLoginToDriver() {
+    public function testLoginToDriver()
+    {
         $response = $this->http->request('POST', '/login.php', [
             'json' => [
                 'email' => 'driver@websterwasps.com',
@@ -93,8 +96,8 @@ class LoginTest extends TestCase
         ], $data);
     }
 
-
-    public function testLoginToPassenger() {
+    public function testLoginToPassenger()
+    {
         $response = $this->http->request('POST', '/login.php', [
             'json' => [
                 'email' => 'passenger@websterwasps.com',
@@ -119,7 +122,8 @@ class LoginTest extends TestCase
         ], $data);
     }
 
-    public function testLoginWithPhoneNumber() {
+    public function testLoginWithPhoneNumber()
+    {
         $response = $this->http->request('POST', '/login.php', [
             'json' => [
                 'phone' => '2435254235',
@@ -144,7 +148,8 @@ class LoginTest extends TestCase
         ], $data);
     }
 
-    public function testFailWithInvalidLogin() {
+    public function testFailWithInvalidLogin()
+    {
         $response = $this->http->post('login.php', null, json_encode([
             'email' => 'na',
             'password' => 'na'
