@@ -1,28 +1,21 @@
 <?php
-    //require autoload file for twilio
-    require __DIR__ . '/twilio-php-master/Twilio/autoload.php';
-    //use the REST api to make requests
-    use Twilio\Rest\Client;
-    class TextDriver {
-        //twilio information
-        private $sid = 'ACea262116e95f713800419bb929fb7cb1';
-        private $token = '9ce3a6c589d77a6ca15ca7a244f3f0c6';
-        private $client = new Client($sid, $token);
+include "vendor/autoload.php";
+use Twilio\Rest\Client;
+$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv->load();
 
-        private $waspsPhoneNumber = '+16316511911';
-        function sendMessage($message, $phone)
-        {
-             //send a message
-            $client ->messages->create(
-                //replace with the number to send a message to
-                $name,
-                array(
-                    //the assigned twilio number
-                    'from' => $waspsPhoneNumber,
-                    //Message of the text
-                    'body' => $message
-                    )
-            );
-        }
+class TextDriver
+{
+    public function sendMessage($message, $phone)
+    {
+        $client = new Client($_ENV['TWILIO_SID'], $_ENV['TWILIO_TOKEN']);
+        //send a message
+        $client->messages->create(
+            $phone,
+            [
+                'from' => $_ENV['TWILIO_PHONE_NUMBER'],
+                'body' => $message,
+            ]
+        );
     }
-?>
+}
