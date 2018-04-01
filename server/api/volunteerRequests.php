@@ -11,20 +11,27 @@ switch ($_SERVER['REQUEST_METHOD']) {
       {
          case "passenger":
             echo json_encode($db->volunteerRequest->getVolunteerRequestForUser($_SESSION['user']['id']));
+            http_response_code(200);
+            die();
             break;
          case "admin":
             if (isset($_GET['page']) && isset($_GET['number_per_page']))
             {
                echo json_encode($db->volunteerRequest->getVolunteerRequests($_GET['page'], $_GET['number_per_page']?:10));
+               http_response_code(200);
+               die();
             }
             else
             {
                echo json_encode($db->volunteerRequest->getVolunteerRequests(0, 100));
+               http_response_code(200);
+               die();
             }
             break;
          default:
-            http_response_code(403);
             echo json_encode(["err" => "Only users and admins can access this resource."]);
+            http_response_code(403);
+            die();
       }
 
       break;

@@ -1,8 +1,8 @@
- <?php
+<?php
 
 use PHPUnit\Framework\TestCase;
 
-class DriverAvailabilitiesTest extends TestCase
+class DispatcherVolunteerRequestTest extends TestCase
 {
     private $http;
     private $cookieJar;
@@ -28,21 +28,26 @@ class DriverAvailabilitiesTest extends TestCase
         $this->http = null;
     }
 
-    public function testGetAvailableDriver()
+    public function testGetVolunteerRequest()
     {
-        $response = $this->http->request('GET', '/api/driverAvailabilities.php?start=2018-01-01%2010:00:00&end=2018-03-01%2011:00:00', ['cookies' => $this->cookieJar]);
+        $response = $this->http->request('GET', '/api/volunteerRequests.php', ['cookies' => $this->cookieJar]);
         $this->assertEquals(200, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/json", $contentType);
         $data = json_decode($response->getBody(true), true);
         $this->assertEquals([
-            'id' => 3,
-            'firstName' => 'Main',
-            'lastName' => 'Driver',
-            'role' => 'driver',
-            'phone' => '2035254835',
-            'email' => 'driver@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00'
+            "id" => 1,
+            "timestamp" => "2018-02-01 08:01:00",
+            "userID" => 6
         ], $data[0]);
     }
+
+    // public function testCreateVolunteerRequestForUser() {
+    //     $response = $this->http->request('POST', '/api/volunteerRequests.php?id=4', ['cookies' => $this->cookieJar]);
+    //     $this->assertEquals(200, $response->getStatusCode());
+    //     $contentType = $response->getHeaders()["Content-Type"][0];
+    //     $this->assertEquals("application/json", $contentType);
+    //     $data = json_decode($response->getBody(true), true);
+    //     $this->assertEquals($data['userID'], 4);
+    // }
 }

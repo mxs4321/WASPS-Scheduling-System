@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-class ReportsTest extends TestCase
+class AdminReportsTest extends TestCase
 {
     private $http;
     private $cookieJar;
