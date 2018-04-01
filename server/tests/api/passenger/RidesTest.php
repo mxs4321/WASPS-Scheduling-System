@@ -73,10 +73,7 @@ class PassengerRidesTest extends TestCase
                 'role' => 'passenger',
                 'phone' => '2435254235',
                 'email' => 'passenger@websterwasps.com',
-                'registered' => '2018-01-01 00:00:00',
-                'lastLogin' => '2018-03-01 00:00:00',
-                'wantsSMS' => 1,
-                'wantsEmail' => 1,
+                'registered' => '2018-01-01 00:00:00'
             ],
             'driver' => [
                 'id' => 3,
@@ -85,10 +82,7 @@ class PassengerRidesTest extends TestCase
                 'role' => 'driver',
                 'phone' => '2035254835',
                 'email' => 'driver@websterwasps.com',
-                'registered' => '2018-01-01 00:00:00',
-                'lastLogin' => '2018-03-01 00:00:00',
-                'wantsSMS' => 1,
-                'wantsEmail' => 1,
+                'registered' => '2018-01-01 00:00:00'
             ],
             'apptStart' => "2018-04-23 09:00:00",
             'apptEnd' => "2018-04-23 10:00:00",
@@ -134,10 +128,7 @@ class PassengerRidesTest extends TestCase
                 'role' => 'passenger',
                 'phone' => '2435254235',
                 'email' => 'passenger@websterwasps.com',
-                'registered' => '2018-01-01 00:00:00',
-                'lastLogin' => '2018-03-01 00:00:00',
-                'wantsSMS' => 1,
-                'wantsEmail' => 1,
+                'registered' => '2018-01-01 00:00:00'
             ],
             "driverID" => null,
             "apptStart" => "2018-04-05 08:11:00",
@@ -186,10 +177,7 @@ class PassengerRidesTest extends TestCase
     //             'role' => 'passenger',
     //             'phone' => '2435254235',
     //             'email' => 'passenger@websterwasps.com',
-    //             'registered' => '2018-01-01 00:00:00',
-    //             'lastLogin' => '2018-03-01 00:00:00',
-    //             'wantsSMS' => 1,
-    //             'wantsEmail' => 1,
+    //             'registered' => '2018-01-01 00:00:00'
     //         ],
     //         "driverID" => null,
     //         "apptStart" => "2018-04-05 08:11:00",
@@ -267,10 +255,7 @@ class PassengerRidesTest extends TestCase
                 'role' => 'passenger',
                 'phone' => '2435254235',
                 'email' => 'passenger@websterwasps.com',
-                'registered' => '2018-01-01 00:00:00',
-                'lastLogin' => '2018-03-01 00:00:00',
-                'wantsSMS' => 1,
-                'wantsEmail' => 1,
+                'registered' => '2018-01-01 00:00:00'
             ],
             'driver' => [
                 'id' => 3,
@@ -279,10 +264,7 @@ class PassengerRidesTest extends TestCase
                 'role' => 'driver',
                 'phone' => '2035254835',
                 'email' => 'driver@websterwasps.com',
-                'registered' => '2018-01-01 00:00:00',
-                'lastLogin' => '2018-03-01 00:00:00',
-                'wantsSMS' => 1,
-                'wantsEmail' => 1,
+                'registered' => '2018-01-01 00:00:00'
             ],
         ], $ride);
     }

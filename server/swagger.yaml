@@ -402,15 +402,6 @@ components:
         registered: 
           type: string
           example: "2018-02-01 08:01:00"
-        lastLogin:
-          type: string
-          example: "2018-02-01 08:01:00"
-        wantsSMS:
-          type: boolean
-          example: true
-        wantsEmails: 
-          type: boolean
-          example: true
  
     Ride:
       type: object

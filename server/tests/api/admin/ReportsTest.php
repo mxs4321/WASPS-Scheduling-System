@@ -64,9 +64,7 @@ class ReportsTest extends TestCase
     //         "firstName" => "Main",
     //         "lastName" => "Driver",
     //         "phone" => "2035254835",
-    //         "email" => "driver@websterwasps.com",
-    //         "wantsSMS" => 1,
-    //         "wantsEmail" => 1,
+    //         "email" => "driver@websterwasps.com"
     //         "start" => "07:00:00",
     //         "end" => "16:00:00",
     //         "days" => "Mon,Tue,Wed,Thu,Fri",

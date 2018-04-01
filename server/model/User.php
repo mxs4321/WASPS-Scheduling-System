@@ -9,9 +9,6 @@ class User
     private $phone;
     private $email;
     private $registered;
-    private $lastLogin;
-    private $wantsSMS;
-    private $wantsEmail;
 
     public function getUserInfo()
     {
@@ -22,10 +19,7 @@ class User
             "role" => $this->role,
             "phone" => $this->phone,
             "email" => $this->email,
-            "registered" => $this->registered,
-            "lastLogin" => $this->lastLogin,
-            "wantsSMS" => $this->wantsSMS,
-            "wantsEmail" => $this->wantsEmail
+            "registered" => $this->registered
         ];
     }
 

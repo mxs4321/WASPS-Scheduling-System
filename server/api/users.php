@@ -126,10 +126,8 @@ function postUser($bodyData, $role = "passenger")
       $lastName = $bodyData['lastName'];
       $phone = $bodyData['phone'];
       $email = $bodyData['email'];
-      $wantsSMS = $bodyData['wantsSMS'] ?? true;
-      $wantsEmail = $bodyData['wantsEmail'] ?? true;
 
-      echo json_encode($db->user->insertUser($password, $role, $firstName, $lastName, $phone, $email, $wantsSMS, $wantsEmail));
+      echo json_encode($db->user->insertUser($password, $role, $firstName, $lastName, $phone, $email));
       http_response_code(201);
    }
    else
@@ -149,20 +147,13 @@ function putUser($userID, $bodyData, $role = "")
    $lastName = $bodyData['lastName'] ?? "";
    $phone = $bodyData['phone'] ?? "";
    $email = $bodyData['email'] ?? "";
-   $lastLogin = $bodyData['lastLogin'] ?? "";
-   $wantsSMS = $bodyData['wantsSMS'] ?? "";
-   $wantsEmail = $bodyData['wantsEmail'] ?? "";
 
    $password = sanitizeAndValidate($password, FILTER_SANITIZE_STRING);
    if ($role != "")       $role = sanitizeAndValidate($role, FILTER_SANITIZE_STRING);
    if ($firstName != "")  $firstName = sanitizeAndValidate($firstName, FILTER_SANITIZE_STRING);
-   if ($lastLogin != "")  $lastLogin = sanitizeAndValidate($lastLogin, FILTER_SANITIZE_STRING);
    if ($phone != "")      $phone = sanitizeAndValidate($phone, FILTER_SANITIZE_STRING);
    if ($email!= "")       $email = sanitizeAndValidate($email, FILTER_SANITIZE_EMAIL, FILTER_VALIDATE_EMAIL);
-   if ($wantsSMS !== "")   $wantsSMS = sanitizeAndValidate($wantsSMS, -1, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-   if ($wantsEmail !== "") $wantsEmail = sanitizeAndValidate($wantsEmail, -1, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
    http_response_code(200);
-   echo json_encode($db->user->updateUser($userID, $password, $role, $firstName, $lastName, $phone, $email, "",
-      $lastLogin, $wantsSMS, $wantsEmail));
+   echo json_encode($db->user->updateUser($userID, $password, $role, $firstName, $lastName, $phone, $email, ""));
 }

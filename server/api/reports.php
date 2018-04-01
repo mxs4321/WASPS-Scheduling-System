@@ -86,7 +86,7 @@ function exportClientToCSV($filename = "clients.csv", $fetchSince = "")
    global $db;
    global $delimiter;
 
-   $columnNames = array("First Name", "Last Name", "Phone number", "Email Address", "Wants Email", "Wants SMS");
+   $columnNames = array("First Name", "Last Name", "Phone number", "Email Address");
    $data = $db->user->getClientExportInfo($fetchSince);
 
    $f = fopen('php://output', 'w');
@@ -94,24 +94,6 @@ function exportClientToCSV($filename = "clients.csv", $fetchSince = "")
    fputcsv($f, $columnNames, $delimiter);
    foreach ($data as $line)
    {
-      if ($line['wantsSMS'] == 1)
-      {
-         $line['wantsSMS'] = "yes";
-      }
-      else
-      {
-         $line['wantsSMS'] = "no";
-      }
-
-      if ($line['wantsEmail'] == 1)
-      {
-         $line['wantsEmail'] = "yes";
-      }
-      else
-      {
-         $line['wantsEmail'] = "no";
-      }
-
       fputcsv($f, $line, $delimiter);
    }
 
@@ -148,7 +130,7 @@ function exportDriverToCSV($filename = "drivers.csv", $fetchSince = "")
    global $db;
    global $delimiter;
 
-   $columnNames = array("First Name", "Last Name", "Phone", "Email Address", "Wants Email", "Wants SMS", "Driver Schedule Monday",
+   $columnNames = array("First Name", "Last Name", "Phone", "Email Address", "Driver Schedule Monday",
       "Driver Schedule Tuesday", "Driver Schedule Wednesday", "Driver Schedule Thursday", "Driver Schedule Friday",
       "Driver Schedule Saturday", "Driver Schedule Sunday");
    $data = $db->user->getDriverExportInfo($fetchSince);
@@ -173,8 +155,6 @@ function exportDriverToCSV($filename = "drivers.csv", $fetchSince = "")
          unset($lastDriver['start']);
          unset($lastDriver['end']);
          unset($lastDriver['days']);
-         $lastDriver['wantsSMS'] = $lastDriver['wantsSMS'] == 1 ? "Yes" : "No";
-         $lastDriver['wantsEmail'] = $lastDriver['wantsEmail'] == 1 ? "Yes" : "No";
          fputcsv($f, $lastDriver, $delimiter);
 
          $lastDriver = $driver;
@@ -191,8 +171,6 @@ function exportDriverToCSV($filename = "drivers.csv", $fetchSince = "")
       unset($lastDriver['start']);
       unset($lastDriver['end']);
       unset($lastDriver['days']);
-      $lastDriver['wantsSMS'] = $lastDriver['wantsSMS'] == 1 ? "Yes" : "No";
-      $lastDriver['wantsEmail'] = $lastDriver['wantsEmail'] == 1 ? "Yes" : "No";
       fputcsv($f, $lastDriver, $delimiter);
    }
 
