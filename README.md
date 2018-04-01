@@ -4,13 +4,18 @@
 
 ![React App Screenshot](docs/client-screenshot.png)
 
+
+## [Database](database/README.md)
+
+The server-side a MySQL Database to be set up before it can be run. There is a TestDBFixture called `databases/fullDump.sql`. Update the information in `/server/.env` to reflect your database's login. 
+
 ## [Server](server/README.md)
 
-The server-side requires PHP and a MySQL Database to be set up before it can be run. Update the information in `/server/env.php` to reflect your database's login. To install PHP dependencies, you must have [Composer](https://getcomposer.org/) on your computer.
+The server-side requires PHP and [Composer](https://getcomposer.org/) to be set up before it can be run. 
 
 ### Running the Server
 
-To start the server, you must change into the directory with `cd server`. Run `composer install` to install the dependencies and then start the server using `composer start`.
+To start the server, you must update the information in `/server/.env` to reflect your database's login. Once the database is ready you can change into the server directory with `cd server`. Run `composer install` to install the dependencies and then start the server using `composer start`.
 
 ```shell
 cd server
@@ -40,7 +45,7 @@ npm start
 
 ### Storybooks
 
-Component Documentation is available using React [storybooks](https://github.com/storybooks/storybook). To Run the storybooks, you must change into the directory with `cd client`. If dependencies are not installed run `npm install` to install them and then you can run the test using `npm run storybook`.
+Component Documentation is available using React [storybooks](https://github.com/storybooks/storybook). To Run the storybooks, you must change into the client directory with `cd client`. If dependencies are not installed run `npm install` to install them and then you can run the test using `npm run storybook`.
 
 ```bash
 cd client
