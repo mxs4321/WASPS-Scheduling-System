@@ -1,7 +1,7 @@
 <?php
-include "vendor/autoload.php";
+include __DIR__ . "/../vendor/autoload.php";
 
-$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv = new Dotenv\Dotenv(__DIR__.'/..');
 $dotenv->load();
 
 $host = $_ENV["MYSQL_HOST"];
@@ -21,6 +21,5 @@ if ($result = $db->query("SHOW TABLES"))
    }
 }
 $db->exec("SET foreign_key_checks = 1");
-// TODO: Some type of production dump needs to be made.
-$sql = file_get_contents("../database/fullDump.sql");
+$sql = file_get_contents(__DIR__ . "/../../database/fullDump.sql");
 $db->exec($sql);

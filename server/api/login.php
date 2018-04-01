@@ -1,8 +1,7 @@
 <?php
 session_start(); // Starting Session
 header('Content-Type: application/json');
-
-require_once "./db.class.php";
+require_once "../db.class.php";
 $db = new DB();
 
 if (isset($_SESSION['user'])) {

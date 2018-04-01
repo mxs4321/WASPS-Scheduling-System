@@ -17,13 +17,13 @@ class LogoutTest extends TestCase
 
     public function testGetShouldFail()
     {
-        $response = $this->http->request('GET', 'logout.php');
+        $response = $this->http->request('GET', '/api/logout.php');
         $this->assertEquals(405, $response->getStatusCode());
     }
 
     public function testDeleteShouldLogout()
     {
-        $response = $this->http->request('DELETE', 'logout.php');
+        $response = $this->http->request('DELETE', '/api/logout.php');
         $this->assertEquals(202, $response->getStatusCode());
     }
 }

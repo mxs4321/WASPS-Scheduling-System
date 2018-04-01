@@ -8,8 +8,8 @@ class LoginTest extends TestCase
 
     public function setUp()
     {
-        $this->http = new GuzzleHttp\Client(['base_uri' => 'localhost:8000/login.php', 'http_errors' => false]);
-        $this->http->request('GET', '/setupTestDB.php');
+        $this->http = new GuzzleHttp\Client(['base_uri' => 'localhost:8000', 'http_errors' => false]);
+        $this->http->request('GET', '/tests/setupTestDB.php');
     }
 
     public function tearDown()
@@ -20,7 +20,7 @@ class LoginTest extends TestCase
 
     public function testLoginToAdmin()
     {
-        $response = $this->http->request('POST', '/login.php', [
+        $response = $this->http->request('POST', '/api/login.php', [
             'json' => [
                 'email' => 'admin@websterwasps.com',
                 'password' => 'admin'
@@ -43,7 +43,7 @@ class LoginTest extends TestCase
 
     public function testLoginToDispatcher()
     {
-        $response = $this->http->request('POST', '/login.php', [
+        $response = $this->http->request('POST', '/api/login.php', [
             'json' => [
                 'email' => 'dispatcher@websterwasps.com',
                 'password' => 'dispatcher'
@@ -66,7 +66,7 @@ class LoginTest extends TestCase
 
     public function testLoginToDriver()
     {
-        $response = $this->http->request('POST', '/login.php', [
+        $response = $this->http->request('POST', '/api/login.php', [
             'json' => [
                 'email' => 'driver@websterwasps.com',
                 'password' => 'driver'
@@ -89,7 +89,7 @@ class LoginTest extends TestCase
 
     public function testLoginToPassenger()
     {
-        $response = $this->http->request('POST', '/login.php', [
+        $response = $this->http->request('POST', '/api/login.php', [
             'json' => [
                 'email' => 'passenger@websterwasps.com',
                 'password' => 'passenger'
@@ -112,7 +112,7 @@ class LoginTest extends TestCase
 
     public function testLoginWithPhoneNumber()
     {
-        $response = $this->http->request('POST', '/login.php', [
+        $response = $this->http->request('POST', '/api/login.php', [
             'json' => [
                 'phone' => '2435254235',
                 'password' => 'passenger'
@@ -135,7 +135,7 @@ class LoginTest extends TestCase
 
     public function testFailWithInvalidLogin()
     {
-        $response = $this->http->post('login.php', null, json_encode([
+        $response = $this->http->post('/api/login.php', null, json_encode([
             'email' => 'na',
             'password' => 'na'
         ]));
@@ -144,7 +144,7 @@ class LoginTest extends TestCase
 
     public function testFailGetRequest()
     {
-        $response = $this->http->get('login.php');
+        $response = $this->http->get('/api/login.php');
         $this->assertEquals(401, $response->getStatusCode());
     }
 }
