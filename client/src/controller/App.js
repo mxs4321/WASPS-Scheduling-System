@@ -9,7 +9,7 @@ import StatusFilter from '../view/StatusFilter';
 import { Add } from '../view/icons';
 import Navigation from './Navigation';
 import CreateRide from './CreateRide';
-import Availability from './Availability';
+import AvailabilityForm from './forms/AvailabilityForm';
 import Users from './Users';
 import Schedule from './Schedule';
 import Rides from './Rides';
@@ -109,7 +109,11 @@ export const App = ({
         <PrivateRoute
           allowedRoles={['driver']}
           path="/availability"
-          component={Availability}
+          component={(...args) => (
+            <Card>
+              <AvailabilityForm {...args} />
+            </Card>
+          )}
         />
         <PrivateRoute
           allowedRoles={['dispatcher', 'admin']}

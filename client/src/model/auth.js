@@ -1,6 +1,6 @@
 // @flow
 import { push } from 'react-router-redux';
-import { postJSON, deleteJSON, putJSON } from '../util/fetch';
+import { postJSON, deleteJSON, putJSON, getJSON } from '../util/fetch';
 import { updateRequest } from './ajax';
 import type { User } from './types/user';
 
@@ -11,27 +11,41 @@ const NAMESPACE = 'AUTH';
 const LOGIN_SUCCESSFUL = `${NAMESPACE}/LOGIN_SUCCESSFUL`;
 export const ATTEMPT_LOGOUT = `${NAMESPACE}/ATTEMPT_LOGOUT`;
 
-export const login = ({ email, password, referrer }) => dispatch => {
-  dispatch(updateRequest('POST /api/login.php', 'Pending'));
-  return postJSON('/api/login.php', { email, password })
+export const refreshUserInfo = ({ referrer }) => dispatch => {
+  dispatch(updateRequest('GET /api/auth.php', 'Pending'));
+  return getJSON('/api/auth.php')
     .then(user => {
-      dispatch(updateRequest('POST /api/login.php', 'Success'));
+      dispatch(updateRequest('GET /api/auth.php', 'Success'));
       dispatch({
         type: LOGIN_SUCCESSFUL,
         payload: user
       });
       dispatch(push(referrer));
     })
-    .catch(err => dispatch(updateRequest('POST /api/login.php', 'Error', err)));
+    .catch(err => dispatch(updateRequest('GET /api/auth.php', 'Error', err)));
+};
+
+export const login = ({ email, password, referrer }) => dispatch => {
+  dispatch(updateRequest('POST /api/auth.php', 'Pending'));
+  return postJSON('/api/auth.php', { email, password })
+    .then(user => {
+      dispatch(updateRequest('POST /api/auth.php', 'Success'));
+      dispatch({
+        type: LOGIN_SUCCESSFUL,
+        payload: user
+      });
+      dispatch(push(referrer));
+    })
+    .catch(err => dispatch(updateRequest('POST /api/auth.php', 'Error', err)));
 };
 
 export const logout = () => dispatch => {
   dispatch({ type: ATTEMPT_LOGOUT });
-  dispatch(updateRequest('DELETE /api/logout.php', 'Pending'));
-  return deleteJSON('/api/logout.php')
-    .then(() => dispatch(updateRequest('DELETE /api/logout.php', 'Success')))
+  dispatch(updateRequest('DELETE /api/auth.php', 'Pending'));
+  return deleteJSON('/api/auth.php')
+    .then(() => dispatch(updateRequest('DELETE /api/auth.php', 'Success')))
     .catch(err =>
-      dispatch(updateRequest('DELETE /api/logout.php', 'Error', err))
+      dispatch(updateRequest('DELETE /api/auth.php', 'Error', err))
     );
 };
 

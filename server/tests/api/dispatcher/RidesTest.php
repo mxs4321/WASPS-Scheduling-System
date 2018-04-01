@@ -12,7 +12,7 @@ class DispatcherRidesTest extends TestCase
         $this->cookieJar = new \GuzzleHttp\Cookie\CookieJar();
         $this->http = new GuzzleHttp\Client(['base_uri' => 'localhost:8000', 'http_errors' => false]);
         $this->http->request('POST', '/tests/setupTestDB.php');
-        $this->http->request('POST', '/api/login.php', [
+        $this->http->request('POST', '/api/auth.php', [
             'json' => [
                 'email' => 'dispatcher@websterwasps.com',
                 'password' => 'dispatcher',
@@ -23,7 +23,7 @@ class DispatcherRidesTest extends TestCase
 
     public function tearDown()
     {
-        $this->http->request('DELETE', '/api/logout.php', ['cookies' => $this->cookieJar]);
+        $this->http->request('DELETE', '/api/auth.php', ['cookies' => $this->cookieJar]);
         $this->http = null;
     }
 
