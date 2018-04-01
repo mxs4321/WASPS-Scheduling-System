@@ -4,7 +4,6 @@ include "dao/RideDAO.php";
 include "dao/AvailabilityDAO.php";
 include "dao/AvailabilityExclusionDAO.php";
 include "dao/VolunteerRequestDAO.php";
-include "dao/NotificationDAO.php";
 
 class DB {
     private $dbh;
@@ -25,7 +24,6 @@ class DB {
             $this->availability = new AvailabilityDAO($this->dbh);
             $this->availabilityExclusion = new AvailabilityExclusionDAO($this->dbh);
             $this->volunteerRequest = new VolunteerRequestDAO($this->dbh);
-            $this->notification = new NotificationDAO($this->dbh);
         } catch(PDOException $e) {
             echo $e->getMessage();
             die();
