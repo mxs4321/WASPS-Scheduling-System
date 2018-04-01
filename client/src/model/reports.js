@@ -3,6 +3,7 @@ import { getJSON, postJSON } from '../util/fetch';
 import { updateRequest } from './ajax';
 import { addUsers } from './users';
 import type { Ride } from './types/ride';
+import { ATTEMPT_LOGOUT } from './auth';
 
 // type State = {
 //   byId: Array<Ride>
@@ -51,6 +52,8 @@ export default (state: State = DEFAULT_STATE, action) => {
         ...state,
         [action.payload.type]: action.payload.report
       };
+    case ATTEMPT_LOGOUT:
+      return DEFAULT_STATE;
     default:
       return state;
   }

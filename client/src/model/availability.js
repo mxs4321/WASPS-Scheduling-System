@@ -1,6 +1,7 @@
 import { prop, flatten, indexBy } from 'ramda';
 import { getJSON, postJSON, putJSON, deleteJSON } from '../util/fetch';
 import { updateRequest } from './ajax';
+import { ATTEMPT_LOGOUT } from './auth';
 
 type State = {
   byId: Array<Ride>
@@ -123,6 +124,9 @@ export default (state: State = DEFAULT_STATE, action) => {
         ...state,
         drivers: action.payload
       };
+    case ATTEMPT_LOGOUT:
+      return DEFAULT_STATE;
+
     default:
       return state;
   }
