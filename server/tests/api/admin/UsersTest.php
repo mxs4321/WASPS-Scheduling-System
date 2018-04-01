@@ -41,10 +41,7 @@ class UsersTest extends TestCase
             'role' => 'admin',
             'phone' => '5852167829',
             'email' => 'admin@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00',
-            'lastLogin' => '2018-03-01 00:00:00',
-            'wantsSMS' => 1,
-            'wantsEmail' => 1,
+            'registered' => '2018-01-01 00:00:00'
         ], $data);
     }
 
@@ -62,10 +59,7 @@ class UsersTest extends TestCase
             'role' => 'admin',
             'phone' => '5852167829',
             'email' => 'admin@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00',
-            'lastLogin' => '2018-03-01 00:00:00',
-            'wantsSMS' => 1,
-            'wantsEmail' => 1,
+            'registered' => '2018-01-01 00:00:00'
         ]], $data);
     }
 
@@ -85,10 +79,7 @@ class UsersTest extends TestCase
             'role' => 'admin',
             'phone' => '5852167829',
             'email' => 'admin@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00',
-            'lastLogin' => '2018-03-01 00:00:00',
-            'wantsSMS' => 1,
-            'wantsEmail' => 1,
+            'registered' => '2018-01-01 00:00:00'
         ], $data[0]);
     }
 
@@ -126,8 +117,6 @@ class UsersTest extends TestCase
     //      $this->assertEquals('admin', $passenger->role);
     //      $this->assertEquals('2036259401', $passenger->phone);
     //      $this->assertEquals('testAdmin@websterwasps.com', $passenger->email);
-    //      $this->assertEquals(1, $passenger->wantsSMS);
-    //      $this->assertEquals(1, $passenger->wantsEmail);
     //  }
 
     // TODO: Admins should be able to create dispatchers
@@ -152,8 +141,6 @@ class UsersTest extends TestCase
     //      $this->assertEquals('dispatcher', $passenger->role);
     //      $this->assertEquals('2034229403', $passenger->phone);
     //      $this->assertEquals('testDispatcher@websterwasps.com', $passenger->email);
-    //      $this->assertEquals(1, $passenger->wantsSMS);
-    //      $this->assertEquals(1, $passenger->wantsEmail);
     //  }
 
     // TODO: Admins should be able to create Drivers
@@ -178,8 +165,6 @@ class UsersTest extends TestCase
     //      $this->assertEquals('driver', $passenger->role);
     //      $this->assertEquals('2034259401', $passenger->phone);
     //      $this->assertEquals('testDriver@websterwasps.com', $passenger->email);
-    //      $this->assertEquals(1, $passenger->wantsSMS);
-    //      $this->assertEquals(1, $passenger->wantsEmail);
     //  }
 
     public function testCreatePassenger()
@@ -203,8 +188,6 @@ class UsersTest extends TestCase
         $this->assertEquals('passenger', $passenger['role']);
         $this->assertEquals('2034259401', $passenger['phone']);
         $this->assertEquals('testDriver@websterwasps.com', $passenger['email']);
-        $this->assertEquals(1, $passenger['wantsSMS']);
-        $this->assertEquals(1, $passenger['wantsEmail']);
     }
 
     public function testCreateRequiresFirstName()

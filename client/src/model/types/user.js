@@ -8,8 +8,5 @@ export type User = {
   lastName: string,
   phone: string,
   email: stirng,
-  registered: Date,
-  lastLogin: boolean,
-  wantsSMS: boolean,
-  wantsEmail: boolean
+  registered: Date
 };

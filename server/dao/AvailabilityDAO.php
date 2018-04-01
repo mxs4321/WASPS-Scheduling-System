@@ -151,14 +151,15 @@ class AvailabilityDAO
             $dayOfTheWeekIndex = date('w', strtotime($datetimeStart));
             $dayOfTheWeek = $daysOfTheWeek[$dayOfTheWeekIndex];
 
-            $query = "SELECT User.id, User.firstName, User.lastName, User.role, User.phone, User.email, User.registered, User.lastLogin, User.wantsSMS, User.wantsEmail FROM User
-           LEFT JOIN (Availability) ON (User.id = Availability.driverID)
-           LEFT JOIN (AvailabilityExclusion) ON (User.id = AvailabilityExclusion.driverID)
-           WHERE User.role = 'driver'
-             AND FIND_IN_SET(:dayOfTheWeek, Availability.days)>0
-             AND Availability.start <= :timeOfDayStart AND Availability.end >= :timeOfDayEnd
-             AND (AvailabilityExclusion.id IS NULL OR AvailabilityExclusion.end < :datetimeStart OR AvailabilityExclusion.start > :datetimeEnd)
-             GROUP BY id
+            $query = "SELECT User.id, User.firstName, User.lastName, User.role, User.phone, User.email, User.registered
+                FROM User
+                LEFT JOIN (Availability) ON (User.id = Availability.driverID)
+                LEFT JOIN (AvailabilityExclusion) ON (User.id = AvailabilityExclusion.driverID)
+                WHERE User.role = 'driver'
+                    AND FIND_IN_SET(:dayOfTheWeek, Availability.days)>0
+                    AND Availability.start <= :timeOfDayStart AND Availability.end >= :timeOfDayEnd
+                    AND (AvailabilityExclusion.id IS NULL OR AvailabilityExclusion.end < :datetimeStart OR AvailabilityExclusion.start > :datetimeEnd)
+                    GROUP BY id
              ";
 
             $stmt = $this->dbh->prepare($query);

@@ -37,10 +37,7 @@ class LoginTest extends TestCase
             'role' => 'admin',
             'phone' => '5852167829',
             'email' => 'admin@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00',
-            'lastLogin' => '2018-03-01 00:00:00',
-            'wantsSMS' => 1,
-            'wantsEmail' => 1
+            'registered' => '2018-01-01 00:00:00'
         ], $data);
     }
 
@@ -63,10 +60,7 @@ class LoginTest extends TestCase
             'role' => 'dispatcher',
             'phone' => '5852167819',
             'email' => 'dispatcher@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00',
-            'lastLogin' => '2018-03-01 00:00:00',
-            'wantsSMS' => 1,
-            'wantsEmail' => 1
+            'registered' => '2018-01-01 00:00:00'
         ], $data);
     }
 
@@ -89,10 +83,7 @@ class LoginTest extends TestCase
             'role' => 'driver',
             'phone' => '2035254835',
             'email' => 'driver@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00',
-            'lastLogin' => '2018-03-01 00:00:00',
-            'wantsSMS' => 1,
-            'wantsEmail' => 1
+            'registered' => '2018-01-01 00:00:00'
         ], $data);
     }
 
@@ -115,10 +106,7 @@ class LoginTest extends TestCase
             'role' => 'passenger',
             'phone' => '2435254235',
             'email' => 'passenger@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00',
-            'lastLogin' => '2018-03-01 00:00:00',
-            'wantsSMS' => 1,
-            'wantsEmail' => 1
+            'registered' => '2018-01-01 00:00:00'
         ], $data);
     }
 
@@ -141,10 +129,7 @@ class LoginTest extends TestCase
             'role' => 'passenger',
             'phone' => '2435254235',
             'email' => 'passenger@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00',
-            'lastLogin' => '2018-03-01 00:00:00',
-            'wantsSMS' => 1,
-            'wantsEmail' => 1
+            'registered' => '2018-01-01 00:00:00'
         ], $data);
     }
 

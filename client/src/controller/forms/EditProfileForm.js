@@ -73,35 +73,17 @@ const EditDiv = styled.div`
 export class EditProfileForm extends Component {
   constructor(props) {
     super(props);
-    const {
-      id,
-      firstName,
-      lastName,
-      phone,
-      email,
-      wantsSMS,
-      wantsEmail
-    } = this.props;
+    const { id, firstName, lastName, phone, email } = this.props;
     this.state = {
       id,
       firstName,
       lastName,
       phone,
-      email,
-      wantsSMS,
-      wantsEmail
+      email
     };
   }
   render() {
-    const {
-      firstName,
-      lastName,
-      phone,
-      email,
-      wantsSMS,
-      wantsEmail,
-      onSave
-    } = this.props;
+    const { firstName, lastName, phone, email, onSave } = this.props;
     return (
       <Wrapper>
         <Heading>
@@ -154,23 +136,6 @@ export class EditProfileForm extends Component {
               onChange={e => this.setState({ newPassword: e.target.value })}
             />
           </Field>
-          <br />
-          <Label>Wants SMS</Label>
-          <Field>
-            <Checkbox
-              defaultChecked={wantsSMS}
-              onChange={e => this.setState({ wantsSMS: e.target.value })}
-            />
-          </Field>
-          <br />
-          <Label>Wants Email</Label>
-          <Field>
-            <Checkbox
-              defaultChecked={wantsEmail}
-              onChange={e => this.setState({ wantsEmail: e.target.value })}
-            />
-          </Field>
-          <br />
         </EditDiv>
 
         <Save onClick={() => onSave(this.state)}>SAVE</Save>

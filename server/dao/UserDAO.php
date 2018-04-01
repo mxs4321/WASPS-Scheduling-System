@@ -10,8 +10,7 @@ class UserDAO {
 
     function findById($id) {
         try {
-            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `lastLogin`, 
-              `wantsSMS`, `wantsEmail`, `email`, `registered` FROM User WHERE id = :id");
+            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `email`, `registered` FROM User WHERE id = :id");
             $stmt->execute([':id' => intval($id)]);
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             return $stmt->fetch()->getUserInfo();
@@ -45,7 +44,7 @@ class UserDAO {
 
     function getUsers($page = 0, $numberPerPage = 10) {
         try {
-            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `lastLogin`, `wantsSMS`, `wantsEmail`, `email`, `registered` FROM User LIMIT :lim OFFSET :offset");
+            $stmt = $this->dbh->prepare("SELECT `id`, `firstName`, `lastName`, `phone`, `role`, `email`, `registered` FROM User LIMIT :lim OFFSET :offset");
             $lim = intval($numberPerPage);
             $offset = intval($page * $numberPerPage);
             $stmt->bindParam(':lim', $lim, PDO::PARAM_INT);
@@ -66,7 +65,7 @@ class UserDAO {
    {
       try
       {
-         $query = "SELECT user.id, firstName, lastName, phone, email, wantsSMS, wantsEmail, start, end, days FROM User
+         $query = "SELECT user.id, firstName, lastName, phone, email, start, end, days FROM User
                       LEFT JOIN Availability ON (User.id = Availability.driverID)
                       WHERE role = 'driver'";
          if ($fetchSince != "") $query .= " AND User.CreatedTime > :fetchSince";
@@ -94,8 +93,7 @@ class UserDAO {
     {
        try
        {
-          $query = "SELECT firstName, lastName, phone, email, wantsEmail, wantsSMS
-                      FROM User WHERE role = 'passenger'";
+          $query = "SELECT firstName, lastName, phone, email FROM User WHERE role = 'passenger'";
           if ($fetchSince != "") $query .= " AND user.CreatedTime > :fetchSince";
           $stmt = $this->dbh->prepare($query);
           if ($fetchSince != "") $stmt->bindParam('fetchSince', $fetchSince);
@@ -117,7 +115,7 @@ class UserDAO {
        }
     }
 
-    function insertUser($password, $role, $firstName, $lastName, $phone, $email, $wantsSMS = true, $wantsEmail = true)
+    function insertUser($password, $role, $firstName, $lastName, $phone, $email)
     {
         try
         {
@@ -126,20 +124,16 @@ class UserDAO {
            $firstName = strval($firstName);
            $phone = strval($phone);
            $email = strval($email);
-           $wantsSMS = boolval($wantsSMS);
-           $wantsEmail = boolval($wantsEmail);
            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-           $stmt = $this->dbh->prepare("INSERT INTO User (`password`, `role`, `firstName`, `lastName`, `phone`, `email`, `wantsSMS`, `wantsEmail`) 
-            VALUES (:pass, :userRole, :firstName, :lastName, :phone, :email, :wantsSMS, :wantsEmail);");
+           $stmt = $this->dbh->prepare("INSERT INTO User (`password`, `role`, `firstName`, `lastName`, `phone`, `email`) 
+            VALUES (:pass, :userRole, :firstName, :lastName, :phone, :email);");
            $stmt->bindParam(':pass', $password, PDO::PARAM_STR);
            $stmt->bindParam(':userRole', $role, PDO::PARAM_STR);
            $stmt->bindParam(':firstName', $firstName, PDO::PARAM_STR);
            $stmt->bindParam(':lastName', $lastName, PDO::PARAM_STR);
            $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-           $stmt->bindParam(':wantsSMS', $wantsSMS, PDO::PARAM_INT);
-           $stmt->bindParam(':wantsEmail', $wantsEmail, PDO::PARAM_INT);
            $stmt->execute();
 
            return $this->findById($this->dbh->lastInsertId());
@@ -151,8 +145,7 @@ class UserDAO {
         }
     }
 
-    function updateUser($id, $password = "", $role = "", $firstName = "", $lastName = "", $phone = "", $email = "",
-                        $registered = "", $lastLogin = "", $wantsSMS = "", $wantsEmail = "")
+    function updateUser($id, $password = "", $role = "", $firstName = "", $lastName = "", $phone = "", $email = "", $registered = "")
     {
          try
          {
@@ -163,8 +156,6 @@ class UserDAO {
             $lastName = strval($lastName);
             $phone = strval($phone);
             $email = strval($email);
-            if ($wantsSMS !== "")   $wantsSMS = boolval($wantsSMS);
-            if ($wantsEmail !== "") $wantsEmail = boolval($wantsEmail);
             $setStr = "";
 
             if ($password != "")    $setStr .= "`password` = :password";
@@ -174,9 +165,6 @@ class UserDAO {
             if ($phone != "")       $setStr .= ($setStr == "") ? "`phone` = :phone" : ", `phone` = :phone";
             if ($email != "")       $setStr .= ($setStr == "") ? "`email` = :email" : ", `email` = :email";
             if ($registered != "")  $setStr .= ($setStr == "") ? "`registered` = :registered" : ", `registered` = :registered";
-            if ($lastLogin != "")   $setStr .= ($setStr == "") ? "`lastLogin` = :lastLogin" : ", `lastLogin` = :lastLogin";
-            if ($wantsSMS !== "")   $setStr .= ($setStr == "") ? "`wantsSMS` = :wantsSMS" : ", `wantsSMS` = :wantsSMS";
-            if ($wantsEmail !== "") $setStr .= ($setStr == "") ? "`wantsEmail` = :wantsEmail" : ", `wantsEmail` = :wantsEmail";
 
             $stmt = $this->dbh->prepare("UPDATE User SET {$setStr} WHERE id = :id;");
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
@@ -187,9 +175,6 @@ class UserDAO {
             if ($phone != "")      $stmt->bindParam(":phone", $phone, PDO::PARAM_STR);
             if ($email != "")      $stmt->bindParam(":email", $email, PDO::PARAM_STR);
             if ($registered != "") $stmt->bindParam(":registered", $registered, PDO::PARAM_STR);
-            if ($lastLogin != "")  $stmt->bindParam(":lastLogin", $lastLogin, PDO::PARAM_STR);
-            if ($wantsSMS !== "")   $stmt->bindParam(":wantsSMS", $wantsSMS, PDO::PARAM_INT);
-            if ($wantsEmail !== "") $stmt->bindParam(":wantsEmail", $wantsEmail, PDO::PARAM_INT);
             $stmt->execute();
 
             return $this->findById($id);
