@@ -1,4 +1,6 @@
 // @flow
+import { ATTEMPT_LOGOUT } from './auth';
+
 const NAMESPACE = 'AJAX';
 const UPDATE_REQUEST = `${NAMESPACE}/UPDATE_REQUEST`;
 
@@ -30,6 +32,8 @@ export default (state: State = DEFAULT_STATE, action) => {
           lastUpdated: new Date()
         }
       };
+    case ATTEMPT_LOGOUT:
+      return DEFAULT_STATE;
     default:
       return state;
   }

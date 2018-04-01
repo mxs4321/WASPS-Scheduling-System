@@ -2,6 +2,7 @@ import { indexBy, prop, map, reduce } from 'ramda';
 import { getJSON, postJSON, putJSON } from '../util/fetch';
 import { updateRequest } from './ajax';
 import { addUsers } from './users';
+import { ATTEMPT_LOGOUT } from './auth';
 import type { Ride } from './types/ride';
 
 type State = {
@@ -103,6 +104,8 @@ export default (state: State = DEFAULT_STATE, action) => {
           ...indexBy(prop('id'), action.payload)
         }
       };
+    case ATTEMPT_LOGOUT:
+      return DEFAULT_STATE;
     default:
       return state;
   }

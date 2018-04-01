@@ -1,6 +1,6 @@
 # Server
 
-The server side requires PHP and a MySQL Database to be setup before it can be run. Update the information in `/server/env.php` to reflect your database's login. To install PHP dependencies you must have [Composer](https://getcomposer.org/) on your computer.
+The server side requires PHP and a MySQL Database to be setup before it can be run. Update the information in `/server/.env` to reflect your database's login. To install PHP dependencies you must have [Composer](https://getcomposer.org/) on your computer.
 
 ## Running the Server
 

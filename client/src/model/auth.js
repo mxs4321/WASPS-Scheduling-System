@@ -9,7 +9,7 @@ type State = { user: ?User };
 const NAMESPACE = 'AUTH';
 
 const LOGIN_SUCCESSFUL = `${NAMESPACE}/LOGIN_SUCCESSFUL`;
-const ATTEMPT_LOGOUT = `${NAMESPACE}/ATTEMPT_LOGOUT`;
+export const ATTEMPT_LOGOUT = `${NAMESPACE}/ATTEMPT_LOGOUT`;
 
 export const login = ({ email, password, referrer }) => dispatch => {
   dispatch(updateRequest('POST /login.php', 'Pending'));
