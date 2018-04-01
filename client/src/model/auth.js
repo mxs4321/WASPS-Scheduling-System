@@ -12,25 +12,27 @@ const LOGIN_SUCCESSFUL = `${NAMESPACE}/LOGIN_SUCCESSFUL`;
 export const ATTEMPT_LOGOUT = `${NAMESPACE}/ATTEMPT_LOGOUT`;
 
 export const login = ({ email, password, referrer }) => dispatch => {
-  dispatch(updateRequest('POST /login.php', 'Pending'));
-  return postJSON('/login.php', { email, password })
+  dispatch(updateRequest('POST /api/login.php', 'Pending'));
+  return postJSON('/api/login.php', { email, password })
     .then(user => {
-      dispatch(updateRequest('POST /login.php', 'Success'));
+      dispatch(updateRequest('POST /api/login.php', 'Success'));
       dispatch({
         type: LOGIN_SUCCESSFUL,
         payload: user
       });
       dispatch(push(referrer));
     })
-    .catch(err => dispatch(updateRequest('POST /login.php', 'Error', err)));
+    .catch(err => dispatch(updateRequest('POST /api/login.php', 'Error', err)));
 };
 
 export const logout = () => dispatch => {
   dispatch({ type: ATTEMPT_LOGOUT });
-  dispatch(updateRequest('DELETE /logout.php', 'Pending'));
-  return deleteJSON('/logout.php')
-    .then(() => dispatch(updateRequest('DELETE /logout.php', 'Success')))
-    .catch(err => dispatch(updateRequest('DELETE /logout.php', 'Error', err)));
+  dispatch(updateRequest('DELETE /api/logout.php', 'Pending'));
+  return deleteJSON('/api/logout.php')
+    .then(() => dispatch(updateRequest('DELETE /api/logout.php', 'Success')))
+    .catch(err =>
+      dispatch(updateRequest('DELETE /api/logout.php', 'Error', err))
+    );
 };
 
 export const updateProfile = (id, user) => dispatch => {

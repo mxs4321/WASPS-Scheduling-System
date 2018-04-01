@@ -4,14 +4,13 @@
 
 ![React App Screenshot](docs/client-screenshot.png)
 
-
 ## [Database](database/README.md)
 
-The server-side a MySQL Database to be set up before it can be run. There is a TestDBFixture called `databases/fullDump.sql`. Update the information in `/server/.env` to reflect your database's login. 
+The server-side requires a MySQL Database to be set up before it can be run. There is a TestDBFixture called `databases/fullDump.sql`. Update the information in `/server/.env` to reflect your database's login.
 
 ## [Server](server/README.md)
 
-The server-side requires PHP and [Composer](https://getcomposer.org/) to be set up before it can be run. 
+The server-side requires PHP and [Composer](https://getcomposer.org/) to be set up before it can be run.
 
 ### Running the Server
 
