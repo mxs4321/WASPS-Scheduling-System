@@ -83,10 +83,6 @@ class AvailabilityDAO
                 $setStr .= ($setStr == "") ? "`days` = :days" : ", `days` = :days";
             }
 
-            if ($driverID != "") {
-                $setStr .= ($setStr == "") ? "`driverID` = :driverID" : ", `driverID` = :driverID";
-            }
-
             $stmt = $this->dbh->prepare("UPDATE Availability SET {$setStr} WHERE id = :id;");
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
             if ($startTime != "") {
@@ -101,10 +97,6 @@ class AvailabilityDAO
                 $stmt->bindParam(":days", $days);
             }
 
-            if ($driverID != "") {
-                $stmt->bindParam(":driverID", $driverID, PDO::PARAM_INT);
-            }
-
             $stmt->execute();
             return $this->getAvailability($id);
 
@@ -114,27 +106,14 @@ class AvailabilityDAO
         }
     }
 
-    public function deleteAvailability($id, $driverID = "")
+    public function deleteAvailability($id)
     {
         try
         {
-            $id = intval($id);
             $query = "DELETE FROM Availability WHERE id = :id";
-
-            if($driverID != "")
-            {
-               $driverID = intval($driverID);
-               $query .= " AND driverID = :driverID";
-            }
-
             $stmt = $this->dbh->prepare($query);
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
-            if ($driverID != "")
-            {
-               $stmt->bindParam(":driverID", $driverID, PDO::PARAM_INT);
-            }
             $stmt->execute();
-
             return $stmt->rowCount() . " row(s) deleted";
         } catch (PDOException $e) {
             echo $e->getMessage();

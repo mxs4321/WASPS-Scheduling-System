@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-class VolunteerRequestTest extends TestCase
+class AdminVolunteerRequestTest extends TestCase
 {
     private $http;
     private $cookieJar;
@@ -42,17 +42,12 @@ class VolunteerRequestTest extends TestCase
         ], $data[0]);
     }
 
-    public function testCreateVolunteerRequest() {
-        $response = $this->http->request('GET', '/api/volunteerRequests.php', ['cookies' => $this->cookieJar]);
-        $this->assertEquals(200, $response->getStatusCode());
-        $contentType = $response->getHeaders()["Content-Type"][0];
-        $this->assertEquals("application/json", $contentType);
-        $data = json_decode($response->getBody(true), true);
-        $this->assertEquals([
-            "id" => 1,
-            "timestamp" => "2018-02-01 08:01:00",
-            "userID" => 6
-        ], $data[0]);
-    }
-
+    // public function testCreateVolunteerRequestForUser() {
+    //     $response = $this->http->request('POST', '/api/volunteerRequests.php?id=4', ['cookies' => $this->cookieJar]);
+    //     $this->assertEquals(200, $response->getStatusCode());
+    //     $contentType = $response->getHeaders()["Content-Type"][0];
+    //     $this->assertEquals("application/json", $contentType);
+    //     $data = json_decode($response->getBody(true), true);
+    //     $this->assertEquals($data['userID'], 4);
+    // }
 }

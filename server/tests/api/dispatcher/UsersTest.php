@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-class AdminUsersTest extends TestCase
+class DispatcherUsersTest extends TestCase
 {
     private $http;
     private $cookieJar;
@@ -14,8 +14,8 @@ class AdminUsersTest extends TestCase
         $this->http->request('POST', '/tests/setupTestDB.php');
         $response = $this->http->request('POST', '/api/login.php', [
             'json' => [
-                'email' => 'admin@websterwasps.com',
-                'password' => 'admin',
+                'email' => 'dispatcher@websterwasps.com',
+                'password' => 'dispatcher',
             ],
             'cookies' => $this->cookieJar,
         ]);
@@ -41,7 +41,7 @@ class AdminUsersTest extends TestCase
             'role' => 'admin',
             'phone' => '5852167829',
             'email' => 'admin@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00',
+            'registered' => '2018-01-01 00:00:00'
         ], $data);
     }
 
@@ -59,7 +59,7 @@ class AdminUsersTest extends TestCase
             'role' => 'admin',
             'phone' => '5852167829',
             'email' => 'admin@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00',
+            'registered' => '2018-01-01 00:00:00'
         ]], $data);
     }
 
@@ -79,7 +79,7 @@ class AdminUsersTest extends TestCase
             'role' => 'admin',
             'phone' => '5852167829',
             'email' => 'admin@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00',
+            'registered' => '2018-01-01 00:00:00'
         ], $data[0]);
     }
 
@@ -93,79 +93,6 @@ class AdminUsersTest extends TestCase
     //     $data = json_decode($response->getBody(true), true);
     //     $this->assertEquals(11, count($data));
     // }
-
-    // TODO: Admins should be able to create admins
-    //  public function testCreateAdmin() {
-    //      $response = $this->http->request('POST', '/api/users.php', [
-    //          'json' => [
-    //              'firstName' => 'Test',
-    //              'lastName' => 'Admin',
-    //              'role' => 'admin',
-    //              'password' => 'password',
-    //              'phone' => '2036259401',
-    //              'email' => 'testAdmin@websterwasps.com'
-    //          ],
-    //          'cookies' => $this->cookieJar
-    //      ]);
-    //      $this->assertEquals(201, $response->getStatusCode());
-    //      $contentType = $response->getHeaders()["Content-Type"][0];
-    //      $this->assertEquals("application/json", $contentType);
-    //      $passenger = json_decode($response->getBody(true), true);
-    //      $this->assertEquals('Test', $passenger->firstName);
-    //      $this->assertEquals('Admin', $passenger->lastName);
-    //      $this->assertEquals('admin', $passenger->role);
-    //      $this->assertEquals('admin', $passenger->role);
-    //      $this->assertEquals('2036259401', $passenger->phone);
-    //      $this->assertEquals('testAdmin@websterwasps.com', $passenger->email);
-    //  }
-
-    // TODO: Admins should be able to create dispatchers
-    //  public function testCreateDispatcher() {
-    //      $response = $this->http->request('POST', '/api/users.php', [
-    //          'json' => [
-    //              'firstName' => 'Test',
-    //              'lastName' => 'Dispatcher',
-    //              'password' => 'password',
-    //              'role' => 'dispatcher',
-    //              'phone' => '2034229403',
-    //              'email' => 'testDispatcher@websterwasps.com'
-    //          ],
-    //          'cookies' => $this->cookieJar
-    //      ]);
-    //      $this->assertEquals(201, $response->getStatusCode());
-    //      $contentType = $response->getHeaders()["Content-Type"][0];
-    //      $this->assertEquals("application/json", $contentType);
-    //      $passenger = json_decode($response->getBody(true), true);
-    //      $this->assertEquals('Test', $passenger->firstName);
-    //      $this->assertEquals('Dispatcher', $passenger->lastName);
-    //      $this->assertEquals('dispatcher', $passenger->role);
-    //      $this->assertEquals('2034229403', $passenger->phone);
-    //      $this->assertEquals('testDispatcher@websterwasps.com', $passenger->email);
-    //  }
-
-    // TODO: Admins should be able to create Drivers
-    // public function testCreateDriver() {
-    //      $response = $this->http->request('POST', '/api/users.php', [
-    //          'json' => [
-    //              'firstName' => 'Test',
-    //              'lastName' => 'Driver',
-    //              'password' => 'password',
-    //              'role' => 'driver',
-    //              'phone' => '2034259401',
-    //              'email' => 'testDriver@websterwasps.com'
-    //          ],
-    //          'cookies' => $this->cookieJar
-    //      ]);
-    //      $this->assertEquals(201, $response->getStatusCode());
-    //      $contentType = $response->getHeaders()["Content-Type"][0];
-    //      $this->assertEquals("application/json", $contentType);
-    //      $passenger = json_decode($response->getBody(true), true);
-    //      $this->assertEquals('Test', $passenger->firstName);
-    //      $this->assertEquals('Driver', $passenger->lastName);
-    //      $this->assertEquals('driver', $passenger->role);
-    //      $this->assertEquals('2034259401', $passenger->phone);
-    //      $this->assertEquals('testDriver@websterwasps.com', $passenger->email);
-    //  }
 
     public function testCreatePassenger()
     {
@@ -260,27 +187,28 @@ class AdminUsersTest extends TestCase
         $this->assertEquals(400, $response->getStatusCode());
     }
 
-    public function testUpdateUser()
-    {
-        $response = $this->http->request('PUT', '/api/users.php?id=1', [
-            'json' => [
-                'firstName' => 'Main',
-            ],
-            'cookies' => $this->cookieJar,
-        ]);
-        $this->assertEquals(200, $response->getStatusCode());
-        $contentType = $response->getHeaders()["Content-Type"][0];
-        $this->assertEquals("application/json", $contentType);
-        $passenger = json_decode($response->getBody(true), true);
-        $this->assertEquals(1, $passenger['id']);
-        $this->assertEquals('Main', $passenger['firstName']);
-    }
+    // TODO: Dispatchers shoudl be able to update their own profile
+    // public function testUpdateOwnProfile()
+    // {
+    //     $response = $this->http->request('PUT', '/api/users.php?id=1', [
+    //         'json' => [
+    //             'firstName' => 'Main',
+    //         ],
+    //         'cookies' => $this->cookieJar,
+    //     ]);
+    //     $this->assertEquals(200, $response->getStatusCode());
+    //     $contentType = $response->getHeaders()["Content-Type"][0];
+    //     $this->assertEquals("application/json", $contentType);
+    //     $passenger = json_decode($response->getBody(true), true);
+    //     $this->assertEquals(1, $passenger['id']);
+    //     $this->assertEquals('Main', $passenger['firstName']);
+    // }
 
-    public function testDeleteUser()
+    public function testCannotDeleteUser()
     {
         $response = $this->http->request('DELETE', '/api/users.php?id=7', ['cookies' => $this->cookieJar]);
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(403, $response->getStatusCode());
     }
+
     // can update own Password
-    // can update others Password
 }

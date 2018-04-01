@@ -218,7 +218,7 @@ class UserDAO {
             $stmt->setFetchMode(PDO::FETCH_CLASS, "User");
             $user = $stmt->fetch();
 
-            if (password_verify($password, $user->password)) {
+            if ($user && password_verify($password, $user->password)) {
                 return $user->getUserInfo();
             } else {
                 return null;

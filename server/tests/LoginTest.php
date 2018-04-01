@@ -14,7 +14,7 @@ class LoginTest extends TestCase
 
     public function tearDown()
     {
-        $this->http->request('DELETE', 'logout.php');
+        $this->http->request('DELETE', '/api/logout.php');
         $this->http = null;
     }
 
@@ -23,8 +23,8 @@ class LoginTest extends TestCase
         $response = $this->http->request('POST', '/api/login.php', [
             'json' => [
                 'email' => 'admin@websterwasps.com',
-                'password' => 'admin'
-            ]
+                'password' => 'admin',
+            ],
         ]);
         $this->assertEquals(201, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
@@ -37,7 +37,7 @@ class LoginTest extends TestCase
             'role' => 'admin',
             'phone' => '5852167829',
             'email' => 'admin@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00'
+            'registered' => '2018-01-01 00:00:00',
         ], $data);
     }
 
@@ -46,8 +46,8 @@ class LoginTest extends TestCase
         $response = $this->http->request('POST', '/api/login.php', [
             'json' => [
                 'email' => 'dispatcher@websterwasps.com',
-                'password' => 'dispatcher'
-            ]
+                'password' => 'dispatcher',
+            ],
         ]);
         $this->assertEquals(201, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
@@ -60,7 +60,7 @@ class LoginTest extends TestCase
             'role' => 'dispatcher',
             'phone' => '5852167819',
             'email' => 'dispatcher@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00'
+            'registered' => '2018-01-01 00:00:00',
         ], $data);
     }
 
@@ -69,8 +69,8 @@ class LoginTest extends TestCase
         $response = $this->http->request('POST', '/api/login.php', [
             'json' => [
                 'email' => 'driver@websterwasps.com',
-                'password' => 'driver'
-            ]
+                'password' => 'driver',
+            ],
         ]);
         $this->assertEquals(201, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
@@ -83,7 +83,7 @@ class LoginTest extends TestCase
             'role' => 'driver',
             'phone' => '2035254835',
             'email' => 'driver@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00'
+            'registered' => '2018-01-01 00:00:00',
         ], $data);
     }
 
@@ -92,8 +92,8 @@ class LoginTest extends TestCase
         $response = $this->http->request('POST', '/api/login.php', [
             'json' => [
                 'email' => 'passenger@websterwasps.com',
-                'password' => 'passenger'
-            ]
+                'password' => 'passenger',
+            ],
         ]);
         $this->assertEquals(201, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
@@ -106,7 +106,7 @@ class LoginTest extends TestCase
             'role' => 'passenger',
             'phone' => '2435254235',
             'email' => 'passenger@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00'
+            'registered' => '2018-01-01 00:00:00',
         ], $data);
     }
 
@@ -115,8 +115,8 @@ class LoginTest extends TestCase
         $response = $this->http->request('POST', '/api/login.php', [
             'json' => [
                 'phone' => '2435254235',
-                'password' => 'passenger'
-            ]
+                'password' => 'passenger',
+            ],
         ]);
         $this->assertEquals(201, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
@@ -129,22 +129,24 @@ class LoginTest extends TestCase
             'role' => 'passenger',
             'phone' => '2435254235',
             'email' => 'passenger@websterwasps.com',
-            'registered' => '2018-01-01 00:00:00'
+            'registered' => '2018-01-01 00:00:00',
         ], $data);
     }
 
     public function testFailWithInvalidLogin()
     {
-        $response = $this->http->post('/api/login.php', null, json_encode([
-            'email' => 'na',
-            'password' => 'na'
-        ]));
+        $response = $this->http->request('POST', '/api/login.php', [
+            'json' => [
+                'email' => 'na',
+                'password' => 'na',
+            ],
+        ]);
         $this->assertEquals(401, $response->getStatusCode());
     }
 
     public function testFailGetRequest()
     {
-        $response = $this->http->get('/api/login.php');
-        $this->assertEquals(401, $response->getStatusCode());
+        $response = $this->http->request('GET', '/api/login.php');
+        $this->assertEquals(405, $response->getStatusCode());
     }
 }

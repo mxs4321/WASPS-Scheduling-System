@@ -4,6 +4,11 @@ header('Content-Type: application/json');
 require_once "../db.class.php";
 $db = new DB();
 
+if ($_SERVER['REQUEST_METHOD'] !== "POST") {
+    http_response_code(405);
+    die();
+}
+
 if (isset($_SESSION['user'])) {
     echo json_encode($_SESSION['user']);
     die();
