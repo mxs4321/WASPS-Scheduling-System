@@ -2,10 +2,9 @@
 session_start(); // Starting Session
 header('Content-Type: application/json');
 
-include '../env.php';
 include '../sanitizationValidation.php';
 require_once "../db.class.php";
-$db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
+$db = new DB(); // From dbinfo.php
 
 switch ($_SERVER['REQUEST_METHOD']) {
    case "GET":

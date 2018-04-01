@@ -2,9 +2,8 @@
 session_start(); // Starting Session
 header('Content-Type: application/json');
 
-include './env.php';
 require_once "./db.class.php";
-$db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
+$db = new DB();
 
 if (isset($_SESSION['user'])) {
     echo json_encode($_SESSION['user']);

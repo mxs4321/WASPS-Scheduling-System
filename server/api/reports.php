@@ -1,9 +1,7 @@
 <?php
 session_start(); // Starting Session
-
-include '../env.php';
 require_once "../db.class.php";
-$db = new DB($host, $port, $name, $user, $pass); // From dbinfo.php
+$db = new DB();
 $delimiter = ",";
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET')

@@ -1,6 +1,14 @@
 <?php
+include "vendor/autoload.php";
 
-include './env.php';
+$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv->load();
+
+$host = $_ENV["MYSQL_HOST"];
+$port = $_ENV["MYSQL_PORT"];
+$name = $_ENV["MYSQL_DATABASE_NAME"];
+$user = $_ENV["MYSQL_USER"];
+$pass = $_ENV["MYSQL_PASSWORD"];
 
 $db = new PDO("mysql:host=$host;dbname=$name", $user, $pass);
 
