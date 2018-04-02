@@ -13,7 +13,7 @@ class AdminAvailabilitiesTest extends TestCase
         $this->http = new GuzzleHttp\Client(['base_uri' => 'localhost:8000', 'http_errors' => false]);
         $this->http->request('POST', '/tests/setupTestDB.php');
 
-        $response = $this->http->request('POST', '/api/login.php', [
+        $response = $this->http->request('POST', '/api/auth.php', [
             'json' => [
                 'email' => 'admin@websterwasps.com',
                 'password' => 'admin',
@@ -24,7 +24,7 @@ class AdminAvailabilitiesTest extends TestCase
 
     public function tearDown()
     {
-        $this->http->request('DELETE', '/api/logout.php', ['cookies' => $this->cookieJar]);
+        $this->http->request('DELETE', '/api/auth.php', ['cookies' => $this->cookieJar]);
         $this->http = null;
     }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login } from '../model/auth';
+import { login, refreshUserInfo } from '../model/auth';
 import styled from 'styled-components';
 
 const Card = styled.div`
@@ -24,6 +24,13 @@ const Button = styled.button`
 `;
 
 export class SignIn extends Component {
+  componentDidMount() {
+    const { location } = this.props;
+    const useReferrer = location.state && location.state.referrer !== '/login';
+    const referrer = useReferrer ? location.state.referrer : '/';
+    this.props.refreshUserInfo({ referrer });
+  }
+
   render() {
     const { user, login, location } = this.props;
     const useReferrer = location.state && location.state.referrer !== '/login';
@@ -94,6 +101,9 @@ export default withRouter(
     dispatch => ({
       login: ({ email, password, referrer }) => {
         dispatch(login({ email, password, referrer }));
+      },
+      refreshUserInfo: ({ referrer }) => {
+        dispatch(refreshUserInfo({ referrer }));
       }
     })
   )(SignIn)

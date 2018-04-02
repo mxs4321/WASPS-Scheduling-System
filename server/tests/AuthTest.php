@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-class LoginTest extends TestCase
+class AuthTest extends TestCase
 {
     private $http;
 
@@ -14,13 +14,12 @@ class LoginTest extends TestCase
 
     public function tearDown()
     {
-        $this->http->request('DELETE', '/api/logout.php');
         $this->http = null;
     }
 
     public function testLoginToAdmin()
     {
-        $response = $this->http->request('POST', '/api/login.php', [
+        $response = $this->http->request('POST', '/api/auth.php', [
             'json' => [
                 'email' => 'admin@websterwasps.com',
                 'password' => 'admin',
@@ -43,7 +42,7 @@ class LoginTest extends TestCase
 
     public function testLoginToDispatcher()
     {
-        $response = $this->http->request('POST', '/api/login.php', [
+        $response = $this->http->request('POST', '/api/auth.php', [
             'json' => [
                 'email' => 'dispatcher@websterwasps.com',
                 'password' => 'dispatcher',
@@ -66,7 +65,7 @@ class LoginTest extends TestCase
 
     public function testLoginToDriver()
     {
-        $response = $this->http->request('POST', '/api/login.php', [
+        $response = $this->http->request('POST', '/api/auth.php', [
             'json' => [
                 'email' => 'driver@websterwasps.com',
                 'password' => 'driver',
@@ -89,7 +88,7 @@ class LoginTest extends TestCase
 
     public function testLoginToPassenger()
     {
-        $response = $this->http->request('POST', '/api/login.php', [
+        $response = $this->http->request('POST', '/api/auth.php', [
             'json' => [
                 'email' => 'passenger@websterwasps.com',
                 'password' => 'passenger',
@@ -112,7 +111,7 @@ class LoginTest extends TestCase
 
     public function testLoginWithPhoneNumber()
     {
-        $response = $this->http->request('POST', '/api/login.php', [
+        $response = $this->http->request('POST', '/api/auth.php', [
             'json' => [
                 'phone' => '2435254235',
                 'password' => 'passenger',
@@ -135,7 +134,7 @@ class LoginTest extends TestCase
 
     public function testFailWithInvalidLogin()
     {
-        $response = $this->http->request('POST', '/api/login.php', [
+        $response = $this->http->request('POST', '/api/auth.php', [
             'json' => [
                 'email' => 'na',
                 'password' => 'na',
@@ -144,9 +143,23 @@ class LoginTest extends TestCase
         $this->assertEquals(401, $response->getStatusCode());
     }
 
-    public function testFailGetRequest()
+    public function testDeleteShouldFailWithoutCookie()
     {
-        $response = $this->http->request('GET', '/api/login.php');
-        $this->assertEquals(405, $response->getStatusCode());
+        $response = $this->http->request('DELETE', '/api/auth.php');
+        $this->assertEquals(400, $response->getStatusCode());
+    }
+
+    public function testDeleteShouldLogout()
+    {
+        $cookieJar = new \GuzzleHttp\Cookie\CookieJar();
+        $response = $this->http->request('POST', '/api/auth.php', [
+            'json' => [
+                'email' => 'passenger@websterwasps.com',
+                'password' => 'passenger',
+            ],
+            'cookies' => $cookieJar,
+        ]);
+        $response = $this->http->request('DELETE', '/api/auth.php', ['cookies' => $cookieJar]);
+        $this->assertEquals(202, $response->getStatusCode());
     }
 }

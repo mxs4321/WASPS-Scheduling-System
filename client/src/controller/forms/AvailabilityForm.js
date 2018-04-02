@@ -104,10 +104,9 @@ export class AvaliabilityForm extends Component {
         <Button
           onClick={() =>
             createDriverAvailability({
-              driverID,
               days: 'Mon,Tue,Wed,Thu,Fri',
               start: '09:00:00',
-              end: '05:00:00'
+              end: '17:00:00'
             })
           }
         >
