@@ -125,6 +125,7 @@ function acceptOrDeclineRide()
 function postRide($passengerID)
 {
     global $db;
+    global $user;
 
     $bodyData = json_decode(file_get_contents('php://input'), true);
 
@@ -138,7 +139,18 @@ function postRide($passengerID)
     }
 
     $driverID = null;
-    if (isset($bodyData['driverID'])) {
+    $status = "Unverified";
+
+    if ($user['role'] != "passenger")
+    {
+       if (isset($bodyData['driverID']))
+       {
+          $driverID = $bodyData['driverID'];
+          $status = "Pending";
+       }
+    }
+
+    if ($driverID != null) {
         $driverID = sanitizeAndValidate($bodyData['driverID'], FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
     }
     $passengerID = sanitizeAndValidate($passengerID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
@@ -150,7 +162,6 @@ function postRide($passengerID)
     $pickupCity = sanitizeAndValidate($bodyData['pickupCity'], FILTER_SANITIZE_STRING);
     $apptStreetAddress = sanitizeAndValidate($bodyData['apptStreetAddress'], FILTER_SANITIZE_STRING);
     $apptCity = sanitizeAndValidate($bodyData['apptCity'], FILTER_SANITIZE_STRING);
-    $status = isset($bodyData['driverID']) ? "Pending" : "Unverified";
 
     // Maybe Useful
     // http://php.net/manual/en/datetime.diff.php
@@ -177,8 +188,16 @@ function postRide($passengerID)
 function putRide($passengerID = "")
 {
     global $db;
+    global $user;
 
-    $bodyData = json_decode(file_get_contents('php://input'), true);
+   $bodyData = json_decode(file_get_contents('php://input'), true);
+
+    if ($user['role'] == "passenger" && (isset($bodyData['driverID']) || $bodyData['status'] != "Canceled"))
+    {
+       echo json_encode(["err" => "Could not update ride"]);
+       http_response_code(400);
+       die();
+    }
 
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
