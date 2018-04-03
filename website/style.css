@@ -1,11 +1,35 @@
 
-body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
+body, html {
+    position: relative;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
 
-#links ul{list-style-type: none; display: inline; overflow: hidden; position: relative;}
-#links li{float: right; padding-right: 20px; padding-top: 20px;}
-#links a{ color: black; text-decoration: none; text-transform: uppercase; font-weight: bold;font-family: Arial, sans-serif;}
+#links ul {
+    list-style-type: none;
+    display: inline;
+    overflow: hidden;
+    position: relative;
+}
 
-#links .red a{color: red;}
+#links li {
+    float: right;
+    padding-right: 20px;
+    padding-top: 20px;
+}
+
+#links a {
+    color: black;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+}
+
+#links .red a {
+    color: red;
+}
 
 .nav {
     overflow: hidden;
@@ -40,480 +64,486 @@ body, html { position: relative;overflow-x: hidden; margin:0; padding:0;}
     display: none;
 }
 
-.nav a:first-child{
-    padding-left: 100px;}
-
-
-
-    #logo {height: 100px; top: 10px; position: relative;z-index: 10000;
-        vertical-align: middle; left: 10px;}
-
-h2{
-    color:black;
+.nav a:first-child {
+    padding-left: 100px;
 }
 
+#logo {
+    height: 100px;
+    top: 10px;
+    position: relative;
+    z-index: 10000;
+    vertical-align: middle;
+    left: 10px;
+}
 
-    .headerImage {
-        width: 100%;
-        position: relative;
-        float: left;
-        z-index: -1;
+h2 {
+    color: black;
+}
 
-    }
+.headerImage {
+    width: 100%;
+    position: relative;
+    float: left;
+    z-index: -1;
 
-    .headerDiv {
-        font-family: Arial, sans-serif;
-        float: right;
-        z-index: 2;
-        margin-top: -35%;
-        margin-right: 10%;
-    }
+}
 
-    #phone {
-        font-weight:bold;
-        color: #4396E3;
-        font-size: 2em;
-        font-family: Arial, sans-serif;
-        position: relative;
-        top: -30px;
-    }
+.headerDiv {
+    font-family: Arial, sans-serif;
+    float: right;
+    z-index: 2;
+    margin-top: -35%;
+    margin-right: 10%;
+}
 
-    .headerButtons{
-        width: 100%;
-        height: 45px;
-        border: none;
-        font-weight: bold;
-        font-size: 17px;
-        display: block;
-        border-radius: 10px;
-        color: white;
-        margin-top: -30px;
-        margin-bottom: 50px;
-    }
+#phone {
+    font-weight: bold;
+    color: #4396E3;
+    font-size: 2em;
+    font-family: Arial, sans-serif;
+    position: relative;
+    top: -30px;
+}
 
-    #donateButton {
-        background-color: rgba(235, 87, 87, 0.8);
-        text-decoration: none;
-    }
+.headerButtons {
+    width: 100%;
+    height: 45px;
+    border: none;
+    font-weight: bold;
+    font-size: 17px;
+    display: block;
+    border-radius: 10px;
+    color: white;
+    margin-top: -30px;
+    margin-bottom: 50px;
+}
 
-    #reserveButton {
-        background-color: #4396E3;
-        text-decoration: none;
-    }
+#donateButton {
+    background-color: rgba(235, 87, 87, 0.8);
+    text-decoration: none;
+}
 
-    .headerButtons a{
-        text-decoration: none;
-        color: white;
-    }
+#reserveButton {
+    background-color: #4396E3;
+    text-decoration: none;
+}
 
-    #bodyImage {
-        width: 100%;
-        position: relative;
-        top: -380px;
-        height: 590px;
-        border:1px solid green;
-    }
+.headerButtons a {
+    text-decoration: none;
+    color: white;
+}
 
-    #body {
-        background: url(images/body.jpg) repeat-x;
-        z-index: -1;
-        clear: both;
-        padding-bottom: 40px;
-    }
-    #TEST{background: linear-gradient(0deg, rgba(29, 111, 187, 0.63) , rgba(255, 255, 255, 0.08) );
-        width: 100%;
-        height: 900px;
-        z-index: 100; }
+#bodyImage {
+    width: 100%;
+    position: relative;
+    top: -380px;
+    height: 590px;
+    border: 1px solid green;
+}
 
-    #body #bodyHeading {
-        color: #6B6868;
-        font-size: 50px;
-        font-family: Arial, sans-serif;
-        padding-left: 20%;
-        padding-top: 30px;
-    }
+#body {
+    background: url(images/body.jpg) repeat-x;
+    z-index: -1;
+    clear: both;
+    padding-bottom: 40px;
+}
 
-    #body .text{
-        color: #333333;
-        font-size: 15px;
-        font-family: Arial, sans-serif;
-        padding-left: 20%;
-        padding-right: 20%;
-        text-align: justify;
-    }
+#TEST {
+    background: linear-gradient(0deg, rgba(29, 111, 187, 0.63), rgba(255, 255, 255, 0.08));
+    width: 100%;
+    height: 900px;
+    z-index: 100;
+}
 
-    #schedule {
-        background-image: url("images/schedule.v1.png");
-        height: 500px;
-        margin: 0;
-        left: 0;
-        right: 0;
-        border-top: 7px solid #054C8D;
-    }
+#body #bodyHeading {
+    color: #6B6868;
+    font-size: 50px;
+    font-family: Arial, sans-serif;
+    padding-left: 20%;
+    padding-top: 30px;
+}
 
-    #schedule #scheduleHeading{
-        color: white;
-        font-size: 50px;
-        text-transform: uppercase;
-        font-family: Arial, sans-serif;
-        padding-left: 20%;
-    }
+#body .text {
+    color: #333333;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+    padding-left: 20%;
+    padding-right: 20%;
+    text-align: justify;
+}
 
-    #schedule img{
-        width: 20%;
-        padding-left: 10%;
-        float: left;
-    }
+#schedule {
+    background-image: url("images/schedule.v1.png");
+    height: 500px;
+    margin: 0;
+    left: 0;
+    right: 0;
+    border-top: 7px solid #054C8D;
+}
 
-    #schedule #scheduleText{
-        color: white;
-        font-size: 17px;
-        width: 45%;
-        font-family: Arial, sans-serif;
-        padding-right: 15%;
-        float: right;
-        text-align: justify;
-    }
+#schedule #scheduleHeading {
+    color: white;
+    font-size: 50px;
+    text-transform: uppercase;
+    font-family: Arial, sans-serif;
+    padding-left: 20%;
+}
 
-    #joinus {
-        background-color: #fff;
-        height: 95%;
-        border-top: 7px solid rgba(29, 111, 187, 0.63);
-    }
+#schedule img {
+    width: 20%;
+    padding-left: 10%;
+    float: left;
+}
 
-    #joinus #joinusHeading{
-        color: #4486C3;
-        font-size: 50px;
-        text-transform: uppercase;
-        font-family: Arial, sans-serif;
-        padding-left: 20%;
-    }
+#schedule #scheduleText {
+    color: white;
+    font-size: 17px;
+    width: 45%;
+    font-family: Arial, sans-serif;
+    padding-right: 15%;
+    float: right;
+    text-align: justify;
+}
 
-    #joinus #joinusText{
-        font-weight: bold;
-        font-size: 17px;
-        font-family: Arial, sans-serif;
-        padding-left: 20%;
-        padding-right: 20%;
-        text-align: justify;
+#joinus {
+    background-color: #fff;
+    height: 95%;
+    border-top: 7px solid rgba(29, 111, 187, 0.63);
+}
 
-    }
+#joinus #joinusHeading {
+    color: #4486C3;
+    font-size: 50px;
+    text-transform: uppercase;
+    font-family: Arial, sans-serif;
+    padding-left: 20%;
+}
 
-    #joinus .joinusButtons{
-        background-color: #4486C3;
-        text-transform: uppercase;
-        width: 180px;
-        height: 60px;
-        border: none;
-        font-weight: bold;
-        font-size: 20px;
-        display: block;
-        border-radius: 10px;
-        margin-right: 20px;
+#joinus #joinusText {
+    font-weight: bold;
+    font-size: 17px;
+    font-family: Arial, sans-serif;
+    padding-left: 20%;
+    padding-right: 20%;
+    text-align: justify;
 
-    }
+}
 
-    .joinusButtons a{
-        text-decoration: none;
-        color: white;
-    }
+#joinus .joinusButtons {
+    background-color: #4486C3;
+    text-transform: uppercase;
+    width: 180px;
+    height: 60px;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    display: block;
+    border-radius: 10px;
+    margin-right: 20px;
 
-    #joinusDiv{
-        border: none;
-        font-weight: bold;
-        font-size: 17px;
-        display: inline-flex;
-        border-radius: 10px;
-        color: white;
-        margin-left: 30%;
-    }
+}
 
-    #joinusImage {
-        width: 95%;
-        z-index: 3;
-    }
+.joinusButtons a {
+    text-decoration: none;
+    color: white;
+}
 
-    #services #servicesHeading{
-        color: #4486C3;
-        font-size: 50px;
-        text-transform: uppercase;
-        font-family: Arial, sans-serif;
-        padding-left: 20%;
-    }
+#joinusDiv {
+    border: none;
+    font-weight: bold;
+    font-size: 17px;
+    display: inline-flex;
+    border-radius: 10px;
+    color: white;
+    margin-left: 30%;
+}
 
-    #services {
-        background-color: #F4F2F2;
-        height: 650px;
-        margin: 0;
-        left: 0;
-        right: 0;
-        border-top: 7px solid rgba(29, 111, 187, 0.63);
-    }
+#joinusImage {
+    width: 95%;
+    z-index: 3;
+}
 
+#services #servicesHeading {
+    color: #4486C3;
+    font-size: 50px;
+    text-transform: uppercase;
+    font-family: Arial, sans-serif;
+    padding-left: 20%;
+}
 
-    #services #servicesText{
-        font-weight: bold;
-        font-size: 20px;
-        color: #413F3F;
-        font-family: Arial, sans-serif;
-        padding-left: 20%;
-        position: absolute;
-    }
+#services {
+    background-color: #F4F2F2;
+    height: 650px;
+    margin: 0;
+    left: 0;
+    right: 0;
+    border-top: 7px solid rgba(29, 111, 187, 0.63);
+}
 
-    #events {
-        background-color: rgba(71, 152, 225, 0.35);
-        height: 500px;
-        border-top: 7px solid white;
-    }
+#services #servicesText {
+    font-weight: bold;
+    font-size: 20px;
+    color: #413F3F;
+    font-family: Arial, sans-serif;
+    padding-left: 20%;
+    position: absolute;
+}
 
-    #events #eventsHeading{
-        color: black;
-        font-size: 50px;
-        text-transform: uppercase;
-        font-family: Arial, sans-serif;
-        padding-left: 20%;
+#events {
+    background-color: rgba(71, 152, 225, 0.35);
+    height: 500px;
+    border-top: 7px solid white;
+}
 
-    }
+#events #eventsHeading {
+    color: black;
+    font-size: 50px;
+    text-transform: uppercase;
+    font-family: Arial, sans-serif;
+    padding-left: 20%;
 
-    div.gallery {
-        margin: 10px;
-        border: 0px solid #ccc;
-        float: left;
-        width: 28%;
-    }
+}
 
- 
+div.gallery {
+    margin: 10px;
+    border: 0px solid #ccc;
+    float: left;
+    width: 28%;
+}
 
-    div.gallery img {
-        width: 100%;
-        height: auto;
-    }
+div.gallery img {
+    width: 100%;
+    height: auto;
+}
 
-    .gal {    padding-left: 20%;
-        padding-right: 20%;}
+.gal {
+    padding-left: 20%;
+    padding-right: 20%;
+}
 
-    #contact {
-        background-color: #0A4275;
-        height: 700px;
-        margin: 0;
-        left: 0;
-        right: 0;
-        border-top: 7px solid white;
-    }
+#contact {
+    background-color: #0A4275;
+    height: 700px;
+    margin: 0;
+    left: 0;
+    right: 0;
+    border-top: 7px solid white;
+}
 
-    #contact #contactHeading{
-        color: white;
-        font-size: 50px;
-        text-transform: uppercase;
-        font-family: Arial, sans-serif;
-        padding-left: 20%;
-    }
+#contact #contactHeading {
+    color: white;
+    font-size: 50px;
+    text-transform: uppercase;
+    font-family: Arial, sans-serif;
+    padding-left: 20%;
+}
 
-    #contactForm{
-        margin-left: 20%;
-    }
-    
+#contactForm {
+    margin-left: 20%;
+}
 
-    textarea {
-        width: 70%;
-        height: 168px;
-        border: 2px solid white;
-        background-color: #0A4275;
-        margin: 10px;
-        border-radius: 5px;
-        color: white;
-        font-weight: bold;
-        font-size: 17px;
-    }
-    .textInput {
-        width: 371px;
-        height: 35px;
-        border: 2px solid white;
-        background-color: #0A4275;
-        margin: 10px;
-        border-radius: 5px;
-        color: white;
-        font-weight: bold;
-        font-size: 17px;
-        padding-left: 15px;
+textarea {
+    width: 70%;
+    height: 168px;
+    border: 2px solid white;
+    background-color: #0A4275;
+    margin: 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+}
 
-    }
+.textInput {
+    width: 371px;
+    height: 35px;
+    border: 2px solid white;
+    background-color: #0A4275;
+    margin: 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+    padding-left: 15px;
 
-    .contactSubmitButton{width: 150px; height: 40px; background-color:#4396E3; border: none;
-        border-radius: 4px;
-        position: relative;
-        top: 40px;
-        left: -165px;}
+}
 
-    .contactSubmitButton a{
-        text-decoration: none;
-        color: white;
-        font-size: 25px;
-        font-family: Arial, sans-serif;
-    }
+.contactSubmitButton {
+    width: 150px;
+    height: 40px;
+    background-color: #4396E3;
+    border: none;
+    border-radius: 4px;
+    position: relative;
+    top: 40px;
+    left: -165px;
+}
 
-    .contactDiv {
-        font-weight: bold;
-        color: white;
-        font-size: 2em;
-        font-family: Arial, sans-serif;
-        margin-left: 20%;
-    }
+.contactSubmitButton a {
+    text-decoration: none;
+    color: white;
+    font-size: 25px;
+    font-family: Arial, sans-serif;
+}
 
-    .reserveInput, .volunteerInput, .loginInput {
-        width: 100%;
-        padding: 12px 20px;
-        margin: 8px 20px;
-        display: inline-block;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-    }
+.contactDiv {
+    font-weight: bold;
+    color: white;
+    font-size: 2em;
+    font-family: Arial, sans-serif;
+    margin-left: 20%;
+}
 
-    /* Set a style for all buttons */
+.reserveInput, .volunteerInput, .loginInput {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
 
+/* Set a style for all buttons */
 
 button:hover {
     opacity: 0.8;
-    background-color: ;
+    background-color:;
 }
 
-    /* Extra styles for the cancel button */
-    .cancelbtn {
-        width: auto;
-        padding: 10px 18px;
-        background-color: #4396E3;
-        border-radius: 5px;
-    }
+/* Extra styles for the cancel button */
+.cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #4396E3;
+    border-radius: 5px;
+}
 
+.container {
+    padding: 16px;
+    margin-right: 40px;
+}
 
-    .container {
-        padding: 16px;
-        margin-right: 40px;
-    }
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
 
-    span.psw {
-        float: right;
-        padding-top: 16px;
-    }
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
 
-    /* The Modal (background) */
-    .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        padding-top: 60px;
-    }
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 30%; /* Could be more or less, depending on screen size */
+}
 
-    /* Modal Content/Box */
-    .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-        border: 1px solid #888;
-        width: 30%; /* Could be more or less, depending on screen size */
-    }
+/* The Close Button (x) */
+.close {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+}
 
-    /* The Close Button (x) */
-    .close {
-        position: absolute;
-        right: 25px;
-        top: 0;
-        color: #000;
-        font-size: 35px;
-        font-weight: bold;
-    }
+.close:hover,
+.close:focus {
+    color: red;
+    cursor: pointer;
+}
 
-    .close:hover,
-    .close:focus {
-        color: red;
-        cursor: pointer;
-    }
+.servicesButton {
+    background-color: white;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    height: 50px;
+    width: 160px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin: 10px;
 
-    .servicesButton{
-        background-color: white;
-        font-family: Arial, sans-serif;
-        font-weight: bold;
-        height: 50px;
-        width: 160px;
-        border-radius: 5px;
-        font-size: 12px;
-        margin: 10px;
+}
 
-    }
+.servicesButton a {
+    text-decoration: none;
+    color: #5E5E5E;
+    font-size: 17px;
+}
 
-    .servicesButton a{
-        text-decoration: none;
-        color: #5E5E5E;
-        font-size:17px;
-    }
+#servicesButtonId {
+    margin-left: 15%;
+    margin-right: 15%;
+}
 
-    #servicesButtonId {
-        margin-left: 15%;
-        margin-right: 15%;
-        }
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
 
-    .down {
-        transform: rotate(45deg);
-        -webkit-transform: rotate(45deg);
-    }
-
-    i {
-        border: solid black;
-        border-width: 0 3px 3px 0;
-        display: inline-block;
-        padding: 5px;
-        position: relative;
-        left: 9px;
-        top: -2px;
-    }
-
-
+i {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 5px;
+    position: relative;
+    left: 9px;
+    top: -2px;
+}
 
 @media screen and (max-width: 700px) {
-    .nav a:not(:first-child) {display: none;}
+    .nav a:not(:first-child) {
+        display: none;
+    }
+
     .nav a.icon {
         float: right;
         display: block;
     }
 
-    #header{
+    #header {
         height: auto;
         width: auto;
     }
-	h2{
+
+    h2 {
         /*color: white;*/
     }
 
     #joinusImage {
-        padding-top:137px;
+        padding-top: 137px;
     }
+
     .headerDiv {
-        width: 100px;
-        height: 200px;
-        position: relative;
-        left: 30%;
         font-family: Arial, sans-serif;
-        float: none;
-        top: -270px;
+        background-color: rgba(255, 255, 255, 0.74);
+        padding: 25px;
+        margin-right: 30%;
+        margin-top: -50%;
+        border-radius: 15px;
     }
 
     .headerImage {
         width: 150%;
         height: 330px;
-        clear: left;
-        margin-top: -7%;
-        top: 4px;
     }
 
-
-
-    .headerButtons{
+    .headerButtons {
         width: 150px;
         height: 40px;
         border: none;
@@ -528,14 +558,13 @@ button:hover {
     }
 
     #phone {
-        font-weight:bold;
+        font-weight: bold;
         color: #4396E3;
         font-size: 19px;
         font-family: Arial, sans-serif;
         position: relative;
         top: -20px;
     }
-
 
     #body {
         background-image: url("images/body.jpg");
@@ -551,8 +580,8 @@ button:hover {
         padding-top: 30px;
     }
 
-    #body .text{
-        width:85%;
+    #body .text {
+        width: 85%;
         color: #333333;
         font-size: 13px;
         font-family: Arial, sans-serif;
@@ -561,14 +590,12 @@ button:hover {
         text-align: justify;
     }
 
-
     #schedule {
-        background-image: url("images/schedule.v1.png");
-        height: auto;
-        padding-bottom: 20px;
+        background-image: url(images/schedule.v1.png);
+        height: 400px;
         border-top: 7px solid #054C8D;
-    }
 
+    }
 
     #schedule #scheduleHeading {
         color: white;
@@ -584,7 +611,6 @@ button:hover {
         float: left;
     }
 
-
     #schedule #scheduleText {
         color: white;
         font-size: 13px;
@@ -594,16 +620,13 @@ button:hover {
         text-align: justify;
         clear: both;
         position: static;
-        width:85%;
+        width: 85%;
         padding-top: 15px;
     }
 
     #joinus {
-        height: 300px;
-        padding-bottom: 20px;
+        height: 540px;
     }
-    
-    
 
     #joinus #joinusHeading {
         font-size: 30px;
@@ -617,7 +640,7 @@ button:hover {
     #joinus #joinusText {
         font-weight: bold;
         font-size: 13px;
-        width:85%;
+        width: 85%;
         padding-left: 20px;
         padding-right: 20px;
         font-family: Arial, sans-serif;
@@ -625,84 +648,76 @@ button:hover {
     }
 
     #joinusImage {
-        padding-top: 45px;
+        padding-top: 1px;
 
     }
 
+    #joinusDiv {
+        border: none;
+        font-weight: bold;
+        font-size: 17px;
+        display: inline-flex;
+        border-radius: 10px;
+        color: white;
+        margin-left: 15%;
+    }
 
     #services {
-    background-color: #F4F2F2; 
-	height: 400px; 
-	margin: 0;
-	left: 0; 
-	right: 0; 
-	border-top: 7px solid rgba(29, 111, 187, 0.63);
+        background-color: #F4F2F2;
+        height: 400px;
+        margin: 0;
+        left: 0;
+        right: 0;
+        border-top: 7px solid rgba(29, 111, 187, 0.63);
     }
 
     #servicesButtonId {
-     	position: relative;
-		left: 160px;
-		height: auto;
-		display: inline-block;
-		top: -80px;
-		
+        margin-left: 15%;
+        margin-right: 15%;
+
     }
-    
-   #services #servicesText{
+
+    #services #servicesText {
         width: 240px;
         height: 200px;
-        padding-left: 0px;
-        position: relative;
-        top: -280px;
-        left: 210px;
+        padding-left: 20%;
+        position: sticky;
         color: #413F3F;
         font-family: Arial, sans-serif;
-         font-weight: bold;
+        font-weight: bold;
         font-size: 13px;
     }
-    
-     
-     
-
 
     #services #servicesHeading {
-    font-size: 30px;
-        position: relative;
+        font-size: 30px;
         text-transform: uppercase;
         font-family: Arial, sans-serif;
         padding-left: 20px;
-        top: -50px;
-     
-    }
 
-    
+    }
 
     .servicesButton {
-    background-color: white;
-	font-family: Arial, sans-serif; 
-	font-weight: bold;
-	height: 40px;
-	width: 150px;
-	border-radius:5px;
-	margin: 10px;
-	position: relative;
-	top: 10px;
-	left: -350px;
-	text-decoration: none;
-	 color: #5E5E5E;
-	font-size:12px;
+        background-color: white;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        height: 40px;
+        width: 150px;
+        border-radius: 5px;
+        margin: 10px;
+        top: 10px;
+        left: -350px;
+        text-decoration: none;
+        color: #5E5E5E;
+        font-size: 12px;
     }
-    
-    .down {
-    transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-	}
-	
-     
 
+    .down {
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+    }
 
     #events {
-        height:400px;
+        height: 400px;
         padding-bottom: 20px;
     }
 
@@ -715,11 +730,8 @@ button:hover {
     }
 
     .gal {
-        width: 280px;
-        height: 0px;
-        position: relative;
-        top: 0px;
         padding-left: 40px;
+        padding-right: 40px;
     }
 
     div.gallery {
@@ -736,12 +748,13 @@ button:hover {
         padding-left: 20px;
     }
 
-    #contact{
+    #contact {
         height: 550px;
     }
+
     .contactDiv {
         font-size: 19px;
-        width:85%;
+        width: 85%;
         padding-left: 20px;
         padding-right: 20px;
         font-family: Arial, sans-serif;
@@ -753,14 +766,22 @@ button:hover {
         position: static;
         padding-left: 10px;
     }
-    
-     .contactSubmitButton{width: 100px; height: 30px; background-color:#4396E3; border: none;
+
+    .contactSubmitButton {
+        width: 100px;
+        height: 30px;
+        background-color: #4396E3;
+        border: none;
         border-radius: 4px;
         position: relative;
         top: 40px;
-        left: -165px;}
-        
-	.contactSubmitButton a {font-size: 15px;}
+        left: -165px;
+    }
+
+    .contactSubmitButton a {
+        font-size: 15px;
+    }
+
     .textInput {
         width: 150px;
 
@@ -774,7 +795,6 @@ button:hover {
     .contactSubmitButton {
         position: static;
     }
-    
 
     /* Modal Content/Box */
     .modal-content {
@@ -794,28 +814,27 @@ button:hover {
         border-radius: 5px;
     }
 
-
     .container {
         padding: 16px;
         margin-right: 40px;
     }
 
 }
+
 i {
-  border: solid black;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 5px;
-  position: relative;
-  left: 9px;
-  top: -2px;
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 5px;
+    position: relative;
+    left: 9px;
+    top: -2px;
 }
 
 .down {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
 }
-
 
 @media screen and (max-width: 700px) {
     .nav.responsive {
@@ -833,101 +852,102 @@ i {
         display: block;
         text-align: left;
     }
- 
+
 }
 
-@media screen and (max-width: 500px) {
-	#joinusImage {
+@media screen and (max-width: 400px) {
+    #joinusImage {
         padding-top: 101px;
     }
-    
-     #servicesButtonId {
-     	position: relative;
-		left: 150px;
-		height: auto;
-		display: inline-block;
-		top: -80px;
-		
-    }
-     #services #servicesText{
-        font-weight: bold;
-        font-size: 12px;
-        width: 180px;
-        height: 220px;
-        color: #413F3F;
-        font-family: Arial, sans-serif;
-        left: 150px;
-        position: relative;
-        top: -260px;
-        
+
+    #servicesButtonId {
+        display: table-row-group;
+
     }
 
-    
-    .servicesButton {
-    background-color: white;
-	font-family: Arial, sans-serif; 
-	font-weight: bold;
-	height: 30px;
-	width: 115px;
-	border-radius:5px;
-	margin: 10px;
-	position: relative;
-	top: 10px;
-	left: -340px;
-	text-decoration: none;
-	 color: #5E5E5E;
-	font-size:10px;
-	
-    }
-    
-    #services {
-    background-color: #F4F2F2; 
-	height: 350px; 
-	margin: 0;
-	left: 0; 
-	right: 0; 
-	border-top: 7px solid rgba(29, 111, 187, 0.63);
-    }
-    
-    .down {
-    transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-	}
-	
-	i {
- 		 border: solid black;
-  		border-width: 0 2px 2px 0;
-  		display: inline-block;
-  		padding: 3px;
-  		position: relative;
-  		left: 5px;
-  		top: -1px;
-	}
-	
-	 .headerDiv {
-        width: 100px;
-        height: 200px;
-        position: relative;
-        left: 30%;
+    #services #servicesText {
+        font-weight: bold;
+        font-size: 12px;
+        color: #413F3F;
         font-family: Arial, sans-serif;
-        float: none;
-        top: -270px;
+
     }
-    #phone {color: white;}
-    
-     .headerImage {
+
+    .servicesButton {
+        background-color: white;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        height: 30px;
+        width: 115px;
+        border-radius: 5px;
+        margin: 10px;
+        text-decoration: none;
+        color: #5E5E5E;
+        font-size: 10px;
+
+    }
+
+    #services {
+        background-color: #F4F2F2;
+        height: 350px;
+        margin: 0;
+        left: 0;
+        right: 0;
+        border-top: 7px solid rgba(29, 111, 187, 0.63);
+    }
+
+    .down {
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+    }
+
+    i {
+        border: solid black;
+        border-width: 0 2px 2px 0;
+        display: inline-block;
+        padding: 3px;
+        position: relative;
+        left: 5px;
+        top: -1px;
+    }
+
+    .headerDiv {
+        font-family: Arial, sans-serif;
+        background-color: rgba(255, 255, 255, 0.74);
+        padding: 25px;
+        margin-right: 30%;
+        margin-top: -70%;
+        border-radius: 15px;
+    }
+
+    .headerImage {
         width: 150%;
         height: 330px;
-        clear: left;
-        margin-top: -7%;
-        top: 8px;
     }
+
+    .headerButtons {
+        width: 150px;
+        height: 40px;
+        border: none;
+        font-weight: bold;
+        text-align: center;
+        font-size: 13px;
+        display: block;
+        border-radius: 10px;
+        color: white;
+        margin-top: -30px;
+        margin-bottom: 40px;
+    }
+
+    #joinusDiv {
+        display: flex;
 }
 
 @media screen and (max-width: 380px) {
-	#joinusImage {
-        padding-top:137px;
+    #joinusImage {
+        padding-top: 137px;
     }
+
     .headerDiv {
         width: 100px;
         height: 200px;
@@ -937,15 +957,19 @@ i {
         float: none;
         top: -270px;
     }
-    #phone {color: white;}
-   .headerImage {
+
+    #phone {
+        color: white;
+    }
+
+    .headerImage {
         width: 150%;
         height: 330px;
         clear: left;
         margin-top: -7%;
         top: 4px;
     }
-    
+
 }
 
 
