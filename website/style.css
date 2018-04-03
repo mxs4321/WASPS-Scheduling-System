@@ -411,13 +411,6 @@ button:hover {
     background-color:;
 }
 
-/* Extra styles for the cancel button */
-.cancelbtn {
-    width: auto;
-    padding: 10px 18px;
-    background-color: #4396E3;
-    border-radius: 5px;
-}
 
 .container {
     padding: 16px;
@@ -952,4 +945,103 @@ i {
 
 
 
+}
+a{color:#58bff6;text-decoration: none;}
+a:hover{color:#aaa; }
 
+.clear-fix{clear:both;}
+
+
+div#form{
+    position: absolute;
+    width: 50%;
+    height: 320px;
+    height: auto;
+    background-color: rgba(255, 255, 255, 0.99);
+    margin: auto;
+    border-radius: 5px;
+    padding: 20px;
+    left: 20%;
+    top: 10%;
+}
+div.form-item{position: relative; display: block; margin-bottom: 20px;}
+input{transition: all .2s ease;}
+input.form-style{
+    color:#8a8a8a;
+    display: block;
+    width: 90%;
+    height: 35px;
+    padding: 5px 5%;
+    border:1px solid #ccc;
+    -moz-border-radius: 27px;
+    -webkit-border-radius: 27px;
+    border-radius: 27px;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    background-color: rgba(255, 255, 255, 0.69);
+    font-family:'HelveticaNeue','Arial', sans-serif;
+    font-size: 105%;
+    letter-spacing: .8px;
+}
+div.form-item .form-style:focus{outline: none; border:1px solid #58bff6; color:#58bff6; }
+div.form-item p.formLabel {
+    position: absolute;
+    left: 26px;
+    top: 2px;
+    transition: all .4s ease;
+    color: #55b1df;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+.formTop{top:-22px !important; left:26px; background-color: #fff; padding:0 5px; font-size: 14px; color:#58bff6 !important;}
+.formStatus{color:#8a8a8a !important;}
+
+
+
+.reserveTitle{
+color:#4797E0;
+    font-family: Arial, sans-serif;
+}
+
+.reservebtn{
+    cursor:pointer;
+    width: 112px;
+    height: 37px;
+    -moz-border-radius: 19px;
+    -webkit-border-radius: 19px;
+    border-radius: 19px;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    background-color: #55b1df;
+    color: #fff;
+    font-weight: bold;
+}
+
+.reservebtn:hover{
+    background-color: rgba(85, 177, 223, 0.27);
+    color:#fff;
+    cursor:pointer;
+}
+
+
+.cancelbtn{
+    cursor:pointer;
+    width: 112px;
+    height: 37px;
+    -moz-border-radius: 19px;
+    -webkit-border-radius: 19px;
+    border-radius: 19px;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    background-color: #F19495;
+    color: #fff;
+    font-weight: bold;
+}
+.cancelbtn:hover{
+    background-color: rgba(241, 148, 149, 0.27);
+    color:#fff;
+    cursor:pointer;
+}

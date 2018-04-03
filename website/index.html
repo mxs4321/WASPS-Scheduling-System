@@ -4,6 +4,8 @@
     <title>W.A.S.P.S.</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-2.1.0.min.js" ></script>
+    <script src="js/script.js"></script>
 </head>
 <style>
 </style>
@@ -91,14 +93,28 @@
         //please contact the admin for more information"
     }
 
+//    function validateRequestForm(){
+//        var name = document.forms["requestForm"]["name"].value;
+//        var number = document.forms["requestForm"]["number"].value;
+//        var email = document.forms["requestForm"]["email"].value;
+//        var pLocation = document.forms["requestForm"]["pLocation"].value;
+//        var pTime = document.forms["requestForm"]["pTime"].value;
+//        var dLocation = document.forms["requestForm"]["dLocation"].value;
+//        if(name == "" || number == "" || email == "" || pLocation == "" || pTime == ""|| dLocation == ""){
+//            alert("All fields must be filled out");
+//        }
+//        return false;
+//
+//    }
+
     function validateRequestForm(){
-        var name = document.forms["requestForm"]["fullName"].value;
-        var number = document.forms["requestForm"]["number"].value;
+        var name = document.forms["requestForm"]["name"].value;
+        var number = document.forms["requestForm"]["contactName"].value;
         var email = document.forms["requestForm"]["email"].value;
-        var pLocation = document.forms["requestForm"]["pLocation"].value;
-        var pTime = document.forms["requestForm"]["pTime"].value;
-        var dLocation = document.forms["requestForm"]["dLocation"].value;
-        if(name == "" || number == "" || email == "" || pLocation == "" || pTime == ""|| dLocation == ""){
+        var pLocation = document.forms["requestForm"]["picLocation"].value;
+        var pTime = document.forms["requestForm"]["appTime"].value;
+        var dLocation = document.forms["requestForm"]["desLocation"].value;
+        if(name == "" || contactName == "" || email == "" || picLocation == "" || appTime == ""|| desLocation == ""){
             alert("All fields must be filled out");
         }
         return false;
@@ -185,30 +201,73 @@
 
 
 <div id="requestModal" class="modal">
-    <form onsubmit="return validateRequestForm()" name="requestForm" class="modal-content" method="post">
-        <span onclick="closeModal()" class="close" title="Close Modal">&times;</span>
-        <div class="container">
-            <label><b>Name</b></label>
-            <input class="reserveInput" type="text" placeholder="Enter first and last name" name="fullName" >
-            <label><b>Contact Number</b></label>
-            <input class="reserveInput" type="text" placeholder="Enter phone number" name="number">
-            <label><b>Email</b></label>
-            <input class="reserveInput" type="text" placeholder="Enter email" name="email">
-             <label><b>Appointment Date</b></label>
-            <input class="reserveInput" type="text" placeholder="Enter appointment date" name="date">
-            <label><b>Pickup Location</b></label>
-            <input class="reserveInput" type="text" placeholder="Enter pickup location" name="pLocation">
-            <label><b>Appointment Time</b></label>
-            <input class="reserveInput" type="text" placeholder="Enter appointment time" name="pTime">
-            <label><b>Destination Location</b></label>
-            <input class="reserveInput" type="text" placeholder="Enter destination location" name="dLocation">
-            <button type="submit">Reserve</button>
-        </div>
+    <!--<form onsubmit="return validateRequestForm()" name="requestForm" class="modal-content" method="post">-->
+        <!--<span onclick="closeModal()" class="close" title="Close Modal">&times;</span>-->
+        <!--<div class="container">-->
+            <!--<label><b>Name</b></label>-->
+            <!--<input class="reserveInput" type="text" placeholder="Enter first and last name" name="fullName" >-->
+            <!--<label><b>Contact Number</b></label>-->
+            <!--<input class="reserveInput" type="text" placeholder="Enter phone number" name="number">-->
+            <!--<label><b>Email</b></label>-->
+            <!--<input class="reserveInput" type="text" placeholder="Enter email" name="email">-->
+             <!--<label><b>Appointment Date</b></label>-->
+            <!--<input class="reserveInput" type="text" placeholder="Enter appointment date" name="date">-->
+            <!--<label><b>Pickup Location</b></label>-->
+            <!--<input class="reserveInput" type="text" placeholder="Enter pickup location" name="pLocation">-->
+            <!--<label><b>Appointment Time</b></label>-->
+            <!--<input class="reserveInput" type="text" placeholder="Enter appointment time" name="pTime">-->
+            <!--<label><b>Destination Location</b></label>-->
+            <!--<input class="reserveInput" type="text" placeholder="Enter destination location" name="dLocation">-->
+            <!--<button type="submit">Reserve</button>-->
+        <!--</div>-->
 
-        <div class="container" style="background-color:#f1f1f1">
-            <button type="button" onclick="closeModal()" class="cancelbtn">Cancel</button>
+        <!--<div class="container" style="background-color:#f1f1f1">-->
+            <!--<button type="button" onclick="closeModal()" class="cancelbtn">Cancel</button>-->
+        <!--</div>-->
+    <!--</form>-->
+
+
+
+    <div id="formWrapper">
+        <div id="form" onsubmit="return validateRequestForm()" name="requestForm" class="modal-content" method="post">
+            <span onclick="closeModal()" class="close" title="Close Modal">&times;</span>
+            <h2 class="reserveTitle">Reserve Ride</h2>
+            <div class="form-item">
+                <p class="formLabel">Name</p>
+                <input type="text" name="name" id="name" class="form-style" autocomplete="off"/>
+            </div>
+            <div class="form-item">
+                <p class="formLabel">Contact Number</p>
+                <input type="text" name="contactName" id="contactName" class="form-style" autocomplete="off"/>
+            </div>
+            <div class="form-item">
+                <p class="formLabel">Email</p>
+                <input type="text" name="email" id="email" class="form-style" autocomplete="off"/>
+            </div>
+            <div class="form-item">
+                <p class="formLabel">Appointment Date</p>
+                <input type="text" name="appDate" id="appDate" class="form-style" /></div>
+            <div class="form-item">
+                <p class="formLabel">Pickup Location</p>
+                <input type="text" name="picLocation" id="picLocation" class="form-style" /></div>
+            <div class="form-item">
+                <p class="formLabel">Appointment Time</p>
+                <input type="text" name="appTime" id="appTime" class="form-style" /></div>
+            <div class="form-item">
+                <p class="formLabel">Destination Location</p>
+                <input type="text" name="desLocation" id="desLocation" class="form-style" /></div>
+            <!-- <div class="pw-view"><i class="fa fa-eye"></i></div> -->
+
+            <div class="form-item">
+                <button type="submit" class="reservebtn">Reserve</button>
+                <button type="button" onclick="closeModal()" class="cancelbtn">Cancel</button>
+
+            </div>
         </div>
-    </form>
+    </div>
+
+
+
 </div>
 
 
