@@ -37,15 +37,26 @@ const PhoneNumber = styled.a`
   color: #4fc3f7;
   text-decoration: none;
 `;
+const Button = styled.button`
+  flex: 1;
+  background-color: ${props => props.background};
+  color: white;
+`;
 
 const AcceptRide = ({ id, updateRide }) => (
   <Flex>
-    <button onClick={() => updateRide(id, { status: 'Scheduled' })}>
+    <Button
+      background="#4CAF50"
+      onClick={() => updateRide(id, { status: 'Scheduled' })}
+    >
       Accept
-    </button>
-    <button onClick={() => updateRide(id, { status: 'Unverified' })}>
-      Decline
-    </button>
+    </Button>
+    <Button
+      background="#F44336"
+      onClick={() => updateRide(id, { status: 'Unverified' })}
+    >
+      Reject
+    </Button>
   </Flex>
 );
 
@@ -93,6 +104,19 @@ const DetailPanel = ({
   }
   if (user && user.role === 'driver' && status === 'Pending') {
     return <AcceptRide id={id} updateRide={updateRide} />;
+  }
+
+  if (user && user.role === 'driver' && status === 'Scheduled') {
+    return (
+      <Flex>
+        <Button
+          background="#F44336"
+          onClick={() => updateRide(id, { status: 'Unverified' })}
+        >
+          Reject Ride
+        </Button>
+      </Flex>
+    );
   }
 
   if (driver) {
