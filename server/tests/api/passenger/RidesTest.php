@@ -145,82 +145,79 @@ class PassengerRidesTest extends TestCase
         ], $ride);
     }
 
-    // TODO: Passengers shouldn't be able to create a ride with a driver already assigned 
-    // public function testPassengerCannotCreatePendingRideWithDriver()
-    // {
-    //     $response = $this->http->request('POST', '/api/rides.php', [
-    //         'json' => [
-    //             "passengerID" => "4",
-    //             "apptStart" => "2018-04-05 08:11",
-    //             "apptEnd" => "2018-04-05 09:11",
-    //             "pickupTime" => "2018-04-05 09:11",
-    //             "pickupStreetAddress" => "476 Monroe Avenue",
-    //             "pickupCity" => "Rochester",
-    //             "apptStreetAddress" => "584 Monroe Avenue",
-    //             "apptCity" => "Rochester",
-    //             "wheelchairVan" => false,
-    //             "driverID" => "3",
-    //         ],
-    //         'cookies' => $this->cookieJar,
-    //     ]);
-    //     $this->assertEquals(201, $response->getStatusCode());
-    //     $ride = json_decode($response->getBody(true), true);
-    //     unset($ride["id"]);
-    //     unset($ride["modified"]);
-    //     unset($ride["created"]);
+     public function testPassengerCannotCreatePendingRideWithDriver()
+     {
+         $response = $this->http->request('POST', '/api/rides.php', [
+             'json' => [
+                 "passengerID" => "4",
+                 "apptStart" => "2018-04-05 08:11",
+                 "apptEnd" => "2018-04-05 09:11",
+                 "pickupTime" => "2018-04-05 09:11",
+                 "pickupStreetAddress" => "476 Monroe Avenue",
+                 "pickupCity" => "Rochester",
+                 "apptStreetAddress" => "584 Monroe Avenue",
+                 "apptCity" => "Rochester",
+                 "wheelchairVan" => false,
+                 "driverID" => "3",
+             ],
+             'cookies' => $this->cookieJar,
+         ]);
+         $this->assertEquals(201, $response->getStatusCode());
+         $ride = json_decode($response->getBody(true), true);
+         unset($ride["id"]);
+         unset($ride["modified"]);
+         unset($ride["created"]);
 
-    //     $this->assertEquals([
-    //         "passenger" => [
-    //             'id' => 4,
-    //             'firstName' => 'Main',
-    //             'lastName' => 'Passenger',
-    //             'role' => 'passenger',
-    //             'phone' => '2435254235',
-    //             'email' => 'passenger@websterwasps.com',
-    //             'registered' => '2018-01-01 00:00:00'
-    //         ],
-    //         "driverID" => null,
-    //         "apptStart" => "2018-04-05 08:11:00",
-    //         "apptEnd" => "2018-04-05 09:11:00",
-    //         "pickupTime" => "2018-04-05 09:11:00",
-    //         "pickupStreetAddress" => "476 Monroe Avenue",
-    //         "pickupCity" => "Rochester",
-    //         "apptStreetAddress" => "584 Monroe Avenue",
-    //         "apptCity" => "Rochester",
-    //         "wheelchairVan" => 0,
-    //         'numMiles' => null,
-    //         'totalMinutes' => null,
-    //         'status' => 'Unverified',
-    //     ], $ride);
-    // }
+         $this->assertEquals([
+             "passenger" => [
+                 'id' => 4,
+                 'firstName' => 'Main',
+                 'lastName' => 'Passenger',
+                 'role' => 'passenger',
+                 'phone' => '2435254235',
+                 'email' => 'passenger@websterwasps.com',
+                 'registered' => '2018-01-01 00:00:00'
+             ],
+             "driverID" => null,
+             "apptStart" => "2018-04-05 08:11:00",
+             "apptEnd" => "2018-04-05 09:11:00",
+             "pickupTime" => "2018-04-05 09:11:00",
+             "pickupStreetAddress" => "476 Monroe Avenue",
+             "pickupCity" => "Rochester",
+             "apptStreetAddress" => "584 Monroe Avenue",
+             "apptCity" => "Rochester",
+             "wheelchairVan" => 0,
+             'numMiles' => null,
+             'totalMinutes' => null,
+             'status' => 'Unverified',
+         ], $ride);
+     }
 
-    // TODO: Users should not be able to 
-    // public function testPassengerCantAssignDriver()
-    // {
-    //     $response = $this->http->request('PUT', '/api/rides.php?id=3', [
-    //         'json' => [
-    //             "driverID" => "3",
-    //             "status" => "Pending",
-    //         ],
-    //         'cookies' => $this->cookieJar,
-    //     ]);
+     public function testPassengerCantAssignDriver()
+     {
+         $response = $this->http->request('PUT', '/api/rides.php?id=3', [
+             'json' => [
+                 "driverID" => "3",
+                 "status" => "Pending",
+             ],
+             'cookies' => $this->cookieJar,
+         ]);
 
-    //     $this->assertEquals(400, $response->getStatusCode());
-    // }
+         $this->assertEquals(400, $response->getStatusCode());
+     }
 
-    // TODO: Passengers should not be able to minipulate the drivers at all.
-    // public function testCantUnassignDriver()
-    // {
-    //     $response = $this->http->request('PUT', '/api/rides.php?id=2', [
-    //         'json' => [
-    //             "driverID" => -1,
-    //             "status" => "Unverified",
-    //         ],
-    //         'cookies' => $this->cookieJar,
-    //     ]);
+     public function testCantUnassignDriver()
+     {
+         $response = $this->http->request('PUT', '/api/rides.php?id=2', [
+             'json' => [
+                 "driverID" => -1,
+                 "status" => "Unverified",
+             ],
+             'cookies' => $this->cookieJar,
+         ]);
 
-    //     $this->assertEquals(400, $response->getStatusCode());
-    // }
+         $this->assertEquals(400, $response->getStatusCode());
+     }
 
     public function testCanCancelRide()
     {

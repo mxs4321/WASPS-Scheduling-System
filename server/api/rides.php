@@ -125,6 +125,7 @@ function acceptOrDeclineRide()
 function postRide($passengerID)
 {
     global $db;
+    global $user;
 
     $bodyData = json_decode(file_get_contents('php://input'), true);
 
@@ -138,35 +139,42 @@ function postRide($passengerID)
     }
 
     $driverID = null;
-    if (isset($bodyData['driverID'])) {
+    $status = "Unverified";
+    $wheelchairVan = isset($bodyData['wheelchairVan']) ?? false;
+
+    if ($user['role'] != "passenger")
+    {
+       if (isset($bodyData['driverID']))
+       {
+          $driverID = $bodyData['driverID'];
+          $status = "Pending";
+       }
+    }
+
+    if ($driverID != null) {
         $driverID = sanitizeAndValidate($bodyData['driverID'], FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
     }
     $passengerID = sanitizeAndValidate($passengerID, FILTER_SANITIZE_NUMBER_INT, FILTER_VALIDATE_INT);
     $apptStart = sanitizeAndValidate($bodyData['apptStart'], FILTER_SANITIZE_STRING);
     $apptEnd = sanitizeAndValidate($bodyData['apptEnd'], FILTER_SANITIZE_STRING);
     $pickupTime = sanitizeAndValidate($bodyData['pickupTime'], FILTER_SANITIZE_STRING);
-    $wheelchairVan = sanitizeAndValidate($bodyData['wheelchairVan'], -1, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+    $wheelchairVan = sanitizeAndValidate($wheelchairVan, -1, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
     $pickupStreetAddress = sanitizeAndValidate($bodyData['pickupStreetAddress'], FILTER_SANITIZE_STRING);
     $pickupCity = sanitizeAndValidate($bodyData['pickupCity'], FILTER_SANITIZE_STRING);
     $apptStreetAddress = sanitizeAndValidate($bodyData['apptStreetAddress'], FILTER_SANITIZE_STRING);
     $apptCity = sanitizeAndValidate($bodyData['apptCity'], FILTER_SANITIZE_STRING);
-    $status = isset($bodyData['driverID']) ? "Pending" : "Unverified";
 
-    // Maybe Useful
-    // http://php.net/manual/en/datetime.diff.php
-    // $date1 = new DateTime("now");
-    // $date2 = new DateTime("+3 days");
-    // $interval = $date1->diff($date2);
+     date_default_timezone_set('America/New_York');
+     $appointmentDatetime = date_create_from_format('Y-m-d H:i:s', $apptStart);
+     $now = new DateTime(null, new DateTimeZone('America/New_York'));
+     $currentDatetime = date_create_from_format('Y-m-d H:i:s', $now->format('Y-m-d H:i:s'));
 
-    // $appointmentDatetime = date_create_from_format('Y-m-d H:i:s', $apptStart);
-    // //TODO validate time
-
-    // if ($appointmentDatetime->getTimestamp() - time() < 259200) {
-    //     //TODO check if timezones are messing it up or not with time() function
-    //     http_response_code(400);
-    //     echo json_encode(["err" => "Cannot schedule rides within 72h of the appointment"]);
-    //     die();
-    // }
+     if ($appointmentDatetime->getTimestamp() - $currentDatetime->getTimestamp() < 259200)
+     {
+         http_response_code(400);
+         echo json_encode(["err" => "Cannot schedule rides within 72h of the appointment"]);
+         die();
+     }
 
     return $db->ride->insertRide(
         $passengerID, $apptStart, $apptEnd, $pickupTime, $wheelchairVan, $status,
@@ -177,8 +185,16 @@ function postRide($passengerID)
 function putRide($passengerID = "")
 {
     global $db;
+    global $user;
 
-    $bodyData = json_decode(file_get_contents('php://input'), true);
+   $bodyData = json_decode(file_get_contents('php://input'), true);
+
+    if ($user['role'] == "passenger" && (isset($bodyData['driverID']) || $bodyData['status'] != "Canceled"))
+    {
+       echo json_encode(["err" => "Could not update ride"]);
+       http_response_code(400);
+       die();
+    }
 
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
@@ -253,15 +269,17 @@ function putRide($passengerID = "")
         }
 
         if ($apptStart != "") {
-            $appointmentDatetime = date_create_from_format('Y-m-d H:i:s', $apptStart);
-            //TODO validate time
+           date_default_timezone_set('America/New_York');
+           $appointmentDatetime = date_create_from_format('Y-m-d H:i:s', $apptStart);
+           $now = new DateTime(null, new DateTimeZone('America/New_York'));
+           $currentDatetime = date_create_from_format('Y-m-d H:i:s', $now->format('Y-m-d H:i:s'));
 
-            if ($appointmentDatetime->getTimestamp() - time() < 259200) {
-                //TODO check if timezones are messing it up or not with time() function
-                http_response_code(400);
-                echo json_encode(["err" => "Cannot schedule rides within 72h of the appointment"]);
-                die();
-            }
+           if ($appointmentDatetime->getTimestamp() - $currentDatetime->getTimestamp() < 259200)
+           {
+              http_response_code(400);
+              echo json_encode(["err" => "Cannot schedule rides within 72h of the appointment"]);
+              die();
+           }
         }
 
         return $db->ride->updateRide($id, $passengerID, $driverID, $apptStart, $apptEnd, $numMiles, $totalMinutes,
