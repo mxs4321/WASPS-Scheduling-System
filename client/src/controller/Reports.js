@@ -25,6 +25,7 @@ const Wrapper = styled.div`
 
 const ScrollView = styled.div`
   overflow: scroll;
+  height: 100%;
 `;
 
 const DownloadIconWrapper = styled.div`
@@ -57,42 +58,58 @@ export class Reports extends Component {
       'totalMinutes',
       'wheelchairVan'
     ];
+
+    const driverKeys = [
+      'id',
+      'firstName',
+      'lastName',
+      'phone',
+      'email',
+      'start',
+      'end',
+      'days'
+    ];
+
     return (
       <Card>
-        <Wrapper>
-          <h1>Ride Reports</h1>
-          <DownloadIconWrapper onClick={() => this.props.exportRideReports()}>
-            <DownloadIcon />
-          </DownloadIconWrapper>
-          <ScrollView>
-            <Table
-              style={{ width: 2500 }}
-              dataSource={this.props.rideReports}
-              columns={keys.map(key => ({
-                key,
-                title: key,
-                dataIndex: key
-              }))}
-            />
-          </ScrollView>
-        </Wrapper>
-        <Wrapper>
-          <h1>Driver Reports</h1>
-          <DownloadIconWrapper onClick={() => this.props.exportDriverReports()}>
-            <DownloadIcon />
-          </DownloadIconWrapper>
-          <ScrollView>
-            <Table
-              style={{ width: 2500 }}
-              dataSource={this.props.driverReports}
-              columns={keys.map(key => ({
-                key,
-                title: key,
-                dataIndex: key
-              }))}
-            />
-          </ScrollView>
-        </Wrapper>
+        <ScrollView>
+          <Wrapper>
+            <h1>Ride Reports</h1>
+            <DownloadIconWrapper onClick={() => this.props.exportRideReports()}>
+              <DownloadIcon />
+            </DownloadIconWrapper>
+            <ScrollView>
+              <Table
+                style={{ width: 2500 }}
+                dataSource={this.props.rideReports}
+                columns={keys.map(key => ({
+                  key,
+                  title: key,
+                  dataIndex: key
+                }))}
+              />
+            </ScrollView>
+          </Wrapper>
+          <Wrapper>
+            <h1>Driver Reports</h1>
+            <DownloadIconWrapper
+              onClick={() => this.props.exportDriverReports()}
+            >
+              <DownloadIcon />
+            </DownloadIconWrapper>
+            <ScrollView>
+              <Table
+                style={{ width: 2500 }}
+                dataSource={this.props.driverReports}
+                columns={driverKeys.map(key => ({
+                  key,
+                  title: key,
+                  dataIndex: key
+                }))}
+              />
+            </ScrollView>
+          </Wrapper>
+        </ScrollView>
       </Card>
     );
   }
