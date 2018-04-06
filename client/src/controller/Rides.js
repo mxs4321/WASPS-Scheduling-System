@@ -48,7 +48,8 @@ export class Rides extends Component {
             apptStreetAddress,
             status,
             apptStart,
-            pickupTime
+            pickupTime,
+            ...props
           }) => (
             <ExpandingCard
               key={id}
@@ -69,6 +70,7 @@ export class Rides extends Component {
                 apptStreetAddress={apptStreetAddress}
                 status={status}
                 updateRide={updateRide}
+                {...props}
               />
             </ExpandingCard>
           )
