@@ -1,11 +1,19 @@
 import React, { Fragment, Component } from 'react';
 import styled from 'styled-components';
 import * as moment from 'moment';
-import { Popover, Input, InputNumber, Select, TimePicker } from 'antd';
+import {
+  Popover,
+  Input,
+  InputNumber,
+  Select,
+  TimePicker,
+  DatePicker
+} from 'antd';
 import { Calendar, AccessAlarm, AlarmOn, More, EditLocation } from './icons';
 import GoogleMap from './GoogleMap';
 import Avatar from './Avatar';
 import AvailableDriversList from '../controller/AvailableDriversList';
+import PlacesSearchBox from './PlacesSearchbox';
 
 const Flex = styled.div`
   display: flex;
@@ -162,6 +170,7 @@ class EditRide extends Component {
       apptStreetAddress,
       apptStart,
       apptEnd,
+      date,
       pickupTime,
       numMiles,
       onCancel,
@@ -169,61 +178,81 @@ class EditRide extends Component {
     } = this.props;
     return (
       <Pad10>
-        <InputTitle>Pickup Address</InputTitle>
-        <Input
-          defaultValue={pickupStreetAddress}
-          onChange={e => this.setState({ pickupStreetAddress: e.target.value })}
-        />
-        <InputTitle>Appointment Address</InputTitle>
-        <Input
-          defaultValue={apptStreetAddress}
-          onChange={e => this.setState({ apptStreetAddress: e.target.value })}
-        />
-        <br />
-        <InputTitle>Start Time</InputTitle>
-        <br />
-        <TimePicker
-          value={apptStart ? moment(pickupTime, 'HH:mm') : null}
-          use12Hours
-          format="h:mm a"
-          onChange={apptStart => {
-            if (apptStart) {
-              this.setState({
-                apptStart: apptStart.format('HH:mm')
-              });
-            }
-          }}
-        />
-        <br />
-        <InputTitle>Pickup Time</InputTitle>
-        <br />
-        <TimePicker
-          value={pickupTime ? moment(pickupTime, 'h:mm a') : null}
-          use12Hours
-          format="h:mm a"
-          onChange={pickupTime => {
-            if (pickupTime) {
-              this.setState({
-                pickupTime: pickupTime.format('HH:mm')
-              });
-            }
-          }}
-        />
-        <br />
-        <InputTitle>End Time</InputTitle>
-        <br />
-        <TimePicker
-          value={apptEnd ? moment(apptEnd, 'h:mm a') : null}
-          use12Hours
-          format="h:mm a"
-          onChange={apptEnd => {
-            if (apptEnd) {
-              this.setState({
-                apptEnd: apptEnd.format('HH:mm')
-              });
-            }
-          }}
-        />
+        {user.role !== 'driver' && (
+          <div>
+            <InputTitle>Pickup Address</InputTitle>
+            <PlacesSearchBox
+              left
+              onAddressPicked={origin => this.setState({ origin })}
+            />
+            <InputTitle>Appointment Address</InputTitle>
+            <PlacesSearchBox
+              left
+              onAddressPicked={destination => this.setState({ destination })}
+            />
+            <InputTitle>Date</InputTitle>
+            <br />
+            <DatePicker
+              value={date ? moment(date, 'YYYY-MM-DD') : null}
+              format="YYYY-MM-DD"
+              placeholder="Select Date"
+              onChange={date => {
+                if (date) {
+                  this.setState(
+                    { date: date.format('YYYY-MM-DD') },
+                    this.handleChange
+                  );
+                }
+              }}
+            />
+            <br />
+            <InputTitle>Start Time</InputTitle>
+            <br />
+            <TimePicker
+              value={apptStart ? moment(pickupTime, 'HH:mm') : null}
+              use12Hours
+              format="h:mm a"
+              onChange={apptStart => {
+                if (apptStart) {
+                  this.setState({
+                    apptStart: apptStart.format('HH:mm')
+                  });
+                }
+              }}
+            />
+            <br />
+            <InputTitle>Pickup Time</InputTitle>
+            <br />
+            <TimePicker
+              value={pickupTime ? moment(pickupTime, 'h:mm a') : null}
+              use12Hours
+              format="h:mm a"
+              onChange={pickupTime => {
+                if (pickupTime) {
+                  this.setState({
+                    pickupTime: pickupTime.format('HH:mm')
+                  });
+                }
+              }}
+            />
+            <br />
+            <InputTitle>End Time</InputTitle>
+            <br />
+            <TimePicker
+              value={apptEnd ? moment(apptEnd, 'h:mm a') : null}
+              use12Hours
+              format="h:mm a"
+              onChange={apptEnd => {
+                if (apptEnd) {
+                  this.setState({
+                    apptEnd: apptEnd.format('HH:mm')
+                  });
+                }
+              }}
+            />
+          </div>
+        )}
+
         <br />
         <InputTitle>Distance</InputTitle>
         <br />
@@ -253,7 +282,18 @@ class EditRide extends Component {
           <Button background="#9E9E9E" onClick={onCancel}>
             Cancel
           </Button>
-          <Button background="#4CAF50" onClick={() => onSubmit(this.state)}>
+          <Button
+            background="#4CAF50"
+            onClick={() => {
+              onSubmit({
+                apptStart: `${date} ${this.state.apptStart}`,
+                apptEnd: `${date} ${this.state.endTime}`,
+                pickupTime: `${date} ${this.state.pickupTime}`,
+                origin: this.state.origin,
+                destination: this.state.destination
+              });
+            }}
+          >
             Save
           </Button>
         </Flex>
@@ -329,6 +369,15 @@ export default class RideCard extends Component {
                           onClick={() => updateRide(id, { status: 'Canceled' })}
                         >
                           Cancel Ride
+                        </a>
+                      </li>
+                    )}
+                    {status !== 'Complete' && (
+                      <li>
+                        <a
+                          onClick={() => updateRide(id, { status: 'Complete' })}
+                        >
+                          Mark as Complete
                         </a>
                       </li>
                     )}

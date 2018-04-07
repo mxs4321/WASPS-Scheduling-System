@@ -14,11 +14,11 @@ const NoOp = () => {};
 const Wrapper = styled.div`
   position: relative;
   width: 300px;
-  margin: 0 auto;
+  margin: ${props => (props.left ? '' : '0 auto')};
 `;
 const Title = styled.b`
-  margin-top: 5px;
-  margin-left: 5px;
+  margin-top: ${props => (props.left ? '' : '5px')};
+  margin-left: ${props => (props.left ? '' : '5px')};
   font-size: 12px;
 `;
 
@@ -38,11 +38,11 @@ class PlacesSearchBox extends Component {
   };
 
   render() {
-    const { title } = this.props;
+    const { title, left } = this.props;
     const { address } = this.state;
     return (
-      <Wrapper>
-        <Title>{title}</Title>
+      <Wrapper left={left}>
+        <Title left={left}>{title}</Title>
         <PlacesAutocomplete
           googleLogo={false}
           onSelect={this.handleSelect}

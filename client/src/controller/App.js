@@ -66,7 +66,7 @@ export const App = ({
   location,
   history
 }) => {
-  if (!user) {
+  if (!(user && user.id)) {
     return (
       <Redirect
         to={{

@@ -37,6 +37,7 @@ export class Rides extends Component {
 
   render() {
     const { rides, updateRide, user } = this.props;
+
     return (
       <ExpansionList>
         {rides.map(
@@ -50,30 +51,36 @@ export class Rides extends Component {
             apptStart,
             pickupTime,
             ...props
-          }) => (
-            <ExpandingCard
-              key={id}
-              icon={iconsForStatus[status]}
-              title={`${passenger.firstName} ${passenger.lastName}`}
-              description={`${pickupStreetAddress} \u2192 ${apptStreetAddress}`}
-              detailText={moment(pickupTime).fromNow()}
-              accentColor={colorForStatus[status]}
-            >
-              <RideCard
-                id={id}
-                passenger={passenger}
-                driver={driver}
-                user={user}
-                apptStart={apptStart}
-                pickupTime={pickupTime}
-                pickupStreetAddress={pickupStreetAddress}
-                apptStreetAddress={apptStreetAddress}
-                status={status}
-                updateRide={updateRide}
-                {...props}
-              />
-            </ExpandingCard>
-          )
+          }) => {
+            const passengerName = `${passenger.firstName} ${
+              passenger.lastName
+            }`;
+            const route = `${pickupStreetAddress} \u2192 ${apptStreetAddress}`;
+            return (
+              <ExpandingCard
+                key={id}
+                icon={iconsForStatus[status]}
+                title={user.role === 'passenger' ? '' : passengerName}
+                description={route}
+                detailText={moment(pickupTime).fromNow()}
+                accentColor={colorForStatus[status]}
+              >
+                <RideCard
+                  id={id}
+                  passenger={passenger}
+                  driver={driver}
+                  user={user}
+                  apptStart={apptStart}
+                  pickupTime={pickupTime}
+                  pickupStreetAddress={pickupStreetAddress}
+                  apptStreetAddress={apptStreetAddress}
+                  status={status}
+                  updateRide={updateRide}
+                  {...props}
+                />
+              </ExpandingCard>
+            );
+          }
         )}
       </ExpansionList>
     );

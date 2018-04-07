@@ -40,7 +40,7 @@ export class SignIn extends Component {
     const { user, login, location } = this.props;
     const useReferrer = location.state && location.state.referrer !== '/login';
     const referrer = useReferrer ? location.state.referrer : '/';
-    if (user) {
+    if (user && user.id) {
       return <Redirect to={referrer} />;
     }
     return (
