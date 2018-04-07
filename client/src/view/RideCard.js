@@ -1,14 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import styled from 'styled-components';
 import * as moment from 'moment';
-import {
-  Popover,
-  Input,
-  InputNumber,
-  Select,
-  TimePicker,
-  DatePicker
-} from 'antd';
+import { Popover, InputNumber, Select, TimePicker, DatePicker } from 'antd';
 import { Calendar, AccessAlarm, AlarmOn, More, EditLocation } from './icons';
 import GoogleMap from './GoogleMap';
 import Avatar from './Avatar';
@@ -275,8 +268,6 @@ class EditRide extends Component {
           <Select.Option value="Complete">Complete</Select.Option>
           <Select.Option value="Canceled">Canceled</Select.Option>
         </Select>
-        <br />
-        <br />
         <br />
         <Flex>
           <Button background="#9E9E9E" onClick={onCancel}>

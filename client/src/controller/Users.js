@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { fetchUsers } from '../model/users';
+import { fetchUsers, updateUser } from '../model/users';
 import ExpandingCard from '../view/ExpandingCard';
 import Avatar, { computeColor } from '../view/Avatar';
-import DriverCard from '../view/DriverCard';
+import UserCard from '../view/UserCard';
 
 const ExpansionList = styled.div`
   width: 100%;
@@ -19,15 +19,18 @@ class Drivers extends Component {
   render() {
     return (
       <ExpansionList>
-        {this.props.drivers.map(({ id, firstName, lastName, role }) => (
+        {this.props.users.map(({ id, firstName, lastName, role, ...props }) => (
           <ExpandingCard
             key={id}
             icon={<Avatar size={36} name={`${firstName} ${lastName}`} />}
-            title={`${firstName} ${lastName}`}
+            description={`${firstName} ${lastName}`}
             detailText={role}
             accentColor={computeColor(`${firstName} ${lastName}`)}
           >
-            <DriverCard />
+            <UserCard
+              updateUser={changes => this.props.updateUser(id, changes)}
+              {...{ id, firstName, lastName, role, ...props }}
+            />
           </ExpandingCard>
         ))}
       </ExpansionList>
@@ -37,9 +40,10 @@ class Drivers extends Component {
 
 export default connect(
   ({ users }) => ({
-    drivers: Object.values(users.byId)
+    users: Object.values(users.byId)
   }),
   dispatch => ({
-    fetchUsers: () => dispatch(fetchUsers())
+    fetchUsers: () => dispatch(fetchUsers()),
+    updateUser: (id, changes) => dispatch(updateUser(id, changes))
   })
 )(Drivers);
