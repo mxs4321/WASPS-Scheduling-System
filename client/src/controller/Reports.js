@@ -25,6 +25,7 @@ const Wrapper = styled.div`
 
 const ScrollView = styled.div`
   overflow: scroll;
+  height: 100%;
 `;
 
 const DownloadIconWrapper = styled.div`
@@ -33,80 +34,100 @@ const DownloadIconWrapper = styled.div`
   right: 10px;
 `;
 
+const keys = {
+  ride: [
+    'apptCity',
+    'apptEnd',
+    'apptStart',
+    'apptStreetAddress',
+    'created',
+    'driverID',
+    'id',
+    'modified',
+    'numMiles',
+    'passengerID',
+    'pickupCity',
+    'pickupStreetAddress',
+    'pickupTime',
+    'status',
+    'totalMinutes',
+    'wheelchairVan'
+  ],
+  driver: [
+    'id',
+    'firstName',
+    'lastName',
+    'phone',
+    'email',
+    'start',
+    'end',
+    'days'
+  ],
+  destination: [
+    'apptStreetAddress',
+    'apptCity',
+    'firstName',
+    'lastName',
+    'apptEnd'
+  ],
+  client: ['firstName', 'lastName', 'phone', 'email']
+};
+
 export class Reports extends Component {
   componentDidMount() {
-    this.props.fetchDriverReports();
-    this.props.fetchRideReports();
+    this.props.fetchReport(this.props.reportType);
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.reportType !== this.props.reportType) {
+      this.props.fetchReport(nextProps.reportType);
+    }
+  }
+
   render() {
-    const keys = [
-      'apptCity',
-      'apptEnd',
-      'apptStart',
-      'apptStreetAddress',
-      'created',
-      'driverID',
-      'id',
-      'modified',
-      'numMiles',
-      'passengerID',
-      'pickupCity',
-      'pickupStreetAddress',
-      'pickupTime',
-      'status',
-      'totalMinutes',
-      'wheelchairVan'
-    ];
+    const { reportType } = this.props;
+
     return (
       <Card>
-        <Wrapper>
-          <h1>Ride Reports</h1>
-          <DownloadIconWrapper onClick={() => this.props.exportRideReports()}>
-            <DownloadIcon />
-          </DownloadIconWrapper>
-          <ScrollView>
-            <Table
-              style={{ width: 2500 }}
-              dataSource={this.props.rideReports}
-              columns={keys.map(key => ({
-                key,
-                title: key,
-                dataIndex: key
-              }))}
-            />
-          </ScrollView>
-        </Wrapper>
-        <Wrapper>
-          <h1>Driver Reports</h1>
-          <DownloadIconWrapper onClick={() => this.props.exportDriverReports()}>
-            <DownloadIcon />
-          </DownloadIconWrapper>
-          <ScrollView>
-            <Table
-              style={{ width: 2500 }}
-              dataSource={this.props.driverReports}
-              columns={keys.map(key => ({
-                key,
-                title: key,
-                dataIndex: key
-              }))}
-            />
-          </ScrollView>
-        </Wrapper>
+        <ScrollView>
+          <Wrapper>
+            <h1>{reportType} reports</h1>
+            <DownloadIconWrapper onClick={() => this.props.exportRideReports()}>
+              <DownloadIcon />
+            </DownloadIconWrapper>
+            <ScrollView>
+              <Table
+                style={{ width: 2500 }}
+                dataSource={this.props.reports}
+                columns={keys[reportType].map(key => ({
+                  key,
+                  title: key,
+                  dataIndex: key
+                }))}
+              />
+            </ScrollView>
+          </Wrapper>
+        </ScrollView>
       </Card>
     );
   }
 }
 
 export default connect(
-  ({ reports }) => ({
+  ({ reports, app }) => ({
+    reportType: app.reportFilter,
+    reports: reports[app.reportFilter],
     rideReports: reports.ride,
     driverReports: reports.driver
   }),
   dispatch => ({
+    fetchReport: type => dispatch(fetchReport(type)),
     fetchDriverReports: () => dispatch(fetchReport('driver')),
     fetchRideReports: () => dispatch(fetchReport('ride')),
+    fetchDestinationReports: () => dispatch(fetchReport('destination')),
+    fetchClientReports: () => dispatch(fetchReport('client')),
     exportDriverReports: () => dispatch(exportReport('driver')),
-    exportRideReports: () => dispatch(exportReport('ride'))
+    exportRideReports: () => dispatch(exportReport('ride')),
+    exportDestinationReports: () => dispatch(exportReport('destination')),
+    exportClientReports: () => dispatch(exportReport('client'))
   })
 )(Reports);

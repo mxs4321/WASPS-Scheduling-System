@@ -67,7 +67,7 @@ export default class ExpandingCard extends Component {
         <Row isOpen={isOpen} onClick={() => this.setState({ isOpen: !isOpen })}>
           <Flex>
             <Icon>{icon}</Icon>
-            <Flex2>{title}</Flex2>
+            {title && <Flex2>{title}</Flex2>}
             <Flex5>{description}</Flex5>
             <AlignRight>{detailText}</AlignRight>
           </Flex>

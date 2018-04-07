@@ -3,6 +3,7 @@ import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login, refreshUserInfo } from '../model/auth';
 import styled from 'styled-components';
+import { Input, Icon } from 'antd';
 
 const Card = styled.div`
   position: relative;
@@ -17,13 +18,17 @@ const Card = styled.div`
 const Button = styled.button`
   display: block;
   height: 40px;
-  width: 80%;
+  width: 100%;
   margin: 10px auto;
   color: white;
   background-color: ${props => props.background};
 `;
 
 export class SignIn extends Component {
+  state = {
+    email: '',
+    password: ''
+  };
   componentDidMount() {
     const { location } = this.props;
     const useReferrer = location.state && location.state.referrer !== '/login';
@@ -35,58 +40,38 @@ export class SignIn extends Component {
     const { user, login, location } = this.props;
     const useReferrer = location.state && location.state.referrer !== '/login';
     const referrer = useReferrer ? location.state.referrer : '/';
-    if (user) {
+    if (user && user.id) {
       return <Redirect to={referrer} />;
     }
     return (
       <Card>
+        <Input.Group>
+          <Input
+            placeholder="Email or Phone Number"
+            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            onChange={e => this.setState({ email: e.target.value })}
+          />
+
+          <br />
+          <br />
+          <Input
+            type="password"
+            placeholder="Password"
+            prefix={<Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            onChange={e => this.setState({ password: e.target.value })}
+          />
+        </Input.Group>
         <Button
-          background="#24292e"
+          background="#4CAF50"
           onClick={() =>
             login({
-              email: 'admin@websterwasps.com',
-              password: 'admin',
+              email: this.state.email,
+              password: this.state.password,
               referrer
             })
           }
         >
-          Admin
-        </Button>
-        <Button
-          background="#EB5757"
-          onClick={() =>
-            login({
-              email: 'dispatcher@websterwasps.com',
-              password: 'dispatcher',
-              referrer
-            })
-          }
-        >
-          Dispatcher
-        </Button>
-        <Button
-          background="#27AE60"
-          onClick={() =>
-            login({
-              email: 'driver@websterwasps.com',
-              password: 'driver',
-              referrer
-            })
-          }
-        >
-          Driver
-        </Button>
-        <Button
-          background="#4396E3"
-          onClick={() =>
-            login({
-              email: 'passenger@websterwasps.com',
-              password: 'passenger',
-              referrer
-            })
-          }
-        >
-          Passenger
+          Sign In
         </Button>
       </Card>
     );

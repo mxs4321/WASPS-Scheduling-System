@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import ReactDOM from 'react-dom';
@@ -14,6 +14,7 @@ import DriverAvailabilityForm from './forms/DriverAvailabilityForm';
 import VerifyRideForm from './forms/VerifyRideForm';
 import { connect } from 'react-redux';
 import { createRide } from '../model/rides';
+import CreateRideForm from './forms/CreateRideForm';
 
 const NoOp = () => {};
 
@@ -118,14 +119,8 @@ class CreateRide extends Component {
     document.body.removeChild(this.overlayContainer);
   }
 
-  render() {
-    const {
-      location,
-      step,
-      history,
-      createRide,
-      onModalClick = NoOp
-    } = this.props;
+  renderDispatcherView() {
+    const { location, step, history, createRide } = this.props;
     const {
       passengerID,
       origin,
@@ -144,48 +139,62 @@ class CreateRide extends Component {
     if (origin && destination) {
       completedSteps = 3;
     }
+    return (
+      <Fragment>
+        <CardHeader>
+          <Breadcrumb style={{ flex: 4 }}>
+            <Crumb done={step > 1} active={step === 1}>
+              User
+            </Crumb>
+            <Crumb done={step > 2} active={step === 2}>
+              Date & Time
+            </Crumb>
+            <Crumb done={step > 3} active={step === 3}>
+              Route
+            </Crumb>
+            <Crumb done={step > 4} active={step === 4}>
+              Verify
+            </Crumb>
+          </Breadcrumb>
+          <Button
+            onClick={() => {
+              if (step === 4) {
+                createRide(parse(location.search));
+                history.push('/');
+              } else {
+                history.push(`/create/${step + 1}?${queryify(this.state)}`);
+              }
+            }}
+            active={step <= completedSteps || step === 4}
+          >
+            {step === 4 ? 'Create Ride' : 'Next'}
+          </Button>
+        </CardHeader>
+        <RenderForm
+          style={{ position: 'relative' }}
+          step={step}
+          query={parse(location.search)}
+          push={url => this.props.history.push(url)}
+          onChange={payload => {
+            this.setState({ ...payload });
+          }}
+        />
+      </Fragment>
+    );
+  }
 
+  renderPassengerView() {
+    return <CreateRideForm closeForm={this.props.onModalClick} />;
+  }
+
+  render() {
+    const { user, onModalClick = NoOp } = this.props;
     return ReactDOM.createPortal(
       <ModalBackground onClick={onModalClick}>
         <Card onClick={e => e.stopPropagation()}>
-          <CardHeader>
-            <Breadcrumb style={{ flex: 4 }}>
-              <Crumb done={step > 1} active={step === 1}>
-                User
-              </Crumb>
-              <Crumb done={step > 2} active={step === 2}>
-                Date & Time
-              </Crumb>
-              <Crumb done={step > 3} active={step === 3}>
-                Route
-              </Crumb>
-              <Crumb done={step > 4} active={step === 4}>
-                Verify
-              </Crumb>
-            </Breadcrumb>
-            <Button
-              onClick={() => {
-                if (step === 4) {
-                  createRide(parse(location.search));
-                  history.push('/');
-                } else {
-                  history.push(`/create/${step + 1}?${queryify(this.state)}`);
-                }
-              }}
-              active={step <= completedSteps || step === 4}
-            >
-              {step === 4 ? 'Create Ride' : 'Next'}
-            </Button>
-          </CardHeader>
-          <RenderForm
-            style={{ position: 'relative' }}
-            step={step}
-            query={parse(location.search)}
-            push={url => this.props.history.push(url)}
-            onChange={payload => {
-              this.setState({ ...payload });
-            }}
-          />
+          {user.role === 'passenger'
+            ? this.renderPassengerView()
+            : this.renderDispatcherView()}
         </Card>
       </ModalBackground>,
       this.overlayContainer
@@ -195,8 +204,9 @@ class CreateRide extends Component {
 
 export default withRouter(
   connect(
-    ({ users }) => ({
-      users: users.byId
+    ({ users, auth }) => ({
+      users: users.byId,
+      user: auth.user
     }),
     dispatch => ({
       createRide: (...args) => dispatch(createRide(...args))

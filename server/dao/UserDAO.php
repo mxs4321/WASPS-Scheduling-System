@@ -65,7 +65,7 @@ class UserDAO {
    {
       try
       {
-         $query = "SELECT user.id, firstName, lastName, phone, email, start, end, days FROM User
+         $query = "SELECT User.id, firstName, lastName, phone, email, start, end, days FROM User
                       LEFT JOIN Availability ON (User.id = Availability.driverID)
                       WHERE role = 'driver'";
          if ($fetchSince != "") $query .= " AND User.CreatedTime > :fetchSince";

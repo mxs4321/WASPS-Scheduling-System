@@ -34,9 +34,9 @@ export class AvailableDriversList extends Component {
   };
 
   render() {
-    const { drivers, selectedID, handleChange } = this.props;
+    const { drivers, selectedID, handleChange, ...props } = this.props;
     return (
-      <Ul>
+      <Ul {...props}>
         {drivers.map(({ id, firstName, lastName, role }) => (
           <Li
             active={selectedID === id}

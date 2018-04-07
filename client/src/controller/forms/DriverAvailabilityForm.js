@@ -104,19 +104,21 @@ export default class DriverAvailabilityForm extends Component {
             </Margin>
           </Flex>
         </Center>
-        <AvailableDriversList
-          date={date}
-          startTime={startTime}
-          pickupTime={pickupTime}
-          endTime={endTime}
-          drivers={drivers}
-          selectedID={driverID}
-          handleChange={driverID => {
-            if (driverID) {
-              this.setState({ driverID }, this.handleChange);
-            }
-          }}
-        />
+        {endTime && (
+          <AvailableDriversList
+            date={date}
+            startTime={startTime}
+            pickupTime={pickupTime}
+            endTime={endTime}
+            drivers={drivers}
+            selectedID={driverID}
+            handleChange={driverID => {
+              if (driverID) {
+                this.setState({ driverID }, this.handleChange);
+              }
+            }}
+          />
+        )}
       </Flex>
     );
   }

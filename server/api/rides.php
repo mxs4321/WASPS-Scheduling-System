@@ -158,23 +158,22 @@ function postRide($passengerID)
     $apptStart = sanitizeAndValidate($bodyData['apptStart'], FILTER_SANITIZE_STRING);
     $apptEnd = sanitizeAndValidate($bodyData['apptEnd'], FILTER_SANITIZE_STRING);
     $pickupTime = sanitizeAndValidate($bodyData['pickupTime'], FILTER_SANITIZE_STRING);
-    $wheelchairVan = sanitizeAndValidate($wheelchairVan, -1, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+    $wheelchairVan = sanitizeAndValidate($wheelchairVan, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
     $pickupStreetAddress = sanitizeAndValidate($bodyData['pickupStreetAddress'], FILTER_SANITIZE_STRING);
     $pickupCity = sanitizeAndValidate($bodyData['pickupCity'], FILTER_SANITIZE_STRING);
     $apptStreetAddress = sanitizeAndValidate($bodyData['apptStreetAddress'], FILTER_SANITIZE_STRING);
     $apptCity = sanitizeAndValidate($bodyData['apptCity'], FILTER_SANITIZE_STRING);
 
-     date_default_timezone_set('America/New_York');
-     $appointmentDatetime = date_create_from_format('Y-m-d H:i:s', $apptStart);
-     $now = new DateTime(null, new DateTimeZone('America/New_York'));
-     $currentDatetime = date_create_from_format('Y-m-d H:i:s', $now->format('Y-m-d H:i:s'));
-
-     if ($appointmentDatetime->getTimestamp() - $currentDatetime->getTimestamp() < 259200)
-     {
-         http_response_code(400);
-         echo json_encode(["err" => "Cannot schedule rides within 72h of the appointment"]);
-         die();
-     }
+    //  date_default_timezone_set('America/New_York');
+    //  $appointmentDatetime = date_create_from_format('Y-m-d H:i:s', $apptStart);
+    //  $now = new DateTime(null, new DateTimeZone('America/New_York'));
+    //  $currentDatetime = date_create_from_format('Y-m-d H:i:s', $now->format('Y-m-d H:i:s'));
+    //  if ($appointmentDatetime->getTimestamp() - $currentDatetime->getTimestamp() < 259200)
+    //  {
+    //      http_response_code(400);
+    //      echo json_encode(["err" => "Cannot schedule rides within 72h of the appointment"]);
+    //      die();
+    //  }
 
     return $db->ride->insertRide(
         $passengerID, $apptStart, $apptEnd, $pickupTime, $wheelchairVan, $status,
@@ -268,19 +267,19 @@ function putRide($passengerID = "")
             $apptCity = sanitizeAndValidate($apptCity, FILTER_SANITIZE_STRING);
         }
 
-        if ($apptStart != "") {
-           date_default_timezone_set('America/New_York');
-           $appointmentDatetime = date_create_from_format('Y-m-d H:i:s', $apptStart);
-           $now = new DateTime(null, new DateTimeZone('America/New_York'));
-           $currentDatetime = date_create_from_format('Y-m-d H:i:s', $now->format('Y-m-d H:i:s'));
+        // if ($apptStart != "") {
+        //    date_default_timezone_set('America/New_York');
+        //    $appointmentDatetime = date_create_from_format('Y-m-d H:i:s', $apptStart);
+        //    $now = new DateTime(null, new DateTimeZone('America/New_York'));
+        //    $currentDatetime = date_create_from_format('Y-m-d H:i:s', $now->format('Y-m-d H:i:s'));
 
-           if ($appointmentDatetime->getTimestamp() - $currentDatetime->getTimestamp() < 259200)
-           {
-              http_response_code(400);
-              echo json_encode(["err" => "Cannot schedule rides within 72h of the appointment"]);
-              die();
-           }
-        }
+        //    if ($appointmentDatetime->getTimestamp() - $currentDatetime->getTimestamp() < 259200)
+        //    {
+        //       http_response_code(400);
+        //       echo json_encode(["err" => "Cannot schedule rides within 72h of the appointment"]);
+        //       die();
+        //    }
+        // }
 
         return $db->ride->updateRide($id, $passengerID, $driverID, $apptStart, $apptEnd, $numMiles, $totalMinutes,
         $pickupTime, $wheelchairVan, $status, $pickupStreetAddress, $pickupCity, $apptStreetAddress, $apptCity);

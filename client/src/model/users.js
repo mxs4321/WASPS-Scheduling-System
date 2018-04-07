@@ -1,5 +1,5 @@
 import { indexBy, prop } from 'ramda';
-import { getJSON, postJSON } from '../util/fetch';
+import { getJSON, postJSON, putJSON } from '../util/fetch';
 import { updateRequest } from './ajax';
 import { ATTEMPT_LOGOUT } from './auth';
 import type { User } from './types/user';
@@ -39,6 +39,17 @@ export const createUser = user => dispatch => {
       dispatch(addUsers([user]));
     })
     .catch(err => dispatch(updateRequest(`POST ${url}`, 'Error', err)));
+};
+
+export const updateUser = (id, changedValues) => dispatch => {
+  const url = `/api/users.php?id=${id}`;
+  dispatch(updateRequest(`PUT ${url}`, 'Pending'));
+  return putJSON(url, changedValues)
+    .then(user => {
+      dispatch(updateRequest(`GET ${url}`, 'Success'));
+      dispatch(addUsers([user]));
+    })
+    .catch(err => dispatch(updateRequest(`GET ${url}`, 'Error', err)));
 };
 
 export default (state: State = DEFAULT_STATE, action) => {

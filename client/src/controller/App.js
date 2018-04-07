@@ -3,9 +3,14 @@ import styled from 'styled-components';
 import { Route, Redirect, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../model/auth';
-import { toggleSidebar, changeRideFilter } from '../model/app';
+import {
+  toggleSidebar,
+  changeRideFilter,
+  changeReportFilter
+} from '../model/app';
 import Toolbar from '../view/Toolbar';
 import StatusFilter from '../view/StatusFilter';
+import ReportFilter from '../view/ReportFilter';
 import { Add } from '../view/icons';
 import Navigation from './Navigation';
 import CreateRide from './CreateRide';
@@ -64,9 +69,11 @@ export const App = ({
   rideFilter,
   changeRideFilter,
   location,
-  history
+  history,
+  reportFilter,
+  changeReportFilter
 }) => {
-  if (!user) {
+  if (!(user && user.id)) {
     return (
       <Redirect
         to={{
@@ -103,6 +110,16 @@ export const App = ({
                 )}
               />
             ))}
+            <Route
+              exact
+              path={'/reports'}
+              component={() => (
+                <ReportFilter
+                  currentReport={reportFilter}
+                  onFilterChange={changeReportFilter}
+                />
+              )}
+            />
           </Sidebar>
         )}
         <Route exact path="/" component={Rides} />
@@ -165,12 +182,14 @@ export default withRouter(
     ({ auth, app }) => ({
       user: auth.user,
       isSidebarOpen: app.isSidebarOpen,
-      rideFilter: app.rideFilter
+      rideFilter: app.rideFilter,
+      reportFilter: app.reportFilter
     }),
     dispatch => ({
       logout: () => dispatch(logout()),
       toggleSidebar: () => dispatch(toggleSidebar()),
-      changeRideFilter: status => dispatch(changeRideFilter(status))
+      changeRideFilter: status => dispatch(changeRideFilter(status)),
+      changeReportFilter: status => dispatch(changeReportFilter(status))
     })
   )(App)
 );
